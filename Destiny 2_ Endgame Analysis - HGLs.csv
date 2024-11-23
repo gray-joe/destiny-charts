@@ -1,0 +1,69 @@
+WEAPON,,INFO,,,,PERKS,,,TIER,
+Icon,Name,Affinity,Frame,Enhance,Reserves,Column 1,Column 2,Origin Trait,Rank,Tier
+/,Ideal,Solar,Rapid,Yes,39,"Envious Arsenal
+Cascade Point
+Air Trigger","Bait and Switch
+Explosive Light
+Surrounded",Nanotech Tracer Rockets,0,/
+,VS Chill Inhibitor,Stasis,Rapid,Yes,39,"Envious Arsenal
+Cascade Point
+Attrition Orbs","Bait and Switch
+Explosive Light
+Surrounded",Bray Legacy,1,S
+,Bitter/Sweet,Arc,Adaptive,Yes,29,Envious Arsenal,"Bait and Switch
+Cascade Point
+Explosive Light",Dark Ether Reaper,2,A
+,Wicked Sister,Strand,Adaptive,Yes,29,Envious Arsenal,"Bait and Switch
+Cascade Point
+Explosive Light",Nadir Focus,3,A
+,"Edge Transit
+BRAVE version",Void,Adaptive,Yes,30,"Envious Assassin
+Cascade Point
+Chain Reaction","Bait and Switch
+Explosive Light
+Deconstruct",Indomitability,4,A
+,Cataphract GL3,Strand,Adaptive,No,31,"Envious Assassin
+Auto-Loading Holster","Bait and Switch
+Cascade Point",Alacrity,5,B
+,Marsilion-C,Solar,Rapid,Yes,36,Envious Assassin,"Cascade Point
+Full Court",Hakke Breach Armaments,6,B
+,Koraxis's Distress,Strand,Rapid,Yes,39,"Envious Assassin
+Reconstruction","Surrounded
+Frenzy
+Full Court",Harmonic Resonance,7,B
+,Acosmic,Void,Rapid,Yes,39,"Air Trigger
+Clown Cartridge
+Withering Gaze","Bait and Switch
+Cascade Point
+Explosive Light",Nadir Focus,8,B
+,Hullabaloo,Arc,Compressed Wave,Yes,29,"Envious Assassin
+Field Prep
+Voltshot","Chain Reaction
+Cascade Point
+Golden Tricorn",Classy Contender,9,C
+,Regnant,Void,Adaptive,Yes,30,"Envious Assassin
+Auto-Loading Holster","Cascade Point
+Explosive Light",Noble Deeds,10,C
+,Wendigo GL3,Arc,Adaptive,No,30,Auto-Loading Holster,"Cascade Point
+Explosive Light",Vanguard's Vindication,11,C
+,Love and Death,Solar,Rapid,No,37,"Auto-Loading Holster
+Clown Cartridge",Full Court,None,12,D
+,Swarm of the Raven,Void,Rapid,No,37,"Auto-Loading Holster
+Clown Cartridge",Cascade Point,Skulking Wolf,13,D
+,Interference VI,Arc,Adaptive,No,30,"Auto-Loading Holster
+Clown Cartridge",Full Court,None,14,D
+,Typhon GL5,Stasis,Adaptive,No,31,Demolitionist,Explosive Light,Omolon Fluid Dynamics,15,D
+,Dimensional Hypotrochoid,Stasis,Compressed Wave,Yes,29,"Envious Assassin
+Field Prep","Vorpal Weapon
+Chain Reaction",Nanotech Tracer Rockets,16,D
+,Cry Mutiny,Solar,Adaptive,No,31,Demolitionist,Vorpal Weapon,Gun and Run,17,E
+,Canis Major,Solar,Rapid,No,37,Clown Cartridge,Vorpal Weapon,None,18,E
+,Outrageous Fortune,Solar,Rapid,No,38,Auto-Loading Holster,Quickdraw,None,19,F
+,Tarnation,Arc,Rapid,Yes,37,Clown Cartridge,One for All,Psychohack,20,F
+,Memory Interdict,Void,Adaptive,No,29,"Auto-Loading Holster
+Clown Cartridge",Chain Reaction,None,21,F
+,Crowd Pleaser,Void,Adaptive,No,29,Clown Cartridge,Demolitionist,Gun and Run,22,F
+,Blast Battue,Arc,Adaptive,No,31,"Clown Cartridge
+Quickdraw","Chain Reaction
+Auto-Loading Holster",None,23,F
+,Berenger's Memory,Void,Rapid,No,36,Field Prep,Auto-Loading Holster,None,24,F
