@@ -4,7 +4,7 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
+} from '@heroicons/react/24/solid';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
@@ -40,6 +40,14 @@ const links = [
       { name: 'Shotguns', href: '/dashboard/weapons/shotguns' },
       { name: 'Snipers', href: '/dashboard/weapons/snipers' },
       { name: 'Trace Rifles', href: '/dashboard/weapons/trace-rifles' },
+    ],
+  },
+  {
+    name: 'Other',
+    href: '/dashboard/other',
+    icon: DocumentDuplicateIcon,
+    children: [
+      { name: 'Super Regen', href: '/dashboard/other/super_regen' },
     ],
   },
 ];

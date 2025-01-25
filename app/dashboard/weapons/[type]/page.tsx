@@ -2,7 +2,6 @@ import { fetchTierList } from '@/app/lib/data';
 import WeaponsTable from '@/app/ui/weapons-tier-list/table';
 import { notFound } from 'next/navigation';
 
-// Map route parameters to weapon types and display names
 const weaponTypes = {
   'lfrs': {
     type: 'Linear Fusion Rifle',
@@ -54,7 +53,11 @@ const weaponTypes = {
   },
 } as const;
 
-// Type safety for our route parameters
+export interface PageProps {
+  params: Promise<{ type: keyof typeof weaponTypes }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
 export function generateStaticParams() {
   const params = Object.keys(weaponTypes).map((type) => ({
     type,
@@ -62,8 +65,11 @@ export function generateStaticParams() {
   return params;
 }
 
-export default async function Page({ params }: { params: { type: string } }) {
-  const weaponType = weaponTypes[params.type as keyof typeof weaponTypes];
+export default async function Page({ params, searchParams }: PageProps) {
+  const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  
+  const weaponType = weaponTypes[resolvedParams.type];
   
   if (!weaponType) {
     notFound();
