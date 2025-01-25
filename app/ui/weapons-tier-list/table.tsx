@@ -14,8 +14,8 @@ interface Weapon {
   perk_one: string;
   perk_two: string;
   origin_trait: string;
-  rank: number;
-  tier: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F';
+  rank_in_type: number;
+  tier: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 }
 
 export default async function WeaponsTable({
@@ -59,13 +59,16 @@ export default async function WeaponsTable({
                       }`}
                     >
                       <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-6">
-                        <Image
-                          src={weapon.icon_url}
-                          alt={`${weapon.name} icon`}
-                          width={40}
-                          height={40}
-                          className="rounded"
-                        />
+                        {weapon.icon_url ? (
+                          <Image
+                            src={weapon.icon_url}
+                            alt={weapon.name}
+                            width={48}
+                            height={48}
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-200" />
+                        )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
                         {weapon.name}
@@ -92,7 +95,7 @@ export default async function WeaponsTable({
                         {weapon.origin_trait}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        {weapon.rank}
+                        {weapon.rank_in_type}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm font-bold">
                         {weapon.tier}
@@ -119,6 +122,7 @@ function getTierBackgroundColor(tier: string) {
     'D': 'bg-red-100',
     'E': 'bg-purple-100',
     'F': 'bg-gray-100',
+    'G': 'bg-gray-200',
   };
   return colors[tier as keyof typeof colors] || 'bg-white';
 }
