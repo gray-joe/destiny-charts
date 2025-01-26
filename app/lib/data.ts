@@ -1,6 +1,7 @@
 import { db } from '@vercel/postgres';
 import {
   Weapon,
+  SuperRegen,
 } from './definitions';
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -43,10 +44,19 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
       WHERE type = $1
       ORDER BY CAST(rank_in_type AS INTEGER) ASC`, [type]);
 
-    console.log(`Found ${rows.length} weapons for type "${type}"`);
     return rows as Weapon[];
   } catch (error) {
     console.error(`Error fetching ${type} tier list data:`, error);
     throw new Error(`Failed to fetch ${type} tier list data.`);
+  }
+}
+
+export async function fetchSuperRegenList(): Promise<SuperRegen[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM super_regen`);
+    return rows as SuperRegen[];
+  } catch (error) {
+    console.error("Error fetching super regen data:", error);
+    throw new Error("Failed to fetch super regen data.");
   }
 }

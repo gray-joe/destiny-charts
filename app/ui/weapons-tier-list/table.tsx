@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 
-// Define the type for a weapon entry
 interface Weapon {
   id: string;
   icon_url: string;
@@ -112,7 +111,6 @@ export default async function WeaponsTable({
   );
 }
 
-// Helper function to get background color based on tier
 function getTierBackgroundColor(tier: string) {
   const colors = {
     'S': 'bg-emerald-100',
