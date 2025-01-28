@@ -1,23 +1,46 @@
 import DestinyChartsLogo from '@/app/ui/destiny-charts-logo';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ChartBarIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import styles from '@/app/ui/home.module.css';
-import Image from 'next/image';
 
 export default function Page() {
   return (
     <main className="flex min-h-screen flex-col p-6">
-      <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
+      {/* Header Banner */}
+      <div className="flex flex-col items-center rounded-lg bg-primary-light p-6 md:p-12">
         <DestinyChartsLogo />
+        <h1 className="mt-6 text-center text-2xl text-white md:text-4xl font-bold">
+          Welcome to Destiny Charts
+        </h1>
+        <p className="mt-4 text-center text-lg text-white md:text-xl">
+          Endgame PVE analysis and builds
+        </p>
       </div>
-      <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
-        <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
-        <div className={styles.shape} />
-          <p className={`text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Destiny Charts.</strong>
-            Endgame PVE tier lists and analysis.
+
+      {/* Cards Container */}
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {/* Dashboard Card */}
+        <Link 
+          href="/dashboard" 
+          className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+        >
+          <ChartBarIcon className="h-16 w-16 text-blue-500" />
+          <h2 className="mt-4 text-xl font-semibold">Weapon Analysis</h2>
+          <p className="mt-2 text-center text-white">
+            View DPS charts and weapon tier lists for endgame PVE content
           </p>
-        </div>
+        </Link>
+
+        {/* Builds Card */}
+        <Link 
+          href="/builds" 
+          className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+        >
+          <WrenchScrewdriverIcon className="h-16 w-16 text-blue-500" />
+          <h2 className="mt-4 text-xl font-semibold">Build Crafting</h2>
+          <p className="mt-2 text-center text-white">
+            Explore optimized builds for different activities and playstyles
+          </p>
+        </Link>
       </div>
     </main>
   );

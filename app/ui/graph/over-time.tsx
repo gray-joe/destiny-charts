@@ -39,15 +39,12 @@ export default function OverTimeGraph({ data, title = 'Super Regeneration Over T
     return <div>No data available</div>;
   }
 
-  // Sort data by time first
   const sortedData = [...data].sort((a, b) => 
     parseFloat(a['Time (s)']) - parseFloat(b['Time (s)'])
   );
 
-  // Get weapon names (all keys except 'Time (s)')
   const weaponNames = Object.keys(sortedData[0]).filter(key => key !== 'Time (s)');
 
-  // Generate random colors for each weapon
   const colors = weaponNames.map((_, index) => 
     `hsl(${(index * 360) / weaponNames.length}, 70%, 50%)`
   );
@@ -73,12 +70,14 @@ export default function OverTimeGraph({ data, title = 'Super Regeneration Over T
         position: 'right' as const,
         maxHeight: 200,
         labels: {
+          color: 'white',
           boxWidth: 20,
         },
       },
       title: {
         display: true,
         text: title,
+        color: 'white',
       },
     },
     scales: {
@@ -86,12 +85,26 @@ export default function OverTimeGraph({ data, title = 'Super Regeneration Over T
         title: {
           display: true,
           text: 'Time (seconds)',
+          color: 'white',
+        },
+        ticks: {
+          color: 'white',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
         },
       },
       y: {
         title: {
           display: true,
           text: 'Super Energy (%)',
+          color: 'white',
+        },
+        ticks: {
+          color: 'white',
+        },
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
         },
         min: 0,
         max: 100,

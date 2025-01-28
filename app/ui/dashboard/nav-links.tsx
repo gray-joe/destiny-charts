@@ -4,7 +4,7 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-} from '@heroicons/react/24/solid';
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
@@ -77,12 +77,12 @@ export default function NavLinks() {
             <Link
               href={link.href}
               className={clsx(
-                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-primary-light p-3 text-sm font-medium text-white hover:bg-primary-hover md:flex-none md:justify-start md:p-2 md:px-3',
                 {
-                  'bg-sky-100 text-blue-600': isActive,
+                  'bg-primary-hover': isActive,
                 },
               )}
-              onClick={(e) => {
+              onClick={(e: { preventDefault: () => void; }) => {
                 if (hasChildren) {
                   e.preventDefault();
                   toggleExpand(link.name);
@@ -117,9 +117,9 @@ export default function NavLinks() {
                     key={child.name}
                     href={child.href}
                     className={clsx(
-                      'flex h-[40px] items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3',
+                      'flex h-[40px] items-center justify-center gap-2 rounded-md bg-primary-dark p-3 text-sm font-medium text-white hover:bg-primary-hover md:flex-none md:justify-start md:p-2 md:px-3',
                       {
-                        'bg-sky-100 text-blue-600': pathname === child.href,
+                        'bg-primary-hover': pathname === child.href,
                       },
                     )}
                   >
