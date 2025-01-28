@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
+import { useState } from 'react';
 
 interface Weapon {
   id: string;
@@ -17,23 +20,43 @@ interface Weapon {
   tier: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
 }
 
-export default async function WeaponsTable({
+export default function WeaponsTable({
   weapons,
 }: {
   weapons: Weapon[];
 }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const filteredWeapons = weapons.filter(weapon => {
+    const searchFields = [
+      weapon.name,
+      weapon.affinity,
+      weapon.frame,
+      weapon.perk_one,
+      weapon.perk_two,
+      weapon.origin_trait,
+    ];
+    
+    return searchFields.some(field => 
+      field?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
+      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl text-white`}>
         Tier List
       </h1>
-      <Search placeholder="Search weapons..." />
+      <Search 
+        placeholder="Search weapons by name, affinity, frame, perk, origin trait..." 
+        onSearch={setSearchTerm}
+      />
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
-              <table className="min-w-full rounded-md text-gray-900">
-                <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
+            <div className="overflow-hidden rounded-md bg-primary-dark p-2 md:pt-0">
+              <table className="min-w-full rounded-md text-white">
+                <thead className="rounded-md bg-primary-dark text-left text-sm font-normal">
                   <tr>
                     <th scope="col" className="px-4 py-5 font-medium sm:pl-6">Icon</th>
                     <th scope="col" className="px-3 py-5 font-medium">Name</th>
@@ -49,11 +72,11 @@ export default async function WeaponsTable({
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {weapons.map((weapon) => (
+                <tbody className="divide-y divide-primary-light text-white">
+                  {filteredWeapons.map((weapon) => (
                     <tr 
                       key={weapon.id} 
-                      className={`group hover:bg-gray-100 ${
+                      className={`group hover:bg-primary-hover ${
                         getTierBackgroundColor(weapon.tier)
                       }`}
                     >
@@ -66,7 +89,7 @@ export default async function WeaponsTable({
                             height={48}
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gray-200" />
+                          <div className="w-12 h-12 bg-primary-light" />
                         )}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
@@ -113,14 +136,14 @@ export default async function WeaponsTable({
 
 function getTierBackgroundColor(tier: string) {
   const colors = {
-    'S': 'bg-emerald-100',
-    'A': 'bg-green-100',
-    'B': 'bg-yellow-100',
-    'C': 'bg-orange-100',
-    'D': 'bg-red-100',
-    'E': 'bg-purple-100',
-    'F': 'bg-gray-100',
-    'G': 'bg-gray-200',
+    'S': 'bg-emerald-900/50',
+    'A': 'bg-green-900/50',
+    'B': 'bg-yellow-900/50',
+    'C': 'bg-orange-900/50',
+    'D': 'bg-red-900/50',
+    'E': 'bg-purple-900/50',
+    'F': 'bg-gray-900/50',
+    'G': 'bg-gray-950/50',
   };
-  return colors[tier as keyof typeof colors] || 'bg-white';
+  return colors[tier as keyof typeof colors] || 'bg-primary-dark';
 }
