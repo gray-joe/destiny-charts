@@ -24,7 +24,7 @@ export default function Page() {
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <ChartBarIcon className="h-16 w-16 text-blue-500" />
-          <h2 className="mt-4 text-xl font-semibold">Weapon Analysis</h2>
+          <h2 className="mt-4 text-xl font-semibold">Endgame Analysis</h2>
           <p className="mt-2 text-center text-white">
             View DPS charts and weapon tier lists for endgame PVE content
           </p>

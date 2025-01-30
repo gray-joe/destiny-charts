@@ -4,21 +4,7 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { useState } from 'react';
-
-interface Weapon {
-  id: string;
-  icon_url: string;
-  name: string;
-  affinity: string;
-  frame: string;
-  enhanced: boolean;
-  reserves: number;
-  perk_one: string;
-  perk_two: string;
-  origin_trait: string;
-  rank_in_type: number;
-  tier: 'S' | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
-}
+import { Weapon } from '@/app/lib/definitions';
 
 export default function WeaponsTable({
   weapons,
@@ -58,6 +44,8 @@ export default function WeaponsTable({
               <table className="min-w-full rounded-md text-white">
                 <thead className="rounded-md bg-primary-dark text-left text-sm font-normal">
                   <tr>
+                    <th scope="col" className="px-3 py-5 font-medium">Tier</th>
+                    <th scope="col" className="px-3 py-5 font-medium">Rank</th>
                     <th scope="col" className="px-4 py-5 font-medium sm:pl-6">Icon</th>
                     <th scope="col" className="px-3 py-5 font-medium">Name</th>
                     <th scope="col" className="px-3 py-5 font-medium">Affinity</th>
@@ -67,8 +55,6 @@ export default function WeaponsTable({
                     <th scope="col" className="px-3 py-5 font-medium">Perk 1</th>
                     <th scope="col" className="px-3 py-5 font-medium">Perk 2</th>
                     <th scope="col" className="px-3 py-5 font-medium">Origin Trait</th>
-                    <th scope="col" className="px-3 py-5 font-medium">Rank</th>
-                    <th scope="col" className="px-3 py-5 font-medium">Tier</th>
                   </tr>
                 </thead>
 
@@ -80,6 +66,12 @@ export default function WeaponsTable({
                         getTierBackgroundColor(weapon.tier)
                       }`}
                     >
+                      <td className="whitespace-nowrap px-3 py-5 text-sm">
+                        {weapon.rank_in_type}
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-5 text-sm font-bold">
+                        {weapon.tier}
+                      </td>
                       <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-6">
                         {weapon.icon_url ? (
                           <Image
@@ -115,12 +107,6 @@ export default function WeaponsTable({
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
                         {weapon.origin_trait}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        {weapon.rank_in_type}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-5 text-sm font-bold">
-                        {weapon.tier}
                       </td>
                     </tr>
                   ))}

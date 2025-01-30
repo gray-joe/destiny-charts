@@ -32,3 +32,38 @@ export type SuperRegen = {
   wardens_law: number;
   witherhoard_chill_inhibitor: number;
 }
+
+export type SustainedBossDamage = {
+  id: string;
+  name: string;
+  type: string;
+  count: number;
+  notes: string;
+  distribution: string;
+  rate: string;
+  time: string;
+  base: string;
+  perk: string;
+  surge: string;
+  buff: string;
+  debuff: string;
+  single: string;
+  total: string;
+  burst: string;
+  sustained: string;
+}
+
+export type Abilities = {
+  id: string;
+  icon_url: string;
+  updated_at: string;
+  type: string;
+  subtype: string;
+  modifiers: string;
+  wipe: string;
+  count: number;
+  percentage: string;
+  actual: string;
+  ratio: string;
+  deviation: string;
+}

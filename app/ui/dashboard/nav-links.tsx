@@ -1,9 +1,10 @@
 'use client';
  
 import {
-  UserGroupIcon,
+  RocketLaunchIcon,
   HomeIcon,
-  DocumentDuplicateIcon,
+  BugAntIcon,
+  BeakerIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -12,21 +13,21 @@ import { useState } from 'react';
 
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: 'Builds', href: '/builds', icon: HomeIcon },
   {
     name: 'Boss DMG',
-    href: '/dashboard/boss-dmg',
-    icon: DocumentDuplicateIcon,
+    href: '/dashboard/boss_dmg',
+    icon: BugAntIcon,
     children: [
-      { name: 'Overview', href: '/dashboard/boss-dmg' },
-      { name: 'Abilities', href: '/dashboard/boss-dmg/abilities' },
-      { name: 'Sustained', href: '/dashboard/boss-dmg/sustained' },
-      { name: 'Swap', href: '/dashboard/boss-dmg/swap' },
+      { name: 'Abilities', href: '/dashboard/boss_dmg/abilities' },
+      { name: 'Sustained', href: '/dashboard/boss_dmg/sustained' },
+      { name: 'Swap', href: '/dashboard/boss_dmg/swap' },
     ],
   },
   { 
     name: 'Weapons', 
     href: '/dashboard/weapons', 
-    icon: UserGroupIcon,
+    icon: RocketLaunchIcon,
     children: [
       { name: 'Linear Fusion Rifles', href: '/dashboard/weapons/lfrs' },
       { name: 'Heavy Grenade Launchers', href: '/dashboard/weapons/heavy-gls' },
@@ -45,7 +46,7 @@ const links = [
   {
     name: 'Other',
     href: '/dashboard/other',
-    icon: DocumentDuplicateIcon,
+    icon: BeakerIcon,
     children: [
       { name: 'Super Regen', href: '/dashboard/other/super_regen' },
     ],

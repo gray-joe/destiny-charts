@@ -2,6 +2,8 @@ import { db } from '@vercel/postgres';
 import {
   Weapon,
   SuperRegen,
+  SustainedBossDamage,
+  Abilities
 } from './definitions';
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -58,5 +60,25 @@ export async function fetchSuperRegenList(): Promise<SuperRegen[]> {
   } catch (error) {
     console.error("Error fetching super regen data:", error);
     throw new Error("Failed to fetch super regen data.");
+  }
+}
+
+export async function fetchSustainedBossDamageData(): Promise<SustainedBossDamage[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM dps_sustained`);
+    return rows as SustainedBossDamage[];
+  } catch (error) {
+    console.error("Error fetching sustained boss damage data:", error);
+    throw new Error("Failed to fetch sustained boss damage data.");
+  }
+}
+
+export async function fetchAbilitiesData(): Promise<Abilities[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM dps_abilities ORDER BY CAST(actual AS INTEGER) DESC`);
+    return rows as Abilities[];
+  } catch (error) {
+    console.error("Error fetching abilities data:", error);
+    throw new Error("Failed to fetch abilities data.");
   }
 }
