@@ -3,13 +3,13 @@
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { useState } from 'react';
-import { SustainedBossDamage } from '@/app/lib/definitions';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import { SwapBossDamage } from '@/app/lib/definitions';
 
-export default function BossDamageTable({
+export default function SwapDamageTable({
   data,
 }: {
-  data: SustainedBossDamage[];
+  data: SwapBossDamage[];
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [showAllColumns, setShowAllColumns] = useState(false);
@@ -25,10 +25,10 @@ export default function BossDamageTable({
     );
   });
 
-  function getDamageColor(value: string) {
+  function getDPSColor(value: string) {
     const numValue = parseInt(value.replace(/,/g, ''));
-    if (numValue > 250000) return 'bg-emerald-900/50';
-    if (numValue > 175000) return 'bg-green-900/50';
+    if (numValue > 750000) return 'bg-emerald-900/50';
+    if (numValue > 250000) return 'bg-green-900/50';
     if (numValue > 100000) return 'bg-yellow-900/50';
     if (numValue > 50000) return 'bg-orange-900/50';
     return 'bg-red-900/50';
@@ -38,27 +38,47 @@ export default function BossDamageTable({
     { key: 'icon_url', label: '', always: true, className: 'w-[48px]' },
     { key: 'name', label: 'Name', always: true, className: 'min-w-[200px] max-w-[300px] break-words' },
     { key: 'type', label: 'Type', always: true, className: 'min-w-[100px]' },
-    { key: 'total', label: 'Total', always: true, className: 'min-w-[100px]' },
-    { key: 'burst', label: 'Burst', always: true, className: 'min-w-[100px]' },
-    { key: 'sustained', label: 'Sustained', always: true, className: 'min-w-[100px]' },
-    { key: 'count', label: 'Count', always: false, className: 'min-w-[80px]' },
-    { key: 'notes', label: 'Notes', always: false, className: 'min-w-[150px]' },
-    { key: 'distribution', label: 'Distribution', always: false, className: 'min-w-[120px]' },
-    { key: 'rate', label: 'Rate', always: false, className: 'min-w-[80px]' },
-    { key: 'time', label: 'Time', always: false, className: 'min-w-[80px]' },
+    { key: 'swap_dps', label: 'Swap DPS', always: true, className: 'min-w-[100px]' },
+    { key: 'true_dps', label: 'True DPS', always: true, className: 'min-w-[100px]' },
+    { key: 'total', label: 'Total Damage', always: true, className: 'min-w-[100px]' },
     { key: 'base', label: 'Base', always: false, className: 'min-w-[100px]' },
     { key: 'perk', label: 'Perk', always: false, className: 'min-w-[80px]' },
     { key: 'surge', label: 'Surge', always: false, className: 'min-w-[80px]' },
     { key: 'buff', label: 'Buff', always: false, className: 'min-w-[80px]' },
     { key: 'debuff', label: 'Debuff', always: false, className: 'min-w-[80px]' },
-    { key: 'single', label: 'Single', always: false, className: 'min-w-[100px]' },
+    { key: 'ready', label: 'Ready Time', always: false, className: 'min-w-[100px]' },
+    { key: 'fire', label: 'Fire Time', always: false, className: 'min-w-[100px]' },
+    { key: 'stow', label: 'Stow Time', always: false, className: 'min-w-[100px]' },
+    { key: 'swap_time', label: 'Swap Time', always: false, className: 'min-w-[100px]' },
+    { key: 'total_time', label: 'Total Time', always: false, className: 'min-w-[100px]' },
   ];
+
+  function formatValue(value: string | null, key: string): React.ReactNode {
+    if (value === null) return '';
+    
+    if (key === 'icon_url') {
+      return value ? <img src={value} alt="" className="w-8 h-8" /> : null;
+    }
+    
+    // Try to parse as a number with commas
+    const cleanValue = value.replace(/,/g, '');
+    const num = parseFloat(cleanValue);
+    
+    if (!isNaN(num)) {
+      if (num < 100) {
+        return num.toFixed(3);
+      }
+      return num.toLocaleString();
+    }
+    
+    return value;
+  }
 
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-4">
         <h1 className={`${lusitana.className} text-xl md:text-2xl text-white`}>
-          Sustained Boss Damage
+          Weapon Swap DPS
         </h1>
         <button
           onClick={() => setShowAllColumns(!showAllColumns)}
@@ -79,7 +99,7 @@ export default function BossDamageTable({
       </div>
       
       <Search 
-        placeholder="Search by name, type, notes..." 
+        placeholder="Search by name or type..." 
         onSearch={setSearchTerm}
       />
 
@@ -110,21 +130,17 @@ export default function BossDamageTable({
                       {columns.map(column => {
                         if (!column.always && !showAllColumns) return null;
                         
-                        const value = item[column.key as keyof SustainedBossDamage];
-                        const isColoredColumn = ['burst', 'sustained'].includes(column.key);
+                        const value = item[column.key as keyof SwapBossDamage];
+                        const isColoredColumn = ['swap_dps', 'true_dps'].includes(column.key);
                         
                         return (
                           <td 
                             key={column.key}
                             className={`px-3 py-5 text-sm ${column.className} ${
-                              isColoredColumn ? getDamageColor(value as string) : ''
+                              isColoredColumn ? getDPSColor(value as string) : ''
                             }`}
                           >
-                            {column.key === 'icon_url' ? (
-                              value ? <img src={value as string} alt="" className="w-8 h-8" /> : null
-                            ) : (
-                              typeof value === 'number' ? value.toFixed(3) : value
-                            )}
+                            {formatValue(value, column.key)}
                           </td>
                         );
                       })}
