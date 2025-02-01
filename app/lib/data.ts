@@ -3,7 +3,8 @@ import {
   Weapon,
   SuperRegen,
   SustainedBossDamage,
-  Abilities
+  Abilities,
+  SwapBossDamage
 } from './definitions';
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -65,7 +66,7 @@ export async function fetchSuperRegenList(): Promise<SuperRegen[]> {
 
 export async function fetchSustainedBossDamageData(): Promise<SustainedBossDamage[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM dps_sustained`);
+    const { rows } = await db.query(`SELECT * FROM dps_sustained ORDER BY sustained DESC`);
     return rows as SustainedBossDamage[];
   } catch (error) {
     console.error("Error fetching sustained boss damage data:", error);
@@ -80,5 +81,15 @@ export async function fetchAbilitiesData(): Promise<Abilities[]> {
   } catch (error) {
     console.error("Error fetching abilities data:", error);
     throw new Error("Failed to fetch abilities data.");
+  }
+}
+
+export async function fetchSwapBossDamageData(): Promise<SwapBossDamage[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM dps_swap ORDER BY true_dps DESC`);
+    return rows as SwapBossDamage[];
+  } catch (error) {
+    console.error("Error fetching swap boss damage data:", error);
+    throw new Error("Failed to fetch swap boss damage data.");
   }
 }

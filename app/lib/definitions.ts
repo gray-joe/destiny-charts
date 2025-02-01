@@ -67,3 +67,24 @@ export type Abilities = {
   ratio: string;
   deviation: string;
 }
+
+export type SwapBossDamage = {
+  id: string;
+  updated_at: string;
+  name: string;
+  type: string;
+  icon_url: string;
+  base: string;
+  perk: string;
+  surge: string;
+  buff: string;
+  debuff: string;
+  total: string;
+  ready: string;
+  fire: string;
+  stow: string;
+  swap_time: string;
+  total_time: string;
+  swap_dps: string;
+  true_dps: string;
+}
