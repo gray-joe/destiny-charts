@@ -4,7 +4,8 @@ import {
   SuperRegen,
   SustainedBossDamage,
   Abilities,
-  SwapBossDamage
+  SwapBossDamage,
+  Build
 } from './definitions';
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -91,5 +92,51 @@ export async function fetchSwapBossDamageData(): Promise<SwapBossDamage[]> {
   } catch (error) {
     console.error("Error fetching swap boss damage data:", error);
     throw new Error("Failed to fetch swap boss damage data.");
+  }
+}
+
+export async function fetchBuilds(): Promise<Build[]> {
+  try {
+    const { rows } = await db.query(`
+      SELECT 
+        b.id,
+        b.updated_at,
+        b.name,
+        b.class,
+        b.subclass,
+        b.activities,
+        b.background_image,
+        b.exotic_armor,
+        b.exotic_weapon,
+        b.legendary_weapons,
+        b.build_guide_id,
+        e.icon_url
+      FROM builds b
+      LEFT JOIN exotic_weapons e ON b.exotic_weapon = e.name
+      ORDER BY b.updated_at DESC
+    `);
+    return rows as Build[];
+  } catch (error) {
+    console.error('Error fetching builds:', error);
+    throw new Error('Failed to fetch builds');
+  }
+}
+
+export async function fetchBuildById(id: string): Promise<Build> {
+  try {
+    const { rows } = await db.query(`
+      SELECT *
+      FROM builds
+      WHERE id = $1
+    `, [id]);
+
+    if (rows.length === 0) {
+      throw new Error(`Build with ID ${id} not found`);
+    }
+
+    return rows[0] as Build;
+  } catch (error) {
+    console.error('Error fetching build:', error);
+    throw new Error('Failed to fetch build');
   }
 }

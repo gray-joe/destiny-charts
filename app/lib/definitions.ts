@@ -88,3 +88,18 @@ export type SwapBossDamage = {
   swap_dps: string;
   true_dps: string;
 }
+
+export type Build = {
+  id: string;
+  updated_at: string;
+  name: string;
+  class: 'Hunter' | 'Warlock' | 'Titan';
+  subclass: string;
+  activities: string;
+  background_image: string;
+  exotic_armor: string;
+  exotic_weapon: string;
+  legendary_weapons: string;
+  build_guide_id?: string;
+  exotic_weapon_icon: string;
+};

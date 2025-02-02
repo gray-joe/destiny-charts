@@ -13,7 +13,7 @@ import { useState } from 'react';
 
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'Builds', href: '/builds', icon: HomeIcon },
+  { name: 'Builds', href: '/dashboard/builds', icon: HomeIcon },
   {
     name: 'Boss DMG',
     href: '/dashboard/boss_dmg',
