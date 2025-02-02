@@ -77,7 +77,7 @@ export async function fetchSustainedBossDamageData(): Promise<SustainedBossDamag
 
 export async function fetchAbilitiesData(): Promise<Abilities[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM dps_abilities ORDER BY CAST(actual AS INTEGER) DESC`);
+    const { rows } = await db.query(`SELECT * FROM dps_abilities ORDER BY actual DESC`);
     return rows as Abilities[];
   } catch (error) {
     console.error("Error fetching abilities data:", error);
