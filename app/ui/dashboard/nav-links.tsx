@@ -4,7 +4,8 @@ import {
   RocketLaunchIcon,
   HomeIcon,
   BugAntIcon,
-  BeakerIcon
+  BeakerIcon,
+  WrenchScrewdriverIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,7 +14,7 @@ import { useState } from 'react';
 
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'Builds', href: '/dashboard/builds', icon: HomeIcon },
+  { name: 'Builds', href: '/dashboard/builds', icon: WrenchScrewdriverIcon },
   {
     name: 'Boss DMG',
     href: '/dashboard/boss_dmg',

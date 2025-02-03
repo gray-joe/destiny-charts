@@ -110,9 +110,11 @@ export async function fetchBuilds(): Promise<Build[]> {
         b.exotic_weapon,
         b.legendary_weapons,
         b.build_guide_id,
-        e.icon_url
+        e.icon_url as exotic_weapon_icon_url,
+        a.icon_url as exotic_armor_icon_url
       FROM builds b
       LEFT JOIN exotic_weapons e ON b.exotic_weapon = e.name
+      LEFT JOIN exotic_armor a ON b.exotic_armor = a.name
       ORDER BY b.updated_at DESC
     `);
     return rows as Build[];

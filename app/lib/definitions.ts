@@ -101,5 +101,6 @@ export type Build = {
   exotic_weapon: string;
   legendary_weapons: string;
   build_guide_id?: string;
-  exotic_weapon_icon: string;
+  exotic_weapon_icon_url: string;
+  exotic_armor_icon_url: string;
 };

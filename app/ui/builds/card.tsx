@@ -5,39 +5,22 @@ import Link from 'next/link';
 import { lusitana } from '@/app/ui/fonts';
 import { Build } from '@/app/lib/definitions';
 
-// Helper function to validate and format URLs
-const getValidImageUrl = (url: string | null | undefined) => {
-  if (!url) return '';
-  try {
-    // Check if it's already a valid URL
-    new URL(url);
-    return url;
-  } catch {
-    // If it's a relative path, make it absolute
-    return url.startsWith('/') ? url : `/${url}`;
-  }
-};
-
 export default function BuildCard({
     data,
 }: {
     data: Build;
 }) {
-  const backgroundImage = getValidImageUrl(data.background_image);
-  const subclassImage = getValidImageUrl(data.subclass);
-  const exoticArmorImage = getValidImageUrl(data.exotic_armor);
-  const exoticWeaponImage = getValidImageUrl(data.exotic_weapon_icon);
-
   return (
-    <Link href={`/builds/${data.id}`}>
+    <Link href={`builds/${data.id}`}>
       <div className="relative w-[300px] h-[400px] rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-200">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
-          {backgroundImage ? (
+          {data.background_image ? (
             <Image
-              src={backgroundImage}
+              src={data.background_image}
               alt={data.name}
               fill
+              sizes="(max-width: 300px) 100vw, 300px"
               className="object-cover"
               priority
             />
@@ -61,34 +44,37 @@ export default function BuildCard({
           <div className="flex items-center justify-between mt-4">
             <div className="flex gap-4">
               {/* Subclass Icon */}
-              {subclassImage && (
+              {/* {data.subclass && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={subclassImage}
+                    src={data.subclass}
                     alt="Subclass"
                     fill
+                    sizes="48px"
                     className="object-cover p-1"
                   />
                 </div>
-              )}
+              )} */}
               {/* Exotic Armor Icon */}
-              {exoticArmorImage && (
+              {data.exotic_armor_icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={exoticArmorImage}
+                    src={data.exotic_armor_icon_url}
                     alt="Exotic Armor"
                     fill
+                    sizes="48px"
                     className="object-cover p-1"
                   />
                 </div>
               )}
               {/* Exotic Weapon Icon */}
-              {exoticWeaponImage && (
+              {data.exotic_weapon_icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={exoticWeaponImage}
+                    src={data.exotic_weapon_icon_url}
                     alt="Exotic Weapon"
                     fill
+                    sizes="48px"
                     className="object-cover p-1"
                     onError={(e) => console.error('Image load error:', e)}
                   />
