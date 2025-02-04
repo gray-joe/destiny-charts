@@ -65,9 +65,8 @@ export function generateStaticParams() {
   return params;
 }
 
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
   
   const weaponType = weaponTypes[resolvedParams.type];
   

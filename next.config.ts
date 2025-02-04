@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'www.bungie.net',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'lsovkbfxdhcnxpaunabw.supabase.co',
+        pathname: '/**',
+      },
     ],
   },
 };

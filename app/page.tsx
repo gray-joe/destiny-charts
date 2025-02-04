@@ -32,7 +32,7 @@ export default function Page() {
 
         {/* Builds Card */}
         <Link 
-          href="/builds" 
+          href="/dashboard/builds" 
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <WrenchScrewdriverIcon className="h-16 w-16 text-blue-500" />
