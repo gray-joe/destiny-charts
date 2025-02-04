@@ -18,9 +18,9 @@ export default function Page() {
 
       {/* Cards Container */}
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {/* Dashboard Card */}
+        {/* Endgame Analysis Card */}
         <Link 
-          href="/dashboard" 
+          href="/endgame_analysis" 
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <ChartBarIcon className="h-16 w-16 text-blue-500" />
@@ -32,13 +32,13 @@ export default function Page() {
 
         {/* Builds Card */}
         <Link 
-          href="/dashboard/builds" 
+          href="/builds" 
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <WrenchScrewdriverIcon className="h-16 w-16 text-blue-500" />
           <h2 className="mt-4 text-xl font-semibold">Build Crafting</h2>
           <p className="mt-2 text-center text-white">
-            Explore optimized builds for different activities and playstyles
+            Find an optimized build for the activity you want to play
           </p>
         </Link>
       </div>

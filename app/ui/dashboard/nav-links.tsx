@@ -3,6 +3,7 @@
 import {
   RocketLaunchIcon,
   HomeIcon,
+  ChartBarIcon,
   BugAntIcon,
   BeakerIcon,
   WrenchScrewdriverIcon
@@ -13,43 +14,44 @@ import clsx from 'clsx';
 import { useState } from 'react';
 
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  { name: 'Builds', href: '/dashboard/builds', icon: WrenchScrewdriverIcon },
+  { name: 'Home', href: '/', icon: HomeIcon },
+  { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
+  { name: 'Endgame Analysis', href: '/endgame_analysis', icon: ChartBarIcon },
   {
     name: 'Boss DMG',
-    href: '/dashboard/boss_dmg',
+    href: '/endgame_analysis/boss_dmg',
     icon: BugAntIcon,
     children: [
-      { name: 'Abilities', href: '/dashboard/boss_dmg/abilities' },
-      { name: 'Sustained', href: '/dashboard/boss_dmg/sustained' },
-      { name: 'Swap', href: '/dashboard/boss_dmg/swap' },
+      { name: 'Abilities', href: '/endgame_analysis/boss_dmg/abilities' },
+      { name: 'Sustained', href: '/endgame_analysis/boss_dmg/sustained' },
+      { name: 'Swap', href: '/endgame_analysis/boss_dmg/swap' },
     ],
   },
   { 
     name: 'Weapons', 
-    href: '/dashboard/weapons', 
+    href: '/endgame_analysis/weapons', 
     icon: RocketLaunchIcon,
     children: [
-      { name: 'Linear Fusion Rifles', href: '/dashboard/weapons/lfrs' },
-      { name: 'Heavy Grenade Launchers', href: '/dashboard/weapons/heavy-gls' },
-      { name: 'Machine Guns', href: '/dashboard/weapons/mgs' },
-      { name: 'Rockets', href: '/dashboard/weapons/rockets' },
-      { name: 'Swords', href: '/dashboard/weapons/swords' },
-      { name: 'Breach Grenade Launchers', href: '/dashboard/weapons/breach-gls' },
-      { name: 'Glaives', href: '/dashboard/weapons/glaives' },
-      { name: 'Fusion Rifles', href: '/dashboard/weapons/fusions' },
-      { name: 'Rocket Sidearms', href: '/dashboard/weapons/rocket-sidearms' },
-      { name: 'Shotguns', href: '/dashboard/weapons/shotguns' },
-      { name: 'Snipers', href: '/dashboard/weapons/snipers' },
-      { name: 'Trace Rifles', href: '/dashboard/weapons/trace-rifles' },
+      { name: 'Linear Fusion Rifles', href: '/endgame_analysis/weapons/lfrs' },
+      { name: 'Heavy Grenade Launchers', href: '/endgame_analysis/weapons/heavy-gls' },
+      { name: 'Machine Guns', href: '/endgame_analysis/weapons/mgs' },
+      { name: 'Rockets', href: '/endgame_analysis/weapons/rockets' },
+      { name: 'Swords', href: '/endgame_analysis/weapons/swords' },
+      { name: 'Breach Grenade Launchers', href: '/endgame_analysis/weapons/breach-gls' },
+      { name: 'Glaives', href: '/endgame_analysis/weapons/glaives' },
+      { name: 'Fusion Rifles', href: '/endgame_analysis/weapons/fusions' },
+      { name: 'Rocket Sidearms', href: '/endgame_analysis/weapons/rocket-sidearms' },
+      { name: 'Shotguns', href: '/endgame_analysis/weapons/shotguns' },
+      { name: 'Snipers', href: '/endgame_analysis/weapons/snipers' },
+      { name: 'Trace Rifles', href: '/endgame_analysis/weapons/trace-rifles' },
     ],
   },
   {
     name: 'Other',
-    href: '/dashboard/other',
+    href: '/endgame_analysis/other',
     icon: BeakerIcon,
     children: [
-      { name: 'Super Regen', href: '/dashboard/other/super_regen' },
+      { name: 'Super Regen', href: '/endgame_analysis/other/super_regen' },
     ],
   },
 ];
