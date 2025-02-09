@@ -103,4 +103,20 @@ export type Build = {
   build_guide_id?: string;
   exotic_weapon_icon_url: string;
   exotic_armor_icon_url: string;
+  aspects?: string[];
+  fragments?: string[];
+};
+
+export type Aspect = {
+  id: string;
+  icon_url: string;
+  name: string;
+  description: string;
+};
+
+export type Fragment = {
+  id: string;
+  icon_url: string;
+  name: string;
+  description: string;
 };

@@ -5,7 +5,9 @@ import {
   SustainedBossDamage,
   Abilities,
   SwapBossDamage,
-  Build
+  Build,
+  Aspect,
+  Fragment
 } from './definitions';
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -110,6 +112,8 @@ export async function fetchBuilds(): Promise<Build[]> {
         b.exotic_weapon,
         b.legendary_weapons,
         b.build_guide_id,
+        b.aspects,
+        b.fragments,
         e.icon_url as exotic_weapon_icon_url,
         a.icon_url as exotic_armor_icon_url
       FROM builds b
@@ -121,6 +125,26 @@ export async function fetchBuilds(): Promise<Build[]> {
   } catch (error) {
     console.error('Error fetching builds:', error);
     throw new Error('Failed to fetch builds');
+  }
+}
+
+export async function fetchAspects(): Promise<Aspect[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM aspects`);
+    return rows as Aspect[];
+  } catch (error) {
+    console.error('Error fetching aspects:', error);
+    throw new Error('Failed to fetch aspects');
+  }
+}
+
+export async function fetchFragments(): Promise<Fragment[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM fragments`);
+    return rows as Fragment[];
+  } catch (error) {
+    console.error('Error fetching fragments:', error);
+    throw new Error('Failed to fetch fragments');
   }
 }
 
