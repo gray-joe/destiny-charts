@@ -1,4 +1,4 @@
-import BossDamageTable from "@/app/ui/boss-damage-table/table";
+import BossDamageTable from "@/app/ui/boss_damage_table/table";
 import { fetchSustainedBossDamageData } from "@/app/lib/data";
 
 export default async function Page() {

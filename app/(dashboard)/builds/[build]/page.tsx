@@ -2,22 +2,24 @@ import { fetchBuildById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
-
-export interface PageProps {
-  params: Promise<{ build: string }>;
-}
+import { Aspect, Fragment } from '@/app/lib/definitions';
 
 export default async function BuildPage({
   params,
-}: PageProps) {
-  const resolvedParams = await params;
-  
-  const build = await fetchBuildById(resolvedParams.build);
+}: {
+  params: { build: string }
+}) {
+  const build = await fetchBuildById(params.build);
   
   if (!build) {
     notFound();
   }
-  
+
+  // Parse JSON strings into objects
+  const exoticArmor = build.exotic_armor ? JSON.parse(build.exotic_armor) : null;
+  const exoticWeapon = build.exotic_weapon ? JSON.parse(build.exotic_weapon) : null;
+  const legendaryWeapons = build.legendary_weapons ? build.legendary_weapons.split(',').map((w: string) => w.trim()) : [];
+
   return (
     <div className="flex flex-col md:flex-row gap-8 p-6">
       {/* Left Column - Background Image */}
@@ -59,25 +61,44 @@ export default async function BuildPage({
         {/* Subclass Details */}
         <section>
           <h2 className="text-xl text-primary-light mb-3">Subclass Configuration</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Aspects */}
-            {/* <div>
+            <div>
               <h3 className="text-white font-semibold mb-2">Aspects</h3>
-              <ul className="list-disc list-inside text-white">
-                {build.aspects?.map((aspect, index) => (
-                  <li key={index}>{aspect}</li>
+              <ul className="space-y-2">
+                {build.aspects?.map((aspect: Aspect, index: number) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <Image
+                      src={aspect.icon_url}
+                      alt={aspect.name}
+                      width={32}
+                      height={32}
+                      className="rounded-md"
+                    />
+                    <span className="text-white">{aspect.name}</span>
+                  </li>
                 ))}
               </ul>
-            </div> */}
+            </div>
+            
             {/* Fragments */}
-            {/* <div>
+            <div>
               <h3 className="text-white font-semibold mb-2">Fragments</h3>
-              <ul className="list-disc list-inside text-white">
-                {build.fragments?.map((fragment, index) => (
-                  <li key={index}>{fragment}</li>
+              <ul className="space-y-2">
+                {build.fragments?.map((fragment: Fragment, index: number) => (
+                  <li key={index} className="flex items-center gap-3">
+                    <Image
+                      src={fragment.icon_url}
+                      alt={fragment.name}
+                      width={32}
+                      height={32}
+                      className="rounded-md"
+                    />
+                    <span className="text-white">{fragment.name}</span>
+                  </li>
                 ))}
               </ul>
-            </div> */}
+            </div>
           </div>
         </section>
 
@@ -86,44 +107,50 @@ export default async function BuildPage({
           <h2 className="text-xl text-primary-light mb-3">Equipment</h2>
           
           {/* Exotic Armor */}
-          <div className="mb-4">
-            <h3 className="text-white font-semibold mb-2">Exotic Armor</h3>
-            <div className="flex items-center gap-3">
-              {build.exotic_armor_icon_url && (
+          {exoticArmor && (
+            <div className="mb-4">
+              <h3 className="text-white font-semibold mb-2">Exotic Armor</h3>
+              <div className="flex items-center gap-3">
                 <Image
-                  src={build.exotic_armor_icon_url}
-                  alt={build.exotic_armor}
+                  src={exoticArmor.icon_url}
+                  alt={exoticArmor.name}
                   width={40}
                   height={40}
                   className="rounded-md"
                 />
-              )}
-              <span className="text-white">{build.exotic_armor}</span>
+                <span className="text-white">{exoticArmor.name}</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Exotic Weapon */}
-          <div className="mb-4">
-            <h3 className="text-white font-semibold mb-2">Exotic Weapon</h3>
-            <div className="flex items-center gap-3">
-              {build.exotic_weapon_icon_url && (
+          {exoticWeapon && (
+            <div className="mb-4">
+              <h3 className="text-white font-semibold mb-2">Exotic Weapon</h3>
+              <div className="flex items-center gap-3">
                 <Image
-                  src={build.exotic_weapon_icon_url}
-                  alt={build.exotic_weapon}
-                  fill
-                  sizes="48px"
-                  className="object-cover p-1"
+                  src={exoticWeapon.icon_url}
+                  alt={exoticWeapon.name}
+                  width={40}
+                  height={40}
+                  className="rounded-md"
                 />
-              )}
-              <span className="text-white">{build.exotic_weapon}</span>
+                <span className="text-white">{exoticWeapon.name}</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Legendary Weapons */}
-          <div>
-            <h3 className="text-white font-semibold mb-2">Recommended Legendary Weapons</h3>
-            <p className="text-white">{build.legendary_weapons}</p>
-          </div>
+          {legendaryWeapons.length > 0 && (
+            <div>
+              <h3 className="text-white font-semibold mb-2">Recommended Legendary Weapons</h3>
+              <ul className="list-disc list-inside text-white">
+                {legendaryWeapons.map((weapon: string, index: number) => (
+                  <li key={index}>{weapon}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
         {/* Build Guide Link */}

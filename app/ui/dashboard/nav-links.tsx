@@ -6,7 +6,8 @@ import {
   ChartBarIcon,
   BugAntIcon,
   BeakerIcon,
-  WrenchScrewdriverIcon
+  WrenchScrewdriverIcon,
+  AcademicCapIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -16,6 +17,7 @@ import { useState } from 'react';
 const links = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
+  { name: 'Build Finder', href: '/build_finder', icon: AcademicCapIcon },
   { name: 'Endgame Analysis', href: '/endgame_analysis', icon: ChartBarIcon },
   {
     name: 'Boss DMG',

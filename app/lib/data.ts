@@ -101,24 +101,55 @@ export async function fetchBuilds(): Promise<Build[]> {
   try {
     const { rows } = await db.query(`
       SELECT 
-        b.id,
-        b.updated_at,
-        b.name,
-        b.class,
-        b.subclass,
-        b.activities,
-        b.background_image,
-        b.exotic_armor,
-        b.exotic_weapon,
-        b.legendary_weapons,
-        b.build_guide_id,
-        b.aspects,
-        b.fragments,
-        e.icon_url as exotic_weapon_icon_url,
-        a.icon_url as exotic_armor_icon_url
+        b.*,
+        COALESCE(
+          json_agg(DISTINCT 
+            json_build_object(
+              'name', ea.name,
+              'icon_url', ea.icon_url
+            )::text
+          ) FILTER (WHERE ea.name IS NOT NULL),
+          '[]'
+        )::json as exotic_armor,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', ew.name,
+              'icon_url', ew.icon_url
+            )::text
+          ) FILTER (WHERE ew.name IS NOT NULL),
+          '[]'
+        )::json as exotic_weapon,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', a.name,
+              'icon_url', a.icon_url,
+              'type', a.type
+            )::text
+          ) FILTER (WHERE a.name IS NOT NULL AND a.type = 'Super'),
+          '[]'
+        )::json as super_ability,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', ac.name,
+              'icon_url', ac.icon_url,
+              'type', ac.type
+            )::text
+          ) FILTER (WHERE ac.name IS NOT NULL),
+          '[]'
+        )::json as activities
       FROM builds b
-      LEFT JOIN exotic_weapons e ON b.exotic_weapon = e.name
-      LEFT JOIN exotic_armor a ON b.exotic_armor = a.name
+      LEFT JOIN build_exotic_armor bea ON b.id = bea.build_id
+      LEFT JOIN exotic_armor ea ON bea.exotic_armor_id = ea.id
+      LEFT JOIN build_exotic_weapons bew ON b.id = bew.build_id
+      LEFT JOIN exotic_weapons ew ON bew.exotic_weapon_id = ew.id
+      LEFT JOIN build_abilities ba ON b.id = ba.build_id
+      LEFT JOIN abilities a ON ba.ability_id = a.id
+      LEFT JOIN build_activities bac ON b.id = bac.build_id
+      LEFT JOIN activities ac ON bac.activity_id = ac.id
+      GROUP BY b.id
       ORDER BY b.updated_at DESC
     `);
     return rows as Build[];
@@ -148,21 +179,63 @@ export async function fetchFragments(): Promise<Fragment[]> {
   }
 }
 
-export async function fetchBuildById(id: string): Promise<Build> {
+export async function fetchBuildById(id: string) {
   try {
     const { rows } = await db.query(`
-      SELECT *
-      FROM builds
-      WHERE id = $1
+      SELECT 
+        b.*,
+        COALESCE(
+          json_agg(DISTINCT 
+            json_build_object(
+              'name', ea.name,
+              'icon_url', ea.icon_url
+            )::text
+          ) FILTER (WHERE ea.name IS NOT NULL),
+          '[]'
+        )::json as exotic_armor,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', ew.name,
+              'icon_url', ew.icon_url
+            )::text
+          ) FILTER (WHERE ew.name IS NOT NULL),
+          '[]'
+        )::json as exotic_weapon,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', a.name,
+              'icon_url', a.icon_url
+            )::text
+          ) FILTER (WHERE a.name IS NOT NULL),
+          '[]'
+        )::json as aspects,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', f.name,
+              'icon_url', f.icon_url
+            )::text
+          ) FILTER (WHERE f.name IS NOT NULL),
+          '[]'
+        )::json as fragments
+      FROM builds b
+      LEFT JOIN build_aspects ba ON b.id = ba.build_id
+      LEFT JOIN aspects a ON ba.aspect_id = a.id
+      LEFT JOIN build_fragments bf ON b.id = bf.build_id
+      LEFT JOIN fragments f ON bf.fragment_id = f.id
+      LEFT JOIN build_exotic_armor bea ON b.id = bea.build_id
+      LEFT JOIN exotic_armor ea ON bea.exotic_armor_id = ea.id
+      LEFT JOIN build_exotic_weapons bew ON b.id = bew.build_id
+      LEFT JOIN exotic_weapons ew ON bew.exotic_weapon_id = ew.id
+      WHERE b.id = $1
+      GROUP BY b.id
     `, [id]);
-
-    if (rows.length === 0) {
-      throw new Error(`Build with ID ${id} not found`);
-    }
-
-    return rows[0] as Build;
+    if (!rows[0]) return null;
+    return rows[0];
   } catch (error) {
-    console.error('Error fetching build:', error);
+    console.error('Database Error:', error);
     throw new Error('Failed to fetch build');
   }
 }

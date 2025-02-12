@@ -89,22 +89,54 @@ export type SwapBossDamage = {
   true_dps: string;
 }
 
+export type ExoticWeapon = {
+  name: string;
+  icon_url: string;
+};
+
+export type ExoticArmor = {
+  name: string;
+  icon_url: string;
+};
+
+export type AspectData = {
+  name: string;
+  icon_url: string;
+};
+
+export type FragmentData = {
+  name: string;
+  icon_url: string;
+};
+
+export type ActivityData = {
+  name: string;
+  icon_url: string;
+  type: string;
+};
+
 export type Build = {
   id: string;
   updated_at: string;
   name: string;
   class: 'Hunter' | 'Warlock' | 'Titan';
   subclass: string;
-  activities: string;
+  activities: string[];
   background_image: string;
-  exotic_armor: string;
-  exotic_weapon: string;
+  description?: string;
+  exotic_armor: string[];
+  exotic_weapon: string[];
   legendary_weapons: string;
-  build_guide_id?: string;
-  exotic_weapon_icon_url: string;
-  exotic_armor_icon_url: string;
-  aspects?: string[];
-  fragments?: string[];
+  aspects: AspectData[];
+  fragments: FragmentData[];
+  super_ability: string[];
+};
+
+export type Activity = {
+  id: string;
+  name: string;
+  icon_url: string;
+  type: string;
 };
 
 export type Aspect = {
@@ -115,6 +147,13 @@ export type Aspect = {
 };
 
 export type Fragment = {
+  id: string;
+  icon_url: string;
+  name: string;
+  description: string;
+};
+
+export type Ability = {
   id: string;
   icon_url: string;
   name: string;

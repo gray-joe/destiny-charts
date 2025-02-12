@@ -1,5 +1,5 @@
 import { fetchTierList } from '@/app/lib/data';
-import WeaponsTable from '@/app/ui/weapons-tier-list/table';
+import WeaponsTable from '@/app/ui/weapons_tier_list/table';
 import { notFound } from 'next/navigation';
 
 const weaponTypes = {

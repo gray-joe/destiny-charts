@@ -10,8 +10,12 @@ export default function BuildCard({
 }: {
     data: Build;
 }) {
+  const exoticArmor = data.exotic_armor ? JSON.parse(data.exotic_armor as string) : null;
+  const exoticWeapon = data.exotic_weapon ? JSON.parse(data.exotic_weapon as string) : null;
+  const superAbility = data.super_ability ? JSON.parse(data.super_ability as string) : null;
+
   return (
-    <Link href={`builds/${data.id}`}>
+    <Link href={`/builds/${data.id}`}>
       <div className="relative w-[300px] h-[400px] rounded-lg overflow-hidden group hover:scale-105 transition-transform duration-200">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0">
@@ -43,24 +47,24 @@ export default function BuildCard({
           {/* Icons Footer */}
           <div className="flex items-center justify-between mt-4">
             <div className="flex gap-4">
-              {/* Subclass Icon */}
-              {/* {data.subclass && (
+              {/* Ability Icon */}
+              {superAbility.icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={data.subclass}
-                    alt="Subclass"
+                    src={superAbility.icon_url}
+                    alt={`Ability: ${superAbility.name}`}
                     fill
                     sizes="48px"
                     className="object-cover p-1"
                   />
                 </div>
-              )} */}
+              )}
               {/* Exotic Armor Icon */}
-              {data.exotic_armor_icon_url && (
+              {exoticArmor?.icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={data.exotic_armor_icon_url}
-                    alt="Exotic Armor"
+                    src={exoticArmor.icon_url}
+                    alt={`Exotic Armor: ${exoticArmor.name}`}
                     fill
                     sizes="48px"
                     className="object-cover p-1"
@@ -68,15 +72,14 @@ export default function BuildCard({
                 </div>
               )}
               {/* Exotic Weapon Icon */}
-              {data.exotic_weapon_icon_url && (
+              {exoticWeapon?.icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
-                    src={data.exotic_weapon_icon_url}
-                    alt="Exotic Weapon"
+                    src={exoticWeapon.icon_url}
+                    alt={`Exotic Weapon: ${exoticWeapon.name}`}
                     fill
                     sizes="48px"
                     className="object-cover p-1"
-                    onError={(e) => console.error('Image load error:', e)}
                   />
                 </div>
               )}
