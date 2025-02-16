@@ -1,6 +1,9 @@
-import DestinyChartsLogo from '@/app/ui/destiny-charts-logo';
-import { ChartBarIcon, WrenchScrewdriverIcon } from '@heroicons/react/24/outline';
-import Link from 'next/link';
+import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
+import {
+  ChartBarIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/outline'
+import Link from 'next/link'
 
 export default function Page() {
   return (
@@ -19,8 +22,8 @@ export default function Page() {
       {/* Cards Container */}
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* Endgame Analysis Card */}
-        <Link 
-          href="/endgame_analysis" 
+        <Link
+          href="/endgame_analysis"
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <ChartBarIcon className="h-16 w-16 text-blue-500" />
@@ -31,8 +34,8 @@ export default function Page() {
         </Link>
 
         {/* Builds Card */}
-        <Link 
-          href="/builds" 
+        <Link
+          href="/build_finder"
           className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
         >
           <WrenchScrewdriverIcon className="h-16 w-16 text-blue-500" />
@@ -43,5 +46,5 @@ export default function Page() {
         </Link>
       </div>
     </main>
-  );
+  )
 }

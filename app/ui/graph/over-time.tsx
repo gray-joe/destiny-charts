@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   Chart as ChartJS,
@@ -10,8 +10,8 @@ import {
   Tooltip,
   Legend,
   ChartOptions,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
+} from 'chart.js'
+import { Line } from 'react-chartjs-2'
 
 // Register ChartJS components
 ChartJS.register(
@@ -22,45 +22,50 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);
+)
 
 interface DataPoint {
-  'Time (s)': string;
-  [key: string]: string | number;
+  'Time (s)': string
+  [key: string]: string | number
 }
 
 interface OverTimeGraphProps {
-  data: DataPoint[];
-  title?: string;
+  data: DataPoint[]
+  title?: string
 }
 
-export default function OverTimeGraph({ data, title = 'Super Regeneration Over Time' }: OverTimeGraphProps) {
+export default function OverTimeGraph({
+  data,
+  title = 'Super Regeneration Over Time',
+}: OverTimeGraphProps) {
   if (!data || !Array.isArray(data) || data.length === 0) {
-    return <div>No data available</div>;
+    return <div>No data available</div>
   }
 
-  const sortedData = [...data].sort((a, b) => 
-    parseFloat(a['Time (s)']) - parseFloat(b['Time (s)'])
-  );
+  const sortedData = [...data].sort(
+    (a, b) => parseFloat(a['Time (s)']) - parseFloat(b['Time (s)'])
+  )
 
-  const weaponNames = Object.keys(sortedData[0]).filter(key => key !== 'Time (s)');
+  const weaponNames = Object.keys(sortedData[0]).filter(
+    (key) => key !== 'Time (s)'
+  )
 
-  const colors = weaponNames.map((_, index) => 
-    `hsl(${(index * 360) / weaponNames.length}, 70%, 50%)`
-  );
+  const colors = weaponNames.map(
+    (_, index) => `hsl(${(index * 360) / weaponNames.length}, 70%, 50%)`
+  )
 
   const chartData = {
-    labels: sortedData.map(item => item['Time (s)']),
+    labels: sortedData.map((item) => item['Time (s)']),
     datasets: weaponNames.map((weapon, index) => ({
       label: weapon,
-      data: sortedData.map(item => Number(item[weapon]) * 100),
+      data: sortedData.map((item) => Number(item[weapon]) * 100),
       borderColor: colors[index],
       backgroundColor: colors[index],
       tension: 0.1,
       pointRadius: 0,
       borderWidth: 1,
     })),
-  };
+  }
 
   const options: ChartOptions<'line'> = {
     responsive: true,
@@ -110,11 +115,11 @@ export default function OverTimeGraph({ data, title = 'Super Regeneration Over T
         max: 100,
       },
     },
-  };
+  }
 
   return (
     <div className="w-full h-[600px] p-4">
       <Line data={chartData} options={options} />
     </div>
-  );
+  )
 }

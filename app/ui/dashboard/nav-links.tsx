@@ -1,21 +1,23 @@
-'use client';
- 
+'use client'
+
 import {
   RocketLaunchIcon,
   HomeIcon,
   ChartBarIcon,
   BugAntIcon,
   BeakerIcon,
-  WrenchScrewdriverIcon
-} from '@heroicons/react/24/outline';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
-import { useState } from 'react';
+  WrenchScrewdriverIcon,
+  AcademicCapIcon,
+} from '@heroicons/react/24/outline'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import clsx from 'clsx'
+import { useState } from 'react'
 
 const links = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
+  { name: 'Build Finder', href: '/build_finder', icon: AcademicCapIcon },
   { name: 'Endgame Analysis', href: '/endgame_analysis', icon: ChartBarIcon },
   {
     name: 'Boss DMG',
@@ -27,23 +29,38 @@ const links = [
       { name: 'Swap', href: '/endgame_analysis/boss_dmg/swap' },
     ],
   },
-  { 
-    name: 'Weapons', 
-    href: '/endgame_analysis/weapons', 
+  {
+    name: 'Weapons',
+    href: '/endgame_analysis/weapons',
     icon: RocketLaunchIcon,
     children: [
       { name: 'Linear Fusion Rifles', href: '/endgame_analysis/weapons/lfrs' },
-      { name: 'Heavy Grenade Launchers', href: '/endgame_analysis/weapons/heavy-gls' },
+      {
+        name: 'Heavy Grenade Launchers',
+        href: '/endgame_analysis/weapons/heavy-gls',
+      },
       { name: 'Machine Guns', href: '/endgame_analysis/weapons/mgs' },
       { name: 'Rockets', href: '/endgame_analysis/weapons/rockets' },
       { name: 'Swords', href: '/endgame_analysis/weapons/swords' },
-      { name: 'Breach Grenade Launchers', href: '/endgame_analysis/weapons/breach-gls' },
+      {
+        name: 'Breach Grenade Launchers',
+        href: '/endgame_analysis/weapons/breach-gls',
+      },
       { name: 'Glaives', href: '/endgame_analysis/weapons/glaives' },
       { name: 'Fusion Rifles', href: '/endgame_analysis/weapons/fusions' },
-      { name: 'Rocket Sidearms', href: '/endgame_analysis/weapons/rocket-sidearms' },
+      {
+        name: 'Rocket Sidearms',
+        href: '/endgame_analysis/weapons/rocket-sidearms',
+      },
       { name: 'Shotguns', href: '/endgame_analysis/weapons/shotguns' },
-      { name: 'Snipers', href: '/endgame_analysis/weapons/snipers' },
-      { name: 'Trace Rifles', href: '/endgame_analysis/weapons/trace-rifles' },
+      {
+        name: 'Sniper Rifles',
+        href: '/endgame_analysis/weapons/sniper-rifles',
+      },
+      {
+        name: 'Trace Rifles',
+        href: '/endgame_analysis/weapons/trace-rifles',
+      },
     ],
   },
   {
@@ -54,27 +71,27 @@ const links = [
       { name: 'Super Regen', href: '/endgame_analysis/other/super_regen' },
     ],
   },
-];
+]
 
 export default function NavLinks() {
-  const pathname = usePathname();
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const pathname = usePathname()
+  const [expandedItems, setExpandedItems] = useState<string[]>([])
 
   const toggleExpand = (name: string) => {
-    setExpandedItems(prev =>
+    setExpandedItems((prev) =>
       prev.includes(name)
-        ? prev.filter(item => item !== name)
+        ? prev.filter((item) => item !== name)
         : [...prev, name]
-    );
-  };
+    )
+  }
 
   return (
     <>
       {links.map((link) => {
-        const LinkIcon = link.icon;
-        const isExpanded = expandedItems.includes(link.name);
-        const isActive = pathname === link.href;
-        const hasChildren = link.children && link.children.length > 0;
+        const LinkIcon = link.icon
+        const isExpanded = expandedItems.includes(link.name)
+        const isActive = pathname === link.href
+        const hasChildren = link.children && link.children.length > 0
 
         return (
           <div key={link.name}>
@@ -84,12 +101,12 @@ export default function NavLinks() {
                 'flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-primary-light p-3 text-sm font-medium text-white hover:bg-primary-hover md:flex-none md:justify-start md:p-2 md:px-3',
                 {
                   'bg-primary-hover': isActive,
-                },
+                }
               )}
-              onClick={(e: { preventDefault: () => void; }) => {
+              onClick={(e: { preventDefault: () => void }) => {
                 if (hasChildren) {
-                  e.preventDefault();
-                  toggleExpand(link.name);
+                  e.preventDefault()
+                  toggleExpand(link.name)
                 }
               }}
             >
@@ -113,7 +130,7 @@ export default function NavLinks() {
                 </svg>
               )}
             </Link>
-            
+
             {hasChildren && isExpanded && (
               <div className="ml-6 mt-1 space-y-1">
                 {link.children.map((child) => (
@@ -124,7 +141,7 @@ export default function NavLinks() {
                       'flex h-[40px] items-center justify-center gap-2 rounded-md bg-primary-dark p-3 text-sm font-medium text-white hover:bg-primary-hover md:flex-none md:justify-start md:p-2 md:px-3',
                       {
                         'bg-primary-hover': pathname === child.href,
-                      },
+                      }
                     )}
                   >
                     <p className="hidden md:block">{child.name}</p>
@@ -133,8 +150,8 @@ export default function NavLinks() {
               </div>
             )}
           </div>
-        );
+        )
       })}
     </>
-  );
+  )
 }
