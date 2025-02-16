@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import NavLinks from '@/app/ui/dashboard/nav-links';
-import DestinyChartsLogo from '@/app/ui/destiny-charts-logo';
+import Link from 'next/link'
+import NavLinks from '@/app/ui/dashboard/nav-links'
+import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
 
 export default function SideNav() {
   return (
@@ -18,5 +18,5 @@ export default function SideNav() {
         <div className="hidden h-auto w-full grow rounded-md bg-primary-light md:block"></div>
       </div>
     </div>
-  );
+  )
 }

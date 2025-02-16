@@ -1,4 +1,4 @@
-import { db } from '@vercel/postgres';
+import { db } from '@vercel/postgres'
 import {
   Weapon,
   SuperRegen,
@@ -7,8 +7,8 @@ import {
   SwapBossDamage,
   Build,
   Aspect,
-  Fragment
-} from './definitions';
+  Fragment,
+} from './definitions'
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
   const validTypes = [
@@ -23,16 +23,17 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
     'Rocket Sidearm',
     'Sniper',
     'Shotgun',
-    'Trace Rifle'
-  ];
+    'Trace Rifle',
+  ]
 
   if (!validTypes.includes(type)) {
-    console.log(`Type "${type}" not found in valid types:`, validTypes);
-    throw new Error(`Invalid weapon type: ${type}`);
+    console.log(`Type "${type}" not found in valid types:`, validTypes)
+    throw new Error(`Invalid weapon type: ${type}`)
   }
 
   try {
-    const { rows } = await db.query(`
+    const { rows } = await db.query(
+      `
       SELECT 
         id,
         icon_url,
@@ -48,52 +49,62 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
         tier
       FROM legendary_weapons
       WHERE type = $1
-      ORDER BY CAST(rank_in_type AS INTEGER) ASC`, [type]);
+      ORDER BY CAST(rank_in_type AS INTEGER) ASC`,
+      [type]
+    )
 
-    return rows as Weapon[];
+    return rows as Weapon[]
   } catch (error) {
-    console.error(`Error fetching ${type} tier list data:`, error);
-    throw new Error(`Failed to fetch ${type} tier list data.`);
+    console.error(`Error fetching ${type} tier list data:`, error)
+    throw new Error(`Failed to fetch ${type} tier list data.`)
   }
 }
 
 export async function fetchSuperRegenList(): Promise<SuperRegen[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM super_regen`);
-    return rows as SuperRegen[];
+    const { rows } = await db.query(`SELECT * FROM super_regen`)
+    return rows as SuperRegen[]
   } catch (error) {
-    console.error("Error fetching super regen data:", error);
-    throw new Error("Failed to fetch super regen data.");
+    console.error('Error fetching super regen data:', error)
+    throw new Error('Failed to fetch super regen data.')
   }
 }
 
-export async function fetchSustainedBossDamageData(): Promise<SustainedBossDamage[]> {
+export async function fetchSustainedBossDamageData(): Promise<
+  SustainedBossDamage[]
+> {
   try {
-    const { rows } = await db.query(`SELECT * FROM dps_sustained ORDER BY sustained DESC`);
-    return rows as SustainedBossDamage[];
+    const { rows } = await db.query(
+      `SELECT * FROM dps_sustained ORDER BY sustained DESC`
+    )
+    return rows as SustainedBossDamage[]
   } catch (error) {
-    console.error("Error fetching sustained boss damage data:", error);
-    throw new Error("Failed to fetch sustained boss damage data.");
+    console.error('Error fetching sustained boss damage data:', error)
+    throw new Error('Failed to fetch sustained boss damage data.')
   }
 }
 
 export async function fetchAbilitiesData(): Promise<Abilities[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM dps_abilities ORDER BY actual DESC`);
-    return rows as Abilities[];
+    const { rows } = await db.query(
+      `SELECT * FROM dps_abilities ORDER BY actual DESC`
+    )
+    return rows as Abilities[]
   } catch (error) {
-    console.error("Error fetching abilities data:", error);
-    throw new Error("Failed to fetch abilities data.");
+    console.error('Error fetching abilities data:', error)
+    throw new Error('Failed to fetch abilities data.')
   }
 }
 
 export async function fetchSwapBossDamageData(): Promise<SwapBossDamage[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM dps_swap ORDER BY true_dps DESC`);
-    return rows as SwapBossDamage[];
+    const { rows } = await db.query(
+      `SELECT * FROM dps_swap ORDER BY true_dps DESC`
+    )
+    return rows as SwapBossDamage[]
   } catch (error) {
-    console.error("Error fetching swap boss damage data:", error);
-    throw new Error("Failed to fetch swap boss damage data.");
+    console.error('Error fetching swap boss damage data:', error)
+    throw new Error('Failed to fetch swap boss damage data.')
   }
 }
 
@@ -151,37 +162,38 @@ export async function fetchBuilds(): Promise<Build[]> {
       LEFT JOIN activities ac ON bac.activity_id = ac.id
       GROUP BY b.id
       ORDER BY b.updated_at DESC
-    `);
-    return rows as Build[];
+    `)
+    return rows as Build[]
   } catch (error) {
-    console.error('Error fetching builds:', error);
-    throw new Error('Failed to fetch builds');
+    console.error('Error fetching builds:', error)
+    throw new Error('Failed to fetch builds')
   }
 }
 
 export async function fetchAspects(): Promise<Aspect[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM aspects`);
-    return rows as Aspect[];
+    const { rows } = await db.query(`SELECT * FROM aspects`)
+    return rows as Aspect[]
   } catch (error) {
-    console.error('Error fetching aspects:', error);
-    throw new Error('Failed to fetch aspects');
+    console.error('Error fetching aspects:', error)
+    throw new Error('Failed to fetch aspects')
   }
 }
 
 export async function fetchFragments(): Promise<Fragment[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM fragments`);
-    return rows as Fragment[];
+    const { rows } = await db.query(`SELECT * FROM fragments`)
+    return rows as Fragment[]
   } catch (error) {
-    console.error('Error fetching fragments:', error);
-    throw new Error('Failed to fetch fragments');
+    console.error('Error fetching fragments:', error)
+    throw new Error('Failed to fetch fragments')
   }
 }
 
 export async function fetchBuildById(id: string) {
   try {
-    const { rows } = await db.query(`
+    const { rows } = await db.query(
+      `
       SELECT 
         b.*,
         COALESCE(
@@ -231,11 +243,13 @@ export async function fetchBuildById(id: string) {
       LEFT JOIN exotic_weapons ew ON bew.exotic_weapon_id = ew.id
       WHERE b.id = $1
       GROUP BY b.id
-    `, [id]);
-    if (!rows[0]) return null;
-    return rows[0];
+    `,
+      [id]
+    )
+    if (!rows[0]) return null
+    return rows[0]
   } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch build');
+    console.error('Database Error:', error)
+    throw new Error('Failed to fetch build')
   }
 }

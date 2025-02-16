@@ -1,24 +1,28 @@
-import { fetchBuildById } from '@/app/lib/data';
-import { notFound } from 'next/navigation';
-import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
-import { Aspect, Fragment } from '@/app/lib/definitions';
+import { fetchBuildById } from '@/app/lib/data'
+import { notFound } from 'next/navigation'
+import Image from 'next/image'
+import { lusitana } from '@/app/ui/fonts'
+import { Aspect, Fragment } from '@/app/lib/definitions'
 
 export default async function BuildPage({
   params,
 }: {
   params: { build: string }
 }) {
-  const build = await fetchBuildById(params.build);
-  
+  const build = await fetchBuildById(params.build)
+
   if (!build) {
-    notFound();
+    notFound()
   }
 
   // Parse JSON strings into objects
-  const exoticArmor = build.exotic_armor ? JSON.parse(build.exotic_armor) : null;
-  const exoticWeapon = build.exotic_weapon ? JSON.parse(build.exotic_weapon) : null;
-  const legendaryWeapons = build.legendary_weapons ? build.legendary_weapons.split(',').map((w: string) => w.trim()) : [];
+  const exoticArmor = build.exotic_armor ? JSON.parse(build.exotic_armor) : null
+  const exoticWeapon = build.exotic_weapon
+    ? JSON.parse(build.exotic_weapon)
+    : null
+  const legendaryWeapons = build.legendary_weapons
+    ? build.legendary_weapons.split(',').map((w: string) => w.trim())
+    : []
 
   return (
     <div className="flex flex-col md:flex-row gap-8 p-6">
@@ -44,7 +48,9 @@ export default async function BuildPage({
       <div className="md:w-2/3 space-y-8">
         {/* Header Section */}
         <div>
-          <h1 className={`${lusitana.className} text-3xl font-bold text-white mb-2`}>
+          <h1
+            className={`${lusitana.className} text-3xl font-bold text-white mb-2`}
+          >
             {build.name}
           </h1>
           <p className="text-primary-light text-lg">
@@ -54,13 +60,17 @@ export default async function BuildPage({
 
         {/* Activities Section */}
         <section>
-          <h2 className="text-xl text-primary-light mb-3">Recommended Activities</h2>
+          <h2 className="text-xl text-primary-light mb-3">
+            Recommended Activities
+          </h2>
           <p className="text-white">{build.activities}</p>
         </section>
 
         {/* Subclass Details */}
         <section>
-          <h2 className="text-xl text-primary-light mb-3">Subclass Configuration</h2>
+          <h2 className="text-xl text-primary-light mb-3">
+            Subclass Configuration
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Aspects */}
             <div>
@@ -80,7 +90,7 @@ export default async function BuildPage({
                 ))}
               </ul>
             </div>
-            
+
             {/* Fragments */}
             <div>
               <h3 className="text-white font-semibold mb-2">Fragments</h3>
@@ -105,7 +115,7 @@ export default async function BuildPage({
         {/* Equipment Section */}
         <section>
           <h2 className="text-xl text-primary-light mb-3">Equipment</h2>
-          
+
           {/* Exotic Armor */}
           {exoticArmor && (
             <div className="mb-4">
@@ -143,7 +153,9 @@ export default async function BuildPage({
           {/* Legendary Weapons */}
           {legendaryWeapons.length > 0 && (
             <div>
-              <h3 className="text-white font-semibold mb-2">Recommended Legendary Weapons</h3>
+              <h3 className="text-white font-semibold mb-2">
+                Recommended Legendary Weapons
+              </h3>
               <ul className="list-disc list-inside text-white">
                 {legendaryWeapons.map((weapon: string, index: number) => (
                   <li key={index}>{weapon}</li>
@@ -156,7 +168,7 @@ export default async function BuildPage({
         {/* Build Guide Link */}
         {build.build_guide_id && (
           <section>
-            <a 
+            <a
               href={`/guides/${build.build_guide_id}`}
               className="inline-block px-4 py-2 bg-primary-light text-white rounded-md hover:bg-primary-hover transition-colors"
             >
@@ -166,5 +178,5 @@ export default async function BuildPage({
         )}
       </div>
     </div>
-  );
+  )
 }

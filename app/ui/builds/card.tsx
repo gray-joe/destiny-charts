@@ -1,18 +1,20 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { lusitana } from '@/app/ui/fonts';
-import { Build } from '@/app/lib/definitions';
+import Image from 'next/image'
+import Link from 'next/link'
+import { lusitana } from '@/app/ui/fonts'
+import { Build } from '@/app/lib/definitions'
 
-export default function BuildCard({
-    data,
-}: {
-    data: Build;
-}) {
-  const exoticArmor = data.exotic_armor ? JSON.parse(data.exotic_armor as string) : null;
-  const exoticWeapon = data.exotic_weapon ? JSON.parse(data.exotic_weapon as string) : null;
-  const superAbility = data.super_ability ? JSON.parse(data.super_ability as string) : null;
+export default function BuildCard({ data }: { data: Build }) {
+  const exoticArmor = data.exotic_armor
+    ? JSON.parse(data.exotic_armor as string)
+    : null
+  const exoticWeapon = data.exotic_weapon
+    ? JSON.parse(data.exotic_weapon as string)
+    : null
+  const superAbility = data.super_ability
+    ? JSON.parse(data.super_ability as string)
+    : null
 
   return (
     <Link href={`/builds/${data.id}`}>
@@ -38,7 +40,9 @@ export default function BuildCard({
         <div className="relative h-full flex flex-col justify-between p-4">
           {/* Header */}
           <div>
-            <p className={`${lusitana.className} text-sm font-bold text-primary-light`}>
+            <p
+              className={`${lusitana.className} text-sm font-bold text-primary-light`}
+            >
               {data.class}
             </p>
             <h2 className="text-xl font-bold text-white mt-1">{data.name}</h2>
@@ -91,5 +95,5 @@ export default function BuildCard({
         <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
       </div>
     </Link>
-  );
+  )
 }

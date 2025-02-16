@@ -1,85 +1,85 @@
-import { fetchTierList } from '@/app/lib/data';
-import WeaponsTable from '@/app/ui/weapons_tier_list/table';
-import { notFound } from 'next/navigation';
+import { fetchTierList } from '@/app/lib/data'
+import WeaponsTable from '@/app/ui/weapons_tier_list/table'
+import { notFound } from 'next/navigation'
 
 const weaponTypes = {
-  'lfrs': {
+  lfrs: {
     type: 'Linear Fusion Rifle',
-    display: 'Linear Fusion Rifles'
+    display: 'Linear Fusion Rifles',
   },
-  'shotguns': {
+  shotguns: {
     type: 'Shotgun',
-    display: 'Shotguns'
+    display: 'Shotguns',
   },
   'heavy-gls': {
     type: 'Heavy Grenade Launcher',
-    display: 'Heavy Grenade Launchers'
+    display: 'Heavy Grenade Launchers',
   },
   'rocket-sidearms': {
     type: 'Rocket Sidearm',
-    display: 'Rocket Sidearms'
+    display: 'Rocket Sidearms',
   },
-  'rockets': {
+  rockets: {
     type: 'Rocket',
-    display: 'Rockets'
-  },  
-  'swords': {
+    display: 'Rockets',
+  },
+  swords: {
     type: 'Sword',
-    display: 'Swords'
+    display: 'Swords',
   },
   'breach-gls': {
     type: 'Breach Grenade Launcher',
-    display: 'Breach Grenade Launchers'
+    display: 'Breach Grenade Launchers',
   },
-  'glaives': {
+  glaives: {
     type: 'Glaive',
-    display: 'Glaives'
+    display: 'Glaives',
   },
-  'fusions': {
+  fusions: {
     type: 'Fusion Rifle',
-    display: 'Fusion Rifles'
+    display: 'Fusion Rifles',
   },
   'trace-rifles': {
     type: 'Trace Rifle',
-    display: 'Trace Rifles'
+    display: 'Trace Rifles',
   },
-  'snipers': {
+  snipers: {
     type: 'Sniper',
-    display: 'Snipers'
+    display: 'Snipers',
   },
-  'mgs': {
+  mgs: {
     type: 'Machine Gun',
-    display: 'Machine Guns'
+    display: 'Machine Guns',
   },
-} as const;
+} as const
 
 export interface PageProps {
-  params: Promise<{ type: keyof typeof weaponTypes }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ type: keyof typeof weaponTypes }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export function generateStaticParams() {
   const params = Object.keys(weaponTypes).map((type) => ({
     type,
-  }));
-  return params;
+  }))
+  return params
 }
 
 export default async function Page({ params }: PageProps) {
-  const resolvedParams = await params;
-  
-  const weaponType = weaponTypes[resolvedParams.type];
-  
+  const resolvedParams = await params
+
+  const weaponType = weaponTypes[resolvedParams.type]
+
   if (!weaponType) {
-    notFound();
+    notFound()
   }
 
-  const weapons = await fetchTierList(weaponType.type);
-  
+  const weapons = await fetchTierList(weaponType.type)
+
   return (
     <>
       <h1>{weaponType.display}</h1>
       <WeaponsTable weapons={weapons} />
     </>
-  );
+  )
 }
