@@ -5,14 +5,18 @@ import { activities } from '@/app/lib/activity-data'
 import FilterBar from '@/app/ui/builds/filter-bar'
 import { Suspense } from 'react'
 
-type Params = Promise<{
+type SearchParams = Promise<{
   activity?: string
   subactivity?: string
   encounter?: string
 }>
 
-export default async function Page({ params }: { params: Params }) {
-  const searchParams = await params
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: SearchParams
+}) {
+  const resolvedSearchParams = await searchParams
 
   const builds = await fetchBuilds()
 
@@ -32,25 +36,25 @@ export default async function Page({ params }: { params: Params }) {
       .filter(Boolean)
 
     const activityMatch =
-      !searchParams?.activity ||
+      !resolvedSearchParams?.activity ||
       buildActivities.some((buildActivity) => {
         const activityType = buildActivity.type.toLowerCase()
-        return activityType === searchParams.activity?.toLowerCase()
+        return activityType === resolvedSearchParams.activity?.toLowerCase()
       })
 
     const subActivityMatch =
-      !searchParams?.subactivity ||
+      !resolvedSearchParams?.subactivity ||
       buildActivities.some((buildActivity) => {
         const activityName = buildActivity.name.toLowerCase()
-        return activityName === searchParams.subactivity?.toLowerCase()
+        return activityName === resolvedSearchParams.subactivity?.toLowerCase()
       })
 
     const encounterMatch =
-      !searchParams?.encounter ||
+      !resolvedSearchParams?.encounter ||
       buildActivities.some((buildActivity) => {
         const activityName = buildActivity.name.toLowerCase()
         return activityName.includes(
-          searchParams.encounter?.toLowerCase() || ''
+          resolvedSearchParams.encounter?.toLowerCase() || ''
         )
       })
 

@@ -49,7 +49,7 @@ export default async function SubSubActivityPage({ params }: { params: Params })
             parentId={`${activity.id}/${subActivity.id}`}
             name={encounter.name}
             description={encounter.description || ''}
-            imageUrl={`/images/activities/${activity.id}/${subActivity.id}/${encounter.id}.jpg`}
+            imageUrl={encounter.imageUrl || ''}
             subActivities={encounter.subActivities}
           />
         ))}
