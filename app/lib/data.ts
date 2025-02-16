@@ -21,7 +21,7 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
     'Glaive',
     'Fusion Rifle',
     'Rocket Sidearm',
-    'Sniper',
+    'Sniper Rifle',
     'Shotgun',
     'Trace Rifle',
   ]

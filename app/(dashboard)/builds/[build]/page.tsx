@@ -4,18 +4,18 @@ import Image from 'next/image'
 import { lusitana } from '@/app/ui/fonts'
 import { Aspect, Fragment } from '@/app/lib/definitions'
 
-export default async function BuildPage({
-  params,
-}: {
-  params: { build: string }
-}) {
-  const build = await fetchBuildById(params.build)
+type Params = Promise<{
+  build: string
+}>
+
+export default async function BuildPage({ params }: { params: Params }) {
+  const resolvedParams = await params
+  const build = await fetchBuildById(resolvedParams.build)
 
   if (!build) {
     notFound()
   }
 
-  // Parse JSON strings into objects
   const exoticArmor = build.exotic_armor ? JSON.parse(build.exotic_armor) : null
   const exoticWeapon = build.exotic_weapon
     ? JSON.parse(build.exotic_weapon)

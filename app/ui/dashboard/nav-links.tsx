@@ -53,8 +53,14 @@ const links = [
         href: '/endgame_analysis/weapons/rocket-sidearms',
       },
       { name: 'Shotguns', href: '/endgame_analysis/weapons/shotguns' },
-      { name: 'Snipers', href: '/endgame_analysis/weapons/snipers' },
-      { name: 'Trace Rifles', href: '/endgame_analysis/weapons/trace-rifles' },
+      {
+        name: 'Sniper Rifles',
+        href: '/endgame_analysis/weapons/sniper-rifles',
+      },
+      {
+        name: 'Trace Rifles',
+        href: '/endgame_analysis/weapons/trace-rifles',
+      },
     ],
   },
   {

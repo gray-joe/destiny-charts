@@ -7,13 +7,13 @@ import { Build } from '@/app/lib/definitions'
 
 export default function BuildCard({ data }: { data: Build }) {
   const exoticArmor = data.exotic_armor
-    ? JSON.parse(data.exotic_armor as string)
+    ? JSON.parse(data.exotic_armor as unknown as string)
     : null
   const exoticWeapon = data.exotic_weapon
-    ? JSON.parse(data.exotic_weapon as string)
+    ? JSON.parse(data.exotic_weapon as unknown as string)
     : null
   const superAbility = data.super_ability
-    ? JSON.parse(data.super_ability as string)
+    ? JSON.parse(data.super_ability as unknown as string)
     : null
 
   return (

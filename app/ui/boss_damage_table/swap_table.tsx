@@ -5,7 +5,7 @@ import Search from '@/app/ui/search'
 import { useState } from 'react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { SwapBossDamage } from '@/app/lib/definitions'
-
+import Image from 'next/image'
 export default function SwapDamageTable({ data }: { data: SwapBossDamage[] }) {
   const [searchTerm, setSearchTerm] = useState('')
   const [showAllColumns, setShowAllColumns] = useState(false)
@@ -100,7 +100,15 @@ export default function SwapDamageTable({ data }: { data: SwapBossDamage[] }) {
     if (value === null) return ''
 
     if (key === 'icon_url') {
-      return value ? <img src={value} alt="" className="w-8 h-8" /> : null
+      return value ? (
+        <Image
+          src={value}
+          alt=""
+          className="w-8 h-8"
+          width={48}
+          height={48}
+        />
+      ) : null
     }
 
     // Try to parse as a number with commas

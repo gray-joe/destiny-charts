@@ -7,21 +7,21 @@ import type {
 } from '@/app/lib/activity-data'
 import Link from 'next/link'
 
-export default function SubSubActivityPage({
-  params,
-}: {
-  params: {
-    activity: string
-    subActivity: string
-  }
-}) {
-  const activity = activities.find((a) => a.id === params.activity) as
+type Params = Promise<{
+  activity: string
+  subActivity: string
+}>
+
+export default async function SubSubActivityPage({ params }: { params: Params }) {
+  const resolvedParams = await params
+
+  const activity = activities.find((a) => a.id === resolvedParams.activity) as
     | MainActivity
     | undefined
   const subActivity = activity?.subActivities?.find(
     (sa) =>
       sa.id.toLowerCase() ===
-      decodeURIComponent(params.subActivity).toLowerCase()
+      decodeURIComponent(resolvedParams.subActivity).toLowerCase()
   ) as SubActivity | undefined
 
   if (!activity || !subActivity) {

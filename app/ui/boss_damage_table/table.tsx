@@ -5,7 +5,7 @@ import Search from '@/app/ui/search'
 import { useState } from 'react'
 import { SustainedBossDamage } from '@/app/lib/definitions'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
-
+import Image from 'next/image'
 export default function BossDamageTable({
   data,
 }: {
@@ -150,10 +150,12 @@ export default function BossDamageTable({
                           >
                             {column.key === 'icon_url' ? (
                               value ? (
-                                <img
+                                <Image
                                   src={value as string}
                                   alt=""
                                   className="w-8 h-8"
+                                  width={48}
+                                  height={48}
                                 />
                               ) : null
                             ) : typeof value === 'number' ? (

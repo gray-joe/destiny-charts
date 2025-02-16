@@ -3,12 +3,18 @@ import { activities } from '@/app/lib/activity-data'
 import type { MainActivity, SubActivity } from '@/app/lib/activity-data'
 import Link from 'next/link'
 
-export default function SubActivityPage({
+type Params = Promise<{
+  activity: string
+  subActivity: string
+}>
+
+export default async function SubActivityPage({
   params,
 }: {
-  params: { activity: string }
+  params: Params
 }) {
-  const activity = activities.find((a) => a.id === params.activity) as
+  const resolvedParams = await params
+  const activity = activities.find((a) => a.id === resolvedParams.activity) as
     | MainActivity
     | undefined
 

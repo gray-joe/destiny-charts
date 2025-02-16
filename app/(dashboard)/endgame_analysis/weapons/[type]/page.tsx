@@ -43,9 +43,9 @@ const weaponTypes = {
     type: 'Trace Rifle',
     display: 'Trace Rifles',
   },
-  snipers: {
-    type: 'Sniper',
-    display: 'Snipers',
+  'sniper-rifles': {
+    type: 'Sniper Rifle',
+    display: 'Sniper Rifles',
   },
   mgs: {
     type: 'Machine Gun',

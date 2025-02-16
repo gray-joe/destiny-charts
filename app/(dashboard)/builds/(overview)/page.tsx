@@ -5,34 +5,32 @@ import { activities } from '@/app/lib/activity-data'
 import FilterBar from '@/app/ui/builds/filter-bar'
 import { Suspense } from 'react'
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    activity?: string
-    subactivity?: string
-    encounter?: string
-  }
-}) {
+type Params = Promise<{
+  activity?: string
+  subactivity?: string
+  encounter?: string
+}>
+
+export default async function Page({ params }: { params: Params }) {
+  const searchParams = await params
+
   const builds = await fetchBuilds()
 
-  // Filter builds based on URL parameters
   const filteredBuilds = builds.filter((build) => {
     if (!build.activities || build.activities.length === 0) return false
 
-    // Parse the activities array of JSON strings
     const buildActivities = build.activities
       .map((activity) => {
         try {
           return JSON.parse(activity)
         } catch (e) {
           console.error('Error parsing activity:', activity)
+          console.error('Error type:', e)
           return null
         }
       })
       .filter(Boolean)
 
-    // Check if any of the build's activities match the filters
     const activityMatch =
       !searchParams?.activity ||
       buildActivities.some((buildActivity) => {

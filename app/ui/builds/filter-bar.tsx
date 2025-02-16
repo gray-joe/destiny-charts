@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import {
   MainActivity,
   SubActivity,
-  EncounterActivity,
 } from '@/app/lib/activity-data'
 
 export default function FilterBar({
