@@ -119,7 +119,7 @@ export type Build = {
   id: string
   updated_at: string
   name: string
-  class: 'Hunter' | 'Warlock' | 'Titan'
+  class: string
   subclass: string
   activities: string[]
   background_image: string
@@ -158,4 +158,10 @@ export type Ability = {
   icon_url: string
   name: string
   description: string
+}
+
+export type Subclass = {
+  id: string
+  name: string
+  icon_url: string
 }
