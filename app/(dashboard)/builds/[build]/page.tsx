@@ -24,6 +24,14 @@ export default async function BuildPage({ params }: { params: Params }) {
     ? build.legendary_weapons.split(',').map((w: string) => w.trim())
     : []
 
+  // Parse the JSON strings into objects
+  const aspects = build.aspects ? build.aspects.map((aspect: string) => JSON.parse(aspect)) : []
+  const fragments = build.fragments ? build.fragments.map((fragment: string) => JSON.parse(fragment)) : []
+
+  // Add this temporarily to debug
+  console.log('Aspects:', build.aspects)
+  console.log('Fragments:', build.fragments)
+
   return (
     <div className="flex flex-col md:flex-row gap-8 p-6">
       {/* Left Column - Background Image */}
@@ -76,15 +84,19 @@ export default async function BuildPage({ params }: { params: Params }) {
             <div>
               <h3 className="text-white font-semibold mb-2">Aspects</h3>
               <ul className="space-y-2">
-                {build.aspects?.map((aspect: Aspect, index: number) => (
+                {aspects.map((aspect: Aspect, index: number) => (
                   <li key={index} className="flex items-center gap-3">
-                    <Image
-                      src={aspect.icon_url}
-                      alt={aspect.name}
-                      width={32}
-                      height={32}
-                      className="rounded-md"
-                    />
+                    {aspect.icon_url ? (
+                      <Image
+                        src={aspect.icon_url}
+                        alt={aspect.name}
+                        width={32}
+                        height={32}
+                        className="rounded-md"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gray-700 rounded-md" />
+                    )}
                     <span className="text-white">{aspect.name}</span>
                   </li>
                 ))}
@@ -95,15 +107,19 @@ export default async function BuildPage({ params }: { params: Params }) {
             <div>
               <h3 className="text-white font-semibold mb-2">Fragments</h3>
               <ul className="space-y-2">
-                {build.fragments?.map((fragment: Fragment, index: number) => (
+                {fragments.map((fragment: Fragment, index: number) => (
                   <li key={index} className="flex items-center gap-3">
-                    <Image
-                      src={fragment.icon_url}
-                      alt={fragment.name}
-                      width={32}
-                      height={32}
-                      className="rounded-md"
-                    />
+                    {fragment.icon_url ? (
+                      <Image
+                        src={fragment.icon_url}
+                        alt={fragment.name}
+                        width={32}
+                        height={32}
+                        className="rounded-md"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 bg-gray-700 rounded-md" />
+                    )}
                     <span className="text-white">{fragment.name}</span>
                   </li>
                 ))}
