@@ -24,13 +24,12 @@ export default async function BuildPage({ params }: { params: Params }) {
     ? build.legendary_weapons.split(',').map((w: string) => w.trim())
     : []
 
-  // Parse the JSON strings into objects
-  const aspects = build.aspects ? build.aspects.map((aspect: string) => JSON.parse(aspect)) : []
-  const fragments = build.fragments ? build.fragments.map((fragment: string) => JSON.parse(fragment)) : []
-
-  // Add this temporarily to debug
-  console.log('Aspects:', build.aspects)
-  console.log('Fragments:', build.fragments)
+  const aspects = build.aspects
+    ? build.aspects.map((aspect: string) => JSON.parse(aspect))
+    : []
+  const fragments = build.fragments
+    ? build.fragments.map((fragment: string) => JSON.parse(fragment))
+    : []
 
   return (
     <div className="flex flex-col md:flex-row gap-8 p-6">
@@ -61,24 +60,23 @@ export default async function BuildPage({ params }: { params: Params }) {
           >
             {build.name}
           </h1>
-          <p className="text-primary-light text-lg">
+          <p className="text-white text-lg">
             {build.class} • {build.subclass}
           </p>
         </div>
 
         {/* Activities Section */}
         <section>
-          <h2 className="text-xl text-primary-light mb-3">
-            Recommended Activities
-          </h2>
-          <p className="text-white">{build.activities}</p>
+          <h2 className="text-xl text-white mb-3">Recommended Activities</h2>
+          <p className="text-white">
+            {build.activities
+              .map((activity: string) => JSON.parse(activity).name)
+              .join(', ')}
+          </p>
         </section>
 
         {/* Subclass Details */}
         <section>
-          <h2 className="text-xl text-primary-light mb-3">
-            Subclass Configuration
-          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Aspects */}
             <div>
@@ -130,8 +128,6 @@ export default async function BuildPage({ params }: { params: Params }) {
 
         {/* Equipment Section */}
         <section>
-          <h2 className="text-xl text-primary-light mb-3">Equipment</h2>
-
           {/* Exotic Armor */}
           {exoticArmor && (
             <div className="mb-4">
@@ -180,18 +176,6 @@ export default async function BuildPage({ params }: { params: Params }) {
             </div>
           )}
         </section>
-
-        {/* Build Guide Link */}
-        {build.build_guide_id && (
-          <section>
-            <a
-              href={`/guides/${build.build_guide_id}`}
-              className="inline-block px-4 py-2 bg-primary-light text-white rounded-md hover:bg-primary-hover transition-colors"
-            >
-              View Full Build Guide
-            </a>
-          </section>
-        )}
       </div>
     </div>
   )

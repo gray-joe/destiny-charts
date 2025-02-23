@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import {
-  MainActivity,
-  SubActivity,
-} from '@/app/lib/activity-data'
+import { MainActivity, SubActivity } from '@/app/lib/activity-data'
 
 export default function FilterBar({
   activities,

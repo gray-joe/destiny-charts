@@ -167,7 +167,9 @@ export async function fetchBuilds(): Promise<Build[]> {
             )::text
           ) FILTER (WHERE ac.name IS NOT NULL),
           '[]'
-        )::json as activities
+        )::json as activities,
+        c.name as class,
+        sc.name as subclass
       FROM builds b
       LEFT JOIN build_exotic_armor bea ON b.id = bea.build_id
       LEFT JOIN exotic_armor ea ON bea.exotic_armor_id = ea.id
@@ -177,7 +179,9 @@ export async function fetchBuilds(): Promise<Build[]> {
       LEFT JOIN abilities a ON ba.ability_id = a.id
       LEFT JOIN build_activities bac ON b.id = bac.build_id
       LEFT JOIN activities ac ON bac.activity_id = ac.id
-      GROUP BY b.id
+      LEFT JOIN class c ON b.class_id = c.id
+      LEFT JOIN subclass sc ON b.subclass_id = sc.id
+      GROUP BY b.id, c.name, sc.name
       ORDER BY b.updated_at DESC
     `)
     return rows as Build[]
@@ -248,7 +252,19 @@ export async function fetchBuildById(id: string) {
             )::text
           ) FILTER (WHERE f.name IS NOT NULL),
           '[]'
-        )::json as fragments
+        )::json as fragments,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
+              'name', ac.name,
+              'icon_url', ac.icon_url,
+              'type', ac.type
+            )::text
+          ) FILTER (WHERE ac.name IS NOT NULL),
+          '[]'
+        )::json as activities,
+        c.name as class,
+        sc.name as subclass
       FROM builds b
       LEFT JOIN build_aspects ba ON b.id = ba.build_id
       LEFT JOIN aspects a ON ba.aspect_id = a.id
@@ -258,8 +274,12 @@ export async function fetchBuildById(id: string) {
       LEFT JOIN exotic_armor ea ON bea.exotic_armor_id = ea.id
       LEFT JOIN build_exotic_weapons bew ON b.id = bew.build_id
       LEFT JOIN exotic_weapons ew ON bew.exotic_weapon_id = ew.id
+      LEFT JOIN build_activities bac ON b.id = bac.build_id
+      LEFT JOIN activities ac ON bac.activity_id = ac.id
+      LEFT JOIN class c ON b.class_id = c.id
+      LEFT JOIN subclass sc ON b.subclass_id = sc.id
       WHERE b.id = $1
-      GROUP BY b.id
+      GROUP BY b.id, c.name, sc.name
     `,
       [id]
     )

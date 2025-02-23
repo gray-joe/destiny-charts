@@ -12,7 +12,11 @@ type Params = Promise<{
   subActivity: string
 }>
 
-export default async function SubSubActivityPage({ params }: { params: Params }) {
+export default async function SubSubActivityPage({
+  params,
+}: {
+  params: Params
+}) {
   const resolvedParams = await params
 
   const activity = activities.find((a) => a.id === resolvedParams.activity) as

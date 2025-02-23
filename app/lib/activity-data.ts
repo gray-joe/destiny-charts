@@ -1,4 +1,5 @@
-const STORAGE_BASE_URL = 'https://lsovkbfxdhcnxpaunabw.supabase.co/storage/v1/object/sign/activity_images';
+const STORAGE_BASE_URL =
+  'https://lsovkbfxdhcnxpaunabw.supabase.co/storage/v1/object/sign/activity_images'
 
 export type BaseActivity = {
   id: string
@@ -19,7 +20,6 @@ export type MainActivity = BaseActivity & {
   imageUrl: string
   subActivities?: SubActivity[]
 }
-
 
 export const activities: MainActivity[] = [
   {

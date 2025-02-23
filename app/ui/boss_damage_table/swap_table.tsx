@@ -101,13 +101,7 @@ export default function SwapDamageTable({ data }: { data: SwapBossDamage[] }) {
 
     if (key === 'icon_url') {
       return value ? (
-        <Image
-          src={value}
-          alt=""
-          className="w-8 h-8"
-          width={48}
-          height={48}
-        />
+        <Image src={value} alt="" className="w-8 h-8" width={48} height={48} />
       ) : null
     }
 

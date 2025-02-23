@@ -140,16 +140,16 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
   )
 }
 
-function getTierBackgroundColor(tier: string) {
+function getTierBackgroundColor(tier: string): string {
   const colors = {
     S: 'bg-emerald-900/50',
     A: 'bg-green-900/50',
-    B: 'bg-yellow-900/50',
-    C: 'bg-orange-900/50',
-    D: 'bg-red-900/50',
-    E: 'bg-purple-900/50',
-    F: 'bg-gray-900/50',
-    G: 'bg-gray-950/50',
+    B: 'bg-lime-900/50',
+    C: 'bg-yellow-900/50',
+    D: 'bg-orange-900/50',
+    E: 'bg-red-800/50',
+    F: 'bg-red-900/50',
+    G: 'bg-red-950/50',
   }
   return colors[tier as keyof typeof colors] || 'bg-primary-dark'
 }
