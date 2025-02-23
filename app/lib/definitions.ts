@@ -58,7 +58,7 @@ export type Abilities = {
   icon_url: string
   updated_at: string
   type: string
-  subtype: string
+  name: string
   modifiers: string
   wipe: string
   count: number

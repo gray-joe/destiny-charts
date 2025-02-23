@@ -28,7 +28,7 @@ export default function SwapDamageTable({ data }: { data: SwapBossDamage[] }) {
   }
 
   const columns = [
-    { key: 'icon_url', label: '', always: true, className: 'w-[48px]' },
+    { key: 'icon_url', label: '', always: true, className: 'w-[54px]' },
     {
       key: 'name',
       label: 'Name',
@@ -111,7 +111,6 @@ export default function SwapDamageTable({ data }: { data: SwapBossDamage[] }) {
       ) : null
     }
 
-    // Try to parse as a number with commas
     const cleanValue = value.replace(/,/g, '')
     const num = parseFloat(cleanValue)
 

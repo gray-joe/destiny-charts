@@ -1,4 +1,4 @@
-import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
+import D2WarmindLogo from '@/app/ui/d2warmind-logo'
 import {
   ChartBarIcon,
   WrenchScrewdriverIcon,
@@ -10,9 +10,9 @@ export default function Page() {
     <main className="flex min-h-screen flex-col p-6">
       {/* Header Banner */}
       <div className="flex flex-col items-center rounded-lg bg-primary-light p-6 md:p-12">
-        <DestinyChartsLogo />
+        <D2WarmindLogo />
         <h1 className="mt-6 text-center text-2xl text-white md:text-4xl font-bold">
-          Welcome to Destiny Charts
+          Welcome to D2 Warmind
         </h1>
         <p className="mt-4 text-center text-lg text-white md:text-xl">
           Endgame PVE analysis and builds

@@ -75,7 +75,14 @@ export async function fetchSustainedBossDamageData(): Promise<
 > {
   try {
     const { rows } = await db.query(
-      `SELECT * FROM dps_sustained ORDER BY sustained DESC`
+      `SELECT
+        ds.*,
+        coalesce(ew.icon_url, a.icon_url, lw.icon_url) as icon_url
+      FROM dps_sustained ds
+      LEFT JOIN abilities a ON ds.ability_id = a.id
+      LEFT JOIN exotic_weapons ew ON ds.exotic_weapon_id = ew.id
+      LEFT JOIN legendary_weapons lw ON ds.legendary_weapon_id = lw.id
+      ORDER BY ds.sustained DESC`
     )
     return rows as SustainedBossDamage[]
   } catch (error) {
@@ -87,7 +94,10 @@ export async function fetchSustainedBossDamageData(): Promise<
 export async function fetchAbilitiesData(): Promise<Abilities[]> {
   try {
     const { rows } = await db.query(
-      `SELECT * FROM dps_abilities ORDER BY actual DESC`
+      `SELECT da.*, a.name, a.type, a.icon_url
+       FROM dps_abilities da
+       LEFT JOIN abilities a ON da.ability_id = a.id
+       ORDER BY da.actual DESC`
     )
     return rows as Abilities[]
   } catch (error) {
@@ -99,7 +109,14 @@ export async function fetchAbilitiesData(): Promise<Abilities[]> {
 export async function fetchSwapBossDamageData(): Promise<SwapBossDamage[]> {
   try {
     const { rows } = await db.query(
-      `SELECT * FROM dps_swap ORDER BY true_dps DESC`
+      `SELECT
+        ds.*,
+        coalesce(ew.icon_url, a.icon_url, lw.icon_url) as icon_url
+      FROM dps_swap ds
+      LEFT JOIN abilities a ON ds.ability_id = a.id
+      LEFT JOIN exotic_weapons ew ON ds.exotic_weapon_id = ew.id
+      LEFT JOIN legendary_weapons lw ON ds.legendary_weapon_id = lw.id
+      ORDER BY ds.true_dps DESC`
     )
     return rows as SwapBossDamage[]
   } catch (error) {

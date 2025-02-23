@@ -32,7 +32,7 @@ export default function BossDamageTable({
   }
 
   const columns = [
-    { key: 'icon_url', label: '', always: true, className: 'w-[48px]' },
+    { key: 'icon_url', label: '', always: true, className: 'w-[54px]' },
     {
       key: 'name',
       label: 'Name',

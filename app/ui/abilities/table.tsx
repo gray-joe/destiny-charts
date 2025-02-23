@@ -12,7 +12,7 @@ export default function AbilitiesTable({ data }: { data: Abilities[] }) {
   const [showAllColumns, setShowAllColumns] = useState(false)
 
   const filteredData = data.filter((item) => {
-    const searchFields = [item.type, item.subtype, item.modifiers]
+    const searchFields = [item.type, item.name, item.modifiers]
 
     return searchFields.some((field) =>
       field?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -32,8 +32,8 @@ export default function AbilitiesTable({ data }: { data: Abilities[] }) {
     { key: 'icon_url', label: 'Icon', always: true, className: 'w-[48px]' },
     { key: 'type', label: 'Type', always: true, className: 'min-w-[120px]' },
     {
-      key: 'subtype',
-      label: 'Subtype',
+      key: 'name',
+      label: 'Name',
       always: true,
       className: 'min-w-[120px]',
     },
@@ -97,7 +97,7 @@ export default function AbilitiesTable({ data }: { data: Abilities[] }) {
       </div>
 
       <Search
-        placeholder="Search by type, subtype, modifiers..."
+        placeholder="Search by type, name, modifiers..."
         onSearch={setSearchTerm}
       />
 

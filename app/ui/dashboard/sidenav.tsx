@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import NavLinks from '@/app/ui/dashboard/nav-links'
-import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
+import D2WarmindLogo from '@/app/ui/d2warmind-logo'
 
 export default function SideNav() {
   return (
@@ -10,7 +10,7 @@ export default function SideNav() {
         href="/"
       >
         <div className="w-32 text-white md:w-40">
-          <DestinyChartsLogo />
+          <D2WarmindLogo />
         </div>
       </Link>
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2 min-h-0">
