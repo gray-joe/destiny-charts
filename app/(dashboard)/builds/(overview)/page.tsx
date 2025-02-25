@@ -26,7 +26,7 @@ export default async function Page({
     const buildActivities = build.activities
       .map((activity) => {
         try {
-          return JSON.parse(activity)
+          return JSON.parse(activity as unknown as string)
         } catch (e) {
           console.error('Error parsing activity:', activity)
           console.error('Error type:', e)

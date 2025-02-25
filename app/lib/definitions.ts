@@ -121,7 +121,6 @@ export type Build = {
   name: string
   class: string
   subclass: string
-  activities: string[]
   background_image: string
   description?: string
   exotic_armor: string[]
@@ -130,6 +129,11 @@ export type Build = {
   aspects: AspectData[]
   fragments: FragmentData[]
   super_ability: string[]
+  exotic_armor_id?: string
+  exotic_weapon_id?: string
+  super_ability_id?: string
+  activity_ids?: string[]
+  activities: ActivityData[]
 }
 
 export type Activity = {

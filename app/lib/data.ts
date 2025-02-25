@@ -346,3 +346,45 @@ export async function fetchSubclasses(): Promise<Subclass[]> {
     throw new Error('Failed to fetch subclasses')
   }
 }
+
+export async function fetchExoticArmor() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM exotic_armor ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching exotic armor:', error)
+    throw new Error('Failed to fetch exotic armor')
+  }
+}
+
+export async function fetchExoticWeapons() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM exotic_weapons ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching exotic weapons:', error)
+    throw new Error('Failed to fetch exotic weapons')
+  }
+}
+
+export async function fetchSuperAbilities() {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM abilities WHERE type = 'Super' ORDER BY name ASC`
+    )
+    return rows
+  } catch (error) {
+    console.error('Error fetching super abilities:', error)
+    throw new Error('Failed to fetch super abilities')
+  }
+}
+
+export async function fetchActivities() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM activities ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching activities:', error)
+    throw new Error('Failed to fetch activities')
+  }
+}

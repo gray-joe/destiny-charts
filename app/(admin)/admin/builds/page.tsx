@@ -7,7 +7,16 @@ export default async function BuildsPage() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl text-white mb-8">Builds</h1>
+      <div className="flex w-full items-center justify-between mb-8">
+        <h1 className="text-2xl text-white">Builds</h1>
+        <Link
+          href="/admin/builds/create"
+          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Create Build
+        </Link>
+      </div>
+      
       <div className="grid gap-6">
         {builds.map((build) => (
           <div key={build.id} className="bg-primary-dark rounded-lg p-6">
