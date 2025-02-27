@@ -8,6 +8,7 @@ import {
   Build,
   Aspect,
   Fragment,
+  Subclass,
 } from './definitions'
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
@@ -288,5 +289,102 @@ export async function fetchBuildById(id: string) {
   } catch (error) {
     console.error('Database Error:', error)
     throw new Error('Failed to fetch build')
+  }
+}
+
+export async function fetchLegendaryWeapons(
+  page: number = 1,
+  limit: number = 10
+): Promise<{ weapons: Weapon[]; total: number }> {
+  try {
+    const offset = (page - 1) * limit
+
+    // First, get the total count
+    const totalResult = await db.query('SELECT COUNT(*) FROM legendary_weapons')
+    const total = parseInt(totalResult.rows[0].count)
+
+    // Then get the paginated data
+    const { rows } = await db.query(
+      `
+      SELECT *
+      FROM legendary_weapons
+      ORDER BY name ASC
+      LIMIT $1 OFFSET $2
+      `,
+      [limit, offset]
+    )
+
+    return {
+      weapons: rows as Weapon[],
+      total,
+    }
+  } catch (error) {
+    console.error('Error fetching legendary weapons:', error)
+    throw new Error('Failed to fetch legendary weapons')
+  }
+}
+
+export async function fetchLegendaryWeapon(id: string): Promise<Weapon> {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM legendary_weapons WHERE id = $1`,
+      [id]
+    )
+    return rows[0] as Weapon
+  } catch (error) {
+    console.error('Error fetching legendary weapon:', error)
+    throw new Error('Failed to fetch legendary weapon')
+  }
+}
+
+export async function fetchSubclasses(): Promise<Subclass[]> {
+  try {
+    const { rows } = await db.query(`SELECT * FROM subclass`)
+    return rows as Subclass[]
+  } catch (error) {
+    console.error('Error fetching subclasses:', error)
+    throw new Error('Failed to fetch subclasses')
+  }
+}
+
+export async function fetchExoticArmor() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM exotic_armor ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching exotic armor:', error)
+    throw new Error('Failed to fetch exotic armor')
+  }
+}
+
+export async function fetchExoticWeapons() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM exotic_weapons ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching exotic weapons:', error)
+    throw new Error('Failed to fetch exotic weapons')
+  }
+}
+
+export async function fetchSuperAbilities() {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM abilities WHERE type = 'Super' ORDER BY name ASC`
+    )
+    return rows
+  } catch (error) {
+    console.error('Error fetching super abilities:', error)
+    throw new Error('Failed to fetch super abilities')
+  }
+}
+
+export async function fetchActivities() {
+  try {
+    const { rows } = await db.query(`SELECT * FROM activities ORDER BY name ASC`)
+    return rows
+  } catch (error) {
+    console.error('Error fetching activities:', error)
+    throw new Error('Failed to fetch activities')
   }
 }

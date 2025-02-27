@@ -67,9 +67,9 @@ export const activities: MainActivity[] = [
         name: 'Sundered Doctrine',
         imageUrl: `${STORAGE_BASE_URL}/sundered_soctrine.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvc3VuZGVyZWRfc29jdHJpbmUuanBnIiwiaWF0IjoxNzQwMTcwNzQyLCJleHAiOjE3NzE3MDY3NDJ9.1N9iLWVPEw8QBoNgy8WqQwYLvsc_mt4xfx4170gV3ys`,
         subActivities: [
-          { id: 'sundered-encounter1', name: 'Encounter 1' },
-          { id: 'sundered-encounter2', name: 'Encounter 2' },
-          { id: 'sundered-encounter3', name: 'Encounter 3' },
+          { id: 'solve-the-riddle', name: 'Solve the Riddle' },
+          { id: 'zoetic-lockset', name: 'Zoetic Lockset' },
+          { id: 'kerrev-the-erased', name: 'Kerrev the Erased' },
         ],
       },
       {
@@ -112,7 +112,7 @@ export const activities: MainActivity[] = [
     description:
       'Competitive player-versus-player combat across various game modes.',
     imageUrl: `${STORAGE_BASE_URL}/pvp.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvcHZwLmpwZyIsImlhdCI6MTc0MDIxNzI2OSwiZXhwIjoxNzcxNzUzMjY5fQ.2iCq9osbqqLLduoMFZDxgRf45EDfe_crcwSb6Z0ECAw`,
-    subActivities: [],
+    subActivities: [{ id: 'competetive', name: 'Competetive' }, { id: 'trials', name: 'Trials' }, { id: 'iron-banner', name: 'Iron Banner' }],
   },
   {
     id: 'gambit',
@@ -126,6 +126,6 @@ export const activities: MainActivity[] = [
     name: 'Seasonal Activities',
     description: 'Current season activities with unique mechanics and rewards.',
     imageUrl: `${STORAGE_BASE_URL}/heresy.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvaGVyZXN5LmpwZyIsImlhdCI6MTc0MDE3MjIzNywiZXhwIjoxNzcxNzA4MjM3fQ.AXrfqdKVMVBHAnEIq0kSf3CpSRJyPCJ9SARd-bN2_iA`,
-    subActivities: [],
+    subActivities: [{ id: 'nether', name: 'Nether' }],
   },
 ]

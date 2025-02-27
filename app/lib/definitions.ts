@@ -119,9 +119,8 @@ export type Build = {
   id: string
   updated_at: string
   name: string
-  class: 'Hunter' | 'Warlock' | 'Titan'
+  class: string
   subclass: string
-  activities: string[]
   background_image: string
   description?: string
   exotic_armor: string[]
@@ -130,6 +129,11 @@ export type Build = {
   aspects: AspectData[]
   fragments: FragmentData[]
   super_ability: string[]
+  exotic_armor_id?: string
+  exotic_weapon_id?: string
+  super_ability_id?: string
+  activity_ids?: string[]
+  activities: ActivityData[]
 }
 
 export type Activity = {
@@ -158,4 +162,10 @@ export type Ability = {
   icon_url: string
   name: string
   description: string
+}
+
+export type Subclass = {
+  id: string
+  name: string
+  icon_url: string
 }
