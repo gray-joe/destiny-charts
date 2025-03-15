@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { db } from '@vercel/postgres'
 import { revalidatePath } from 'next/cache'
 import { Build } from './definitions'
+import { to_snake_case } from './utils'
 
 export async function navigateToEdit(formData: FormData) {
   const id = formData.get('id') as string
@@ -175,3 +176,192 @@ export async function createBuild(formData: FormData) {
     return { success: false, error: 'Failed to create build' }
   }
 }
+
+export async function createLegendaryWeapon(formData: FormData) {
+  try {
+    await db.query('BEGIN')
+
+    const { rows } = await db.query(
+      `INSERT INTO legendary_weapons (
+        name,
+        affinity,
+        frame,
+        enhanceable,
+        reserves,
+        perk_one,
+        perk_two,
+        origin_trait,
+        icon_url,
+        type,
+        tier
+      ) VALUES (
+        $1,
+        $2,
+        $3,
+        $4,
+        $5,
+        $6,
+        $7,
+        $8,
+        $9,
+        $10,
+        $11
+      ) RETURNING id`,
+      [
+        formData.get('name'),
+        formData.get('affinity'),
+        formData.get('frame'),
+        formData.get('enhanceable'),
+        formData.get('reserves'),
+        formData.get('perk_one'),
+        formData.get('perk_two'),
+        formData.get('origin_trait'),
+        formData.get('icon_url'),
+        formData.get('type'),
+        formData.get('tier')
+      ]
+    )
+
+    const weaponId = rows[0].id
+    const type = formData.get('type') as string
+    const rank = parseInt(formData.get('rank') as string)
+
+    // Shift existing weapons down to make room for the new rank
+    await db.query(
+      `UPDATE tier_list_${to_snake_case(type)} 
+       SET rank = rank + 1 
+       WHERE rank >= $1`,
+      [rank]
+    )
+
+    // Insert the new weapon's ranking
+    await db.query(
+      `INSERT INTO tier_list_${to_snake_case(type)} (weapon_id, rank) 
+       VALUES ($1, $2)`,
+      [weaponId, rank]
+    )
+
+    await db.query('COMMIT')
+    revalidatePath('/admin/legendary_weapons')
+    return { success: true, id: weaponId }
+  } catch (error) {
+    await db.query('ROLLBACK')
+    console.error('Error creating legendary weapon:', error)
+    return { success: false, error: 'Failed to create legendary weapon' }
+  }
+}
+
+export async function updateLegendaryWeapon(id: string, formData: FormData) {
+  try {
+    await db.query('BEGIN')
+
+    // Get the old weapon type for comparison
+    const { rows: [oldWeapon] } = await db.query(
+      `SELECT type FROM legendary_weapons WHERE id = $1`,
+      [id]
+    )
+
+    // Update the weapon details
+    await db.query(
+      `UPDATE legendary_weapons 
+       SET name = $1,
+           affinity = $2,
+           frame = $3,
+           enhanceable = $4,
+           reserves = $5,
+           perk_one = $6,
+           perk_two = $7,
+           origin_trait = $8,
+           icon_url = $9,
+           type = $10,
+           tier = $11
+       WHERE id = $12`,
+      [
+        formData.get('name'),
+        formData.get('affinity'),
+        formData.get('frame'),
+        formData.get('enhanceable') === 'true',
+        parseInt(formData.get('reserves') as string),
+        formData.get('perk_one'),
+        formData.get('perk_two'),
+        formData.get('origin_trait'),
+        formData.get('icon_url'),
+        formData.get('type'),
+        formData.get('tier'),
+        id
+      ]
+    )
+
+    const newType = formData.get('type') as string
+    const newRank = parseInt(formData.get('rank') as string)
+
+    // If the type has changed, we need to move the weapon to a different tier list
+    if (oldWeapon.type !== newType) {
+      // Remove from old tier list
+      await db.query(
+        `DELETE FROM tier_list_${to_snake_case(oldWeapon.type)} 
+         WHERE weapon_id = $1`,
+        [id]
+      )
+
+      // Make room in the new tier list
+      await db.query(
+        `UPDATE tier_list_${to_snake_case(newType)} 
+         SET rank = rank + 1 
+         WHERE rank >= $1`,
+        [newRank]
+      )
+
+      // Insert into new tier list
+      await db.query(
+        `INSERT INTO tier_list_${to_snake_case(newType)} (weapon_id, rank) 
+         VALUES ($1, $2)`,
+        [id, newRank]
+      )
+    } else {
+      // Just update the rank in the current tier list
+      const { rows: [currentRank] } = await db.query(
+        `SELECT rank FROM tier_list_${to_snake_case(newType)} WHERE weapon_id = $1`,
+        [id]
+      )
+
+      if (currentRank.rank !== newRank) {
+        if (currentRank.rank < newRank) {
+          // Moving down in rank, shift others up
+          await db.query(
+            `UPDATE tier_list_${to_snake_case(newType)} 
+             SET rank = rank - 1 
+             WHERE rank > $1 AND rank <= $2`,
+            [currentRank.rank, newRank]
+          )
+        } else {
+          // Moving up in rank, shift others down
+          await db.query(
+            `UPDATE tier_list_${to_snake_case(newType)} 
+             SET rank = rank + 1 
+             WHERE rank >= $1 AND rank < $2`,
+            [newRank, currentRank.rank]
+          )
+        }
+
+        // Update the weapon's rank
+        await db.query(
+          `UPDATE tier_list_${to_snake_case(newType)} 
+           SET rank = $1 
+           WHERE weapon_id = $2`,
+          [newRank, id]
+        )
+      }
+    }
+
+    await db.query('COMMIT')
+    revalidatePath(`/admin/legendary_weapons/${id}`)
+    revalidatePath('/admin/legendary_weapons')
+    return { success: true }
+  } catch (error) {
+    await db.query('ROLLBACK')
+    console.error('Error updating legendary weapon:', error)
+    return { success: false, error: 'Failed to update legendary weapon' }
+  }
+}
+

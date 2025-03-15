@@ -87,7 +87,7 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
                       )}`}
                     >
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        {weapon.rank_in_type}
+                        {weapon.rank}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm font-bold">
                         {weapon.tier}

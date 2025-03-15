@@ -10,6 +10,7 @@ import {
   Fragment,
   Subclass,
 } from './definitions'
+import { to_snake_case } from './utils'
 
 export async function fetchTierList(type: string): Promise<Weapon[]> {
   const validTypes = [
@@ -36,22 +37,21 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
     const { rows } = await db.query(
       `
       SELECT 
-        id,
-        icon_url,
-        name,
-        affinity,
-        frame,
-        enhanceable,
-        reserves,
-        perk_one,
-        perk_two,
-        origin_trait,
-        rank_in_type,
-        tier
-      FROM legendary_weapons
-      WHERE type = $1
-      ORDER BY CAST(rank_in_type AS INTEGER) ASC`,
-      [type]
+        lw.id,
+        lw.icon_url,
+        lw.name,
+        lw.affinity,
+        lw.frame,
+        lw.enhanceable,
+        lw.reserves,
+        lw.perk_one,
+        lw.perk_two,
+        lw.origin_trait,
+        lw.tier,
+        tl.rank
+      FROM legendary_weapons lw
+      JOIN tier_list_${to_snake_case(type)} tl ON lw.id = tl.weapon_id
+      ORDER BY tl.rank ASC`
     )
 
     return rows as Weapon[]
