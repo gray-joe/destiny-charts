@@ -169,3 +169,12 @@ export type Subclass = {
   name: string
   icon_url: string
 }
+
+export type ArtifactPerk = {
+  season: number
+  column_number: number
+  row: number
+  name: string
+  description: string
+  icon_url: string
+}

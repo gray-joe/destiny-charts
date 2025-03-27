@@ -9,6 +9,7 @@ import {
   Aspect,
   Fragment,
   Subclass,
+  ArtifactPerk,
 } from './definitions'
 import { to_snake_case } from './utils'
 
@@ -386,5 +387,20 @@ export async function fetchActivities() {
   } catch (error) {
     console.error('Error fetching activities:', error)
     throw new Error('Failed to fetch activities')
+  }
+}
+
+export async function fetchArtifactPerks(season: number): Promise<ArtifactPerk[]> {
+  try {
+    const { rows } = await db.query(
+      `SELECT * FROM artifact_perks 
+       WHERE season = $1 
+       ORDER BY column_number, row`,
+      [season]
+    )
+    return rows as ArtifactPerk[]
+  } catch (error) {
+    console.error('Error fetching artifact perks:', error)
+    throw new Error('Failed to fetch artifact perks')
   }
 }
