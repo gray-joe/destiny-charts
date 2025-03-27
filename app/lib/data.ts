@@ -293,34 +293,35 @@ export async function fetchBuildById(id: string) {
   }
 }
 
-export async function fetchLegendaryWeapons(
-  page: number = 1,
-  limit: number = 10
-): Promise<{ weapons: Weapon[]; total: number }> {
+export async function fetchLegendaryWeapons(page: number = 1, limit: number = 10, query: string = '') {
   try {
     const offset = (page - 1) * limit
 
-    // First, get the total count
-    const totalResult = await db.query('SELECT COUNT(*) FROM legendary_weapons')
-    const total = parseInt(totalResult.rows[0].count)
+    // Count total with search
+    const countQuery = query 
+      ? 'SELECT COUNT(*) FROM legendary_weapons WHERE name ILIKE $1'
+      : 'SELECT COUNT(*) FROM legendary_weapons'
+    const countParams = query ? [`%${query}%`] : []
+    const { rows: countResult } = await db.query(countQuery, countParams)
 
-    // Then get the paginated data
-    const { rows } = await db.query(
-      `
-      SELECT *
-      FROM legendary_weapons
-      ORDER BY name ASC
-      LIMIT $1 OFFSET $2
-      `,
-      [limit, offset]
-    )
+    // Fetch data with search
+    const dataQuery = query
+      ? `SELECT * FROM legendary_weapons 
+         WHERE name ILIKE $3
+         ORDER BY name ASC 
+         LIMIT $1 OFFSET $2`
+      : `SELECT * FROM legendary_weapons 
+         ORDER BY name ASC 
+         LIMIT $1 OFFSET $2`
+    const dataParams = query ? [limit, offset, `%${query}%`] : [limit, offset]
+    const { rows } = await db.query(dataQuery, dataParams)
 
     return {
-      weapons: rows as Weapon[],
-      total,
+      weapons: rows,
+      total: parseInt(countResult[0].count)
     }
   } catch (error) {
-    console.error('Error fetching legendary weapons:', error)
+    console.error('Error:', error)
     throw new Error('Failed to fetch legendary weapons')
   }
 }
