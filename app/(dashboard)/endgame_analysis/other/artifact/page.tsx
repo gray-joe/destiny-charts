@@ -22,7 +22,7 @@ export default async function ArtifactPage() {
       <div className="grid grid-cols-5 gap-4">
         {[1, 2, 3, 4, 5].map(column => (
           <div key={column} className="flex flex-col gap-4">
-            {perksByColumn[column]?.map((perk, index) => (
+            {perksByColumn[column]?.map((perk) => (
               <div
                 key={perk.name}
                 className="bg-primary-dark rounded-lg p-4 relative flex flex-col min-h-[200px]"

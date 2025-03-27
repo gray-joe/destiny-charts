@@ -114,7 +114,7 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
                         {weapon.frame}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
-                        {weapon.enhanced ? 'Yes' : 'No'}
+                        {weapon.enhanceable ? 'Yes' : 'No'}
                       </td>
                       <td className="whitespace-nowrap px-3 py-5 text-sm">
                         {weapon.reserves}

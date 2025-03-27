@@ -68,6 +68,7 @@ const links = [
     href: '/endgame_analysis/other',
     icon: BeakerIcon,
     children: [
+      { name: 'Artifact Mods', href: '/endgame_analysis/other/artifact' },
       { name: 'Super Regen', href: '/endgame_analysis/other/super_regen' },
     ],
   },
