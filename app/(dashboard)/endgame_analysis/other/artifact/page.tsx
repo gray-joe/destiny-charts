@@ -25,7 +25,7 @@ export default async function ArtifactPage() {
             {perksByColumn[column]?.map((perk) => (
               <div
                 key={perk.name}
-                className="bg-primary-dark rounded-lg p-4 relative flex flex-col min-h-[200px]"
+                className="bg-primary-dark rounded-lg p-4 relative flex flex-col h-[300px]"
               >
                 {/* Perk Icon and Name */}
                 <div className="flex items-center gap-3 mb-4">
@@ -44,7 +44,7 @@ export default async function ArtifactPage() {
                 </div>
 
                 {/* Perk Description */}
-                <div className="text-sm text-gray-300 space-y-2 flex-grow">
+                <div className="text-sm text-gray-300 space-y-2 flex-grow overflow-y-auto">
                   {perk.description.split('\n').map((line, i) => (
                     <p key={i} className="whitespace-pre-wrap">
                       {line}
