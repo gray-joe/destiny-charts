@@ -240,6 +240,15 @@ export async function fetchBuildById(id: string) {
         COALESCE(
           json_agg(DISTINCT
             json_build_object(
+              'name', ab.name,
+              'icon_url', ab.icon_url
+            )::text
+          ) FILTER (WHERE ab.name IS NOT NULL AND ab.type = 'Super'),
+          '[]'
+        )::json as super_ability,
+        COALESCE(
+          json_agg(DISTINCT
+            json_build_object(
               'name', a.name,
               'icon_url', a.icon_url
             )::text
@@ -276,6 +285,8 @@ export async function fetchBuildById(id: string) {
       LEFT JOIN exotic_armor ea ON bea.exotic_armor_id = ea.id
       LEFT JOIN build_exotic_weapons bew ON b.id = bew.build_id
       LEFT JOIN exotic_weapons ew ON bew.exotic_weapon_id = ew.id
+      LEFT JOIN build_abilities bab ON b.id = bab.build_id
+      LEFT JOIN abilities ab ON bab.ability_id = ab.id
       LEFT JOIN build_activities bac ON b.id = bac.build_id
       LEFT JOIN activities ac ON bac.activity_id = ac.id
       LEFT JOIN class c ON b.class_id = c.id

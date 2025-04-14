@@ -94,6 +94,26 @@ export async function updateBuild(build: Build) {
       )
     }
 
+    if (build.aspect_ids && build.aspect_ids.length > 0) {
+      await db.query(`DELETE FROM build_aspects WHERE build_id = $1`, [build.id])
+      
+      const aspectPlaceholders = build.aspect_ids.map((_, i) => `($1, $${i + 2})`).join(',')
+      await db.query(
+        `INSERT INTO build_aspects (build_id, aspect_id) VALUES ${aspectPlaceholders}`,
+        [build.id, ...build.aspect_ids]
+      )
+    }
+
+    if (build.fragment_ids && build.fragment_ids.length > 0) {
+      await db.query(`DELETE FROM build_fragments WHERE build_id = $1`, [build.id])
+      
+      const fragmentPlaceholders = build.fragment_ids.map((_, i) => `($1, $${i + 2})`).join(',')
+      await db.query(
+        `INSERT INTO build_fragments (build_id, fragment_id) VALUES ${fragmentPlaceholders}`,
+        [build.id, ...build.fragment_ids]
+      )
+    }
+
     await db.query('COMMIT')
     revalidatePath(`/admin/builds/${build.id}`)
     return { success: true }
@@ -163,6 +183,24 @@ export async function createBuild(formData: FormData) {
       await db.query(
         `INSERT INTO build_activities (build_id, activity_id) VALUES ${placeholders}`,
         [buildId, ...activityIds]
+      )
+    }
+
+    const aspectIds = formData.getAll('aspects')
+    if (aspectIds.length > 0) {
+      const aspectPlaceholders = aspectIds.map((_, i) => `($1, $${i + 2})`).join(',')
+      await db.query(
+        `INSERT INTO build_aspects (build_id, aspect_id) VALUES ${aspectPlaceholders}`,
+        [buildId, ...aspectIds]
+      )
+    }
+
+    const fragmentIds = formData.getAll('fragments')
+    if (fragmentIds.length > 0) {
+      const fragmentPlaceholders = fragmentIds.map((_, i) => `($1, $${i + 2})`).join(',')
+      await db.query(
+        `INSERT INTO build_fragments (build_id, fragment_id) VALUES ${fragmentPlaceholders}`,
+        [buildId, ...fragmentIds]
       )
     }
     

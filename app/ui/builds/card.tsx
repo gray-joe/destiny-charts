@@ -2,7 +2,6 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { lusitana } from '@/app/ui/fonts'
 import { Build } from '@/app/lib/definitions'
 
 export default function BuildCard({ data }: { data: Build }) {
@@ -12,8 +11,8 @@ export default function BuildCard({ data }: { data: Build }) {
   const exoticWeapon = data.exotic_weapon
     ? JSON.parse(data.exotic_weapon as unknown as string)
     : null
-  const superAbility = data.super_ability
-    ? JSON.parse(data.super_ability as unknown as string)
+  const superAbility = data.super_ability?.[0]
+    ? JSON.parse(data.super_ability[0] as string)
     : null
 
   return (
@@ -40,19 +39,17 @@ export default function BuildCard({ data }: { data: Build }) {
         <div className="relative h-full flex flex-col justify-between p-4">
           {/* Header */}
           <div>
-            <p
-              className={`${lusitana.className} text-sm font-bold text-primary-light`}
-            >
+            <span className="inline-block px-2 py-1 rounded bg-primary-dark/80 text-sm font-medium text-white">
               {data.class}
-            </p>
-            <h2 className="text-xl font-bold text-white mt-1">{data.name}</h2>
+            </span>
+            <h2 className="text-xl font-bold text-white mt-2">{data.name}</h2>
           </div>
 
           {/* Icons Footer */}
           <div className="flex items-center justify-between mt-4">
             <div className="flex gap-4">
               {/* Ability Icon */}
-              {superAbility.icon_url && (
+              {superAbility?.icon_url && (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden bg-primary-dark/50">
                   <Image
                     src={superAbility.icon_url}

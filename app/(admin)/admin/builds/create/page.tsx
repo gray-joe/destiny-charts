@@ -1,5 +1,5 @@
 import { createBuild } from '@/app/lib/admin-actions'
-import { fetchSubclasses, fetchExoticArmor, fetchExoticWeapons, fetchSuperAbilities, fetchActivities } from '@/app/lib/data'
+import { fetchSubclasses, fetchExoticArmor, fetchExoticWeapons, fetchSuperAbilities, fetchActivities, fetchAspects, fetchFragments } from '@/app/lib/data'
 import { redirect } from 'next/navigation'
 
 export default async function CreateBuildPage() {
@@ -8,6 +8,8 @@ export default async function CreateBuildPage() {
   const exoticWeapons = await fetchExoticWeapons()
   const superAbilities = await fetchSuperAbilities()
   const activities = await fetchActivities()
+  const aspects = await fetchAspects()
+  const fragments = await fetchFragments()
   
   async function create(formData: FormData) {
     'use server'
@@ -154,23 +156,60 @@ export default async function CreateBuildPage() {
             </div>
 
             <div>
-              <label htmlFor="activities" className="block text-sm font-medium text-gray-400 mb-2">
+              <label className="block text-sm font-medium text-gray-400 mb-4">
                 Activities
               </label>
-              <select
-                id="activities"
-                name="activities"
-                multiple
-                className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
-                size={5}
-              >
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {activities.map((activity) => (
-                  <option key={activity.id} value={activity.id}>
-                    {activity.name}
-                  </option>
+                  <label key={activity.id} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="activities"
+                      value={activity.id}
+                      className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-white">{activity.name}</span>
+                  </label>
                 ))}
-              </select>
-              <p className="mt-1 text-sm text-gray-400">Hold Ctrl/Cmd to select multiple activities</p>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-4">
+                Aspects
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {aspects.map((aspect) => (
+                  <label key={aspect.id} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="aspects"
+                      value={aspect.id}
+                      className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-white">{aspect.name}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-400 mb-4">
+                Fragments
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {fragments.map((fragment) => (
+                  <label key={fragment.id} className="flex items-center space-x-3">
+                    <input
+                      type="checkbox"
+                      name="fragments"
+                      value={fragment.id}
+                      className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                    />
+                    <span className="text-sm text-white">{fragment.name}</span>
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div className="flex justify-end">

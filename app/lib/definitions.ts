@@ -134,6 +134,8 @@ export type Build = {
   super_ability_id?: string
   activity_ids?: string[]
   activities: ActivityData[]
+  aspect_ids?: string[]
+  fragment_ids?: string[]
 }
 
 export type Activity = {

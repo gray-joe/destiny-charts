@@ -1,9 +1,9 @@
 import { fetchBuildById } from '@/app/lib/data'
 import { updateBuild } from '@/app/lib/admin-actions'
-import { fetchSubclasses, fetchExoticArmor, fetchExoticWeapons, fetchSuperAbilities, fetchActivities } from '@/app/lib/data'
+import { fetchSubclasses, fetchExoticArmor, fetchExoticWeapons, fetchSuperAbilities, fetchActivities, fetchAspects, fetchFragments } from '@/app/lib/data'
 import Image from 'next/image'
 import { revalidatePath } from 'next/cache'
-import { Activity } from '@/app/lib/definitions'
+import { Activity, Aspect, Fragment } from '@/app/lib/definitions'
 
 type Params = Promise<{
   id: string
@@ -19,6 +19,8 @@ export default async function EditBuildPage({ params }: { params: Params }) {
   const exoticWeapons = await fetchExoticWeapons()
   const superAbilities = await fetchSuperAbilities()
   const activities = await fetchActivities()
+  const aspects = await fetchAspects()
+  const fragments = await fetchFragments()
 
   if (!build) {
     return <div>Build not found</div>
@@ -26,11 +28,18 @@ export default async function EditBuildPage({ params }: { params: Params }) {
 
   const classes = ['Hunter', 'Titan', 'Warlock']
   const subclassesNames = subclasses.map((subclass) => subclass.name)
-  const currentActivityIds = build.activities?.map((activity: Activity) => activity.id) || []
+
+  // Parse the JSON strings into objects
+  const currentActivities = build.activities.map((a: string) => JSON.parse(a))
+  const currentAspects = build.aspects.map((a: string) => JSON.parse(a))
+  const currentFragments = build.fragments.map((f: string) => JSON.parse(f))
+  const currentExoticArmor = build.exotic_armor?.[0] ? JSON.parse(build.exotic_armor[0]) : null
+  const currentExoticWeapon = build.exotic_weapon?.[0] ? JSON.parse(build.exotic_weapon[0]) : null
+  const currentSuperAbility = build.super_ability?.[0] ? JSON.parse(build.super_ability[0]) : null
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl text-white mb-8">Build Details: {build.name}</h1>
+      <h1 className="text-2xl text-white mb-8">Edit Build: {build.name}</h1>
       <div className="bg-primary-dark rounded-lg p-6 mb-6">
         <div className="flex items-start gap-6">
           {build.background_image && (
@@ -58,6 +67,8 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                 const exotic_weapon_id = formData.get('exotic_weapon') as string
                 const super_ability_id = formData.get('super_ability') as string
                 const activity_ids = formData.getAll('activities') as string[]
+                const aspect_ids = formData.getAll('aspects') as string[]
+                const fragment_ids = formData.getAll('fragments') as string[]
 
                 await updateBuild({
                   id,
@@ -70,6 +81,8 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                   exotic_weapon_id,
                   super_ability_id,
                   activity_ids,
+                  aspect_ids,
+                  fragment_ids,
                   updated_at: '',
                   activities: [],
                   exotic_armor: [],
@@ -184,7 +197,7 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                   <select
                     id="exotic_armor"
                     name="exotic_armor"
-                    defaultValue={build.exotic_armor?.[0]?.id || ''}
+                    defaultValue={exoticArmor.find(a => a.name === currentExoticArmor?.name)?.id || ''}
                     className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
                   >
                     <option value="">Select exotic armor (optional)</option>
@@ -203,7 +216,7 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                   <select
                     id="exotic_weapon"
                     name="exotic_weapon"
-                    defaultValue={build.exotic_weapon?.[0]?.id || ''}
+                    defaultValue={exoticWeapons.find(w => w.name === currentExoticWeapon?.name)?.id || ''}
                     className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
                   >
                     <option value="">Select exotic weapon (optional)</option>
@@ -222,7 +235,7 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                   <select
                     id="super_ability"
                     name="super_ability"
-                    defaultValue={build.super_ability?.[0]?.id || ''}
+                    defaultValue={superAbilities.find(s => s.name === currentSuperAbility?.name)?.id || ''}
                     className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
                   >
                     <option value="">Select super ability (optional)</option>
@@ -234,25 +247,69 @@ export default async function EditBuildPage({ params }: { params: Params }) {
                   </select>
                 </div>
 
-                <div>
-                  <label htmlFor="activities" className="block text-sm font-medium text-gray-400 mb-2">
-                    Activities
-                  </label>
-                  <select
-                    id="activities"
-                    name="activities"
-                    multiple
-                    defaultValue={currentActivityIds}
-                    className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
-                    size={5}
-                  >
-                    {activities.map((activity) => (
-                      <option key={activity.id} value={activity.id}>
-                        {activity.name}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="mt-1 text-sm text-gray-400">Hold Ctrl/Cmd to select multiple activities</p>
+                <div className="space-y-6">
+                  {/* Activities Section */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-4">
+                      Activities
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {activities.map((activity) => (
+                        <label key={activity.id} className="flex items-center space-x-3">
+                          <input
+                            type="checkbox"
+                            name="activities"
+                            value={activity.id}
+                            defaultChecked={currentActivities.some((a: Activity) => a.name === activity.name)}
+                            className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-white">{activity.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Aspects Section */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-4">
+                      Aspects
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {aspects.map((aspect) => (
+                        <label key={aspect.id} className="flex items-center space-x-3">
+                          <input
+                            type="checkbox"
+                            name="aspects"
+                            value={aspect.id}
+                            defaultChecked={currentAspects.some((a: Aspect) => a.name === aspect.name)}
+                            className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-white">{aspect.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Fragments Section */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-4">
+                      Fragments
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {fragments.map((fragment) => (
+                        <label key={fragment.id} className="flex items-center space-x-3">
+                          <input
+                            type="checkbox"
+                            name="fragments"
+                            value={fragment.id}
+                            defaultChecked={currentFragments.some((f: Fragment) => f.name === fragment.name)}
+                            className="h-4 w-4 rounded border-gray-700 bg-primary-light text-blue-600 focus:ring-blue-500"
+                          />
+                          <span className="text-sm text-white">{fragment.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
