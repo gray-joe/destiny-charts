@@ -53,6 +53,36 @@ export const activities: MainActivity[] = [
         imageUrl: `${STORAGE_BASE_URL}/kings_fall.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMva2luZ3NfZmFsbC5qcGciLCJpYXQiOjE3NDAyMTg0MjYsImV4cCI6MTc3MTc1NDQyNn0.t6mlZLXmlnSEYAjG6Je45ItI4nSwPbtPzYifogwuros`,
         subActivities: [],
       },
+      {
+        id: 'vow-of-the-disciple',
+        name: 'Vow of the Disciple',
+        imageUrl: `${STORAGE_BASE_URL}/vow_of_the_disciple.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvdm93X29mX3RoZV9kaXNjaXBsZS5wbmciLCJpYXQiOjE3NDQ4MzI1MDQsImV4cCI6MTc3NjM2ODUwNH0.-TmdB8Aqs6x1DVG-uQbzOPFg9q741Sk8-L929eo-Sos`,
+        subActivities: [],
+      },
+      {
+        id: 'vault-of-glass',
+        name: 'Vault of Glass',
+        imageUrl: `${STORAGE_BASE_URL}/vault_of_glass.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvdmF1bHRfb2ZfZ2xhc3MucG5nIiwiaWF0IjoxNzQ0ODMyNjg5LCJleHAiOjE3NzYzNjg2ODl9.Lao8KM2HqMxE-iU6Lf8ktamxxDaHqLXlpoX6mDHCGZU`,
+        subActivities: [],
+      },
+      {
+        id: 'deep-stone-crypt',
+        name: 'Deep Stone Crypt',
+        imageUrl: `${STORAGE_BASE_URL}/deep-stone-crypt.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZGVlcC1zdG9uZS1jcnlwdC5qcGciLCJpYXQiOjE3NDQ4MzI4NDQsImV4cCI6MTc3NjM2ODg0NH0.dGK6qKlGBjjtoelwHNpFRYJljnFAZdyzT1JLNeRTVfY`,
+        subActivities: [],
+      },
+      {
+        id: 'garden-of-salvation',
+        name: 'Garden of Salvation',
+        imageUrl: `${STORAGE_BASE_URL}/garden-of-salvation.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZ2FyZGVuLW9mLXNhbHZhdGlvbi5qcGciLCJpYXQiOjE3NDQ4MzI5NDAsImV4cCI6MTc3NjM2ODk0MH0.Atl4uLQminjnsdM-gNA0_GmewEdWszSSQJyycp9VInE`,
+        subActivities: [],
+      },
+      {
+        id: 'last-wish',
+        name: 'Last Wish',
+        imageUrl: `${STORAGE_BASE_URL}/last-wish-raid.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvbGFzdC13aXNoLXJhaWQucG5nIiwiaWF0IjoxNzQ0ODMzMTAwLCJleHAiOjE3NzYzNjkxMDB9.0UFLLrcdo2lkivWBqvkvBTAMx97otWMhHTJ_YrqttxQ`,
+        subActivities: [],
+      },
     ],
   },
   {
@@ -63,7 +93,7 @@ export const activities: MainActivity[] = [
     imageUrl: `${STORAGE_BASE_URL}/dungeon.jpeg.avif?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZHVuZ2Vvbi5qcGVnLmF2aWYiLCJpYXQiOjE3NDAyMTc4MTksImV4cCI6MTc3MTc1MzgxOX0.O_JVy626xD04iwyzvsLEcDL2U7wMrVwcM3kD60te-qQ`,
     subActivities: [
       {
-        id: 'sundered doctrine',
+        id: 'sundered-doctrine',
         name: 'Sundered Doctrine',
         imageUrl: `${STORAGE_BASE_URL}/sundered_soctrine.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvc3VuZGVyZWRfc29jdHJpbmUuanBnIiwiaWF0IjoxNzQwMTcwNzQyLCJleHAiOjE3NzE3MDY3NDJ9.1N9iLWVPEw8QBoNgy8WqQwYLvsc_mt4xfx4170gV3ys`,
         subActivities: [
@@ -96,6 +126,31 @@ export const activities: MainActivity[] = [
         imageUrl: `${STORAGE_BASE_URL}/duality.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZHVhbGl0eS5qcGciLCJpYXQiOjE3NDAyMTg1NDMsImV4cCI6MTc3MTc1NDU0M30.mbdQh-AaZs-jtFfKNQuSSLXWqQU7NO5V6I34ziTQEn4`,
         subActivities: [],
       },
+      {
+        id: 'prophecy',
+        name: 'Prophecy',
+        imageUrl: `${STORAGE_BASE_URL}/prophecy.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvcHJvcGhlY3kuanBnIiwiaWF0IjoxNzQ0ODgzNjA4LCJleHAiOjE3NzY0MTk2MDh9.IeNla7gpgmH8MWqMWpfWbvTVaPT90kvT1MzToD8GLQg`,
+        subActivities: [],
+      },
+      {
+        id: 'grasp-of-averice',
+        name: 'Grasp of Averice',
+        imageUrl: `${STORAGE_BASE_URL}/grasp_of_averice.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZ3Jhc3Bfb2ZfYXZlcmljZS5qcGciLCJpYXQiOjE3NDQ4ODM4MjcsImV4cCI6MTc3NjQxOTgyN30.xg6aeXCesn5sIEvGMdc6XrlvQNzstzIc86_5VktwCl8`,
+        subActivities: [],
+      },
+      {
+        id: 'pit-of-heresy',
+        name: 'Pit of Heresy',
+        imageUrl: `${STORAGE_BASE_URL}/`,
+        subActivities: [],
+      },
+      {
+        id: 'shattered-throne',
+        name: 'Shattered Throne',
+        imageUrl: `${STORAGE_BASE_URL}/`,
+        subActivities: [],
+      },
+      
     ],
   },
   {
@@ -104,7 +159,14 @@ export const activities: MainActivity[] = [
     description:
       'Challenging versions of strikes with modifiers and high-tier rewards.',
     imageUrl: `${STORAGE_BASE_URL}/gm_nightfall_2.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvZ21fbmlnaHRmYWxsXzIucG5nIiwiaWF0IjoxNzQwMjE4MjM2LCJleHAiOjE3NzE3NTQyMzZ9.snEVQB-7BwOeP9OY63cEllWSm9LSUNigsPTQ-kZyxmY`,
-    subActivities: [],
+    subActivities: [
+      {
+        id: 'hypernet-protocol',
+        name: 'Hypernet Protocol',
+        imageUrl: `${STORAGE_BASE_URL}/`,
+        subActivities: [],
+      },
+    ],
   },
   {
     id: 'pvp',

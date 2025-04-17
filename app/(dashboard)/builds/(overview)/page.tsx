@@ -39,14 +39,22 @@ export default async function Page({
       !resolvedSearchParams?.activity ||
       buildActivities.some((buildActivity) => {
         const activityType = buildActivity.type.toLowerCase()
-        return activityType === resolvedSearchParams.activity?.toLowerCase()
+        const searchActivity = resolvedSearchParams.activity?.toLowerCase()
+        // Handle cases where database type is singular but ID is plural
+        return activityType === searchActivity || 
+               activityType === searchActivity?.slice(0, -1) || // Remove 's' from plural
+               `${activityType}s` === searchActivity // Add 's' to singular
       })
 
     const subActivityMatch =
       !resolvedSearchParams?.subactivity ||
       buildActivities.some((buildActivity) => {
         const activityName = buildActivity.name.toLowerCase()
-        return activityName === resolvedSearchParams.subactivity?.toLowerCase()
+        const searchSubActivity = resolvedSearchParams.subactivity?.toLowerCase()
+        // Handle both name and ID matching
+        return activityName === searchSubActivity || 
+               activityName === searchSubActivity?.replace(/-/g, ' ') || // Convert hyphens to spaces
+               activityName.replace(/\s+/g, '-') === searchSubActivity // Convert spaces to hyphens
       })
 
     const encounterMatch =
