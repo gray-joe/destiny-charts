@@ -141,16 +141,15 @@ export const activities: MainActivity[] = [
       {
         id: 'pit-of-heresy',
         name: 'Pit of Heresy',
-        imageUrl: `${STORAGE_BASE_URL}/`,
+        imageUrl: `${STORAGE_BASE_URL}/pit_of_heresy.webp?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvcGl0X29mX2hlcmVzeS53ZWJwIiwiaWF0IjoxNzQ0ODk2OTE1LCJleHAiOjE3NzY0MzI5MTV9.eSkJ34nSgtiN95mELQxcW1le_c7UJOJ5uCm6RdHv8l4`,
         subActivities: [],
       },
       {
         id: 'shattered-throne',
         name: 'Shattered Throne',
-        imageUrl: `${STORAGE_BASE_URL}/`,
+        imageUrl: `${STORAGE_BASE_URL}/shattered-throne.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhY3Rpdml0eV9pbWFnZXMvc2hhdHRlcmVkLXRocm9uZS5qcGciLCJpYXQiOjE3NDQ4OTY5NTQsImV4cCI6MTc3NjQzMjk1NH0.vnhOCf8BI1A7j04UjDYasV-ouvVhEUAOqrq1SyNKttY`,
         subActivities: [],
       },
-      
     ],
   },
   {
