@@ -17,6 +17,22 @@ supabase: Client = create_client(supabase_url, supabase_key)
 # Initialize OpenAI client
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
+# List of all weapon types to process
+WEAPON_TYPES = [
+    'Linear Fusion Rifle',
+    'Heavy Grenade Launcher',
+    'Machine Gun',
+    'Rocket',
+    'Sword',
+    'Breach Grenade Launcher',
+    'Glaive',
+    'Fusion Rifle',
+    'Rocket Sidearm',
+    'Sniper Rifle',
+    'Shotgun',
+    'Trace Rifle'
+]
+
 def get_embedding(text: str) -> List[float]:
     """Generate embedding for a given text using OpenAI's API."""
     response = openai_client.embeddings.create(
@@ -25,17 +41,17 @@ def get_embedding(text: str) -> List[float]:
     )
     return response.data[0].embedding
 
-def fetch_linear_fusion_rifles() -> List[Dict[str, Any]]:
-    """Fetch Linear Fusion Rifle data from the tier list."""
+def fetch_weapons(weapon_type: str) -> List[Dict[str, Any]]:
+    """Fetch weapon data from the tier list for a specific weapon type."""
     response = supabase.table('legendary_weapons').select(
         'id, type, name, icon_url, affinity, frame, enhanceable, reserves, perk_one, perk_two, origin_trait, tier'
-    ).eq('type', 'Linear Fusion Rifle').execute()
+    ).eq('type', weapon_type).execute()
     return response.data
 
 def process_weapon_data(weapon: Dict[str, Any]) -> Dict[str, Any]:
     """Process weapon data into a document format."""
     content = f"""
-    Linear Fusion Rifle: {weapon.get('name', 'Unknown')}
+    {weapon.get('type', 'Unknown')}: {weapon.get('name', 'Unknown')}
     Element: {weapon.get('affinity', 'Unknown')}
     Frame: {weapon.get('frame', 'Unknown')}
     Enhanceable: {weapon.get('enhanceable', 'Unknown')}
@@ -49,7 +65,8 @@ def process_weapon_data(weapon: Dict[str, Any]) -> Dict[str, Any]:
     return {
         'content': content.strip(),
         'metadata': {
-            'type': 'linear_fusion_rifle',
+            'type': 'weapon',
+            'weapon_type': weapon.get('type', 'Unknown').lower().replace(' ', '_'),
             'weapon_id': weapon.get('id'),
             'name': weapon.get('name'),
             'source': 'tier_list'
@@ -65,25 +82,27 @@ def store_document(content: str, metadata: Dict[str, Any], embedding: List[float
     }).execute()
 
 def main():
-    print("Starting document population for Linear Fusion Rifles...")
+    print("Starting document population for all weapon types...")
     
-    # Fetch and process weapon data
-    print("Processing Linear Fusion Rifle data...")
-    weapons = fetch_linear_fusion_rifles()
-    print(f"Found {len(weapons)} Linear Fusion Rifles to process")
+    for weapon_type in WEAPON_TYPES:
+        print(f"\nProcessing {weapon_type} data...")
+        
+        # Fetch and process weapon data
+        weapons = fetch_weapons(weapon_type)
+        print(f"Found {len(weapons)} {weapon_type}s to process")
+        
+        for weapon in weapons:
+            try:
+                doc = process_weapon_data(weapon)
+                print(f"Processing {doc['metadata']['name']}...")
+                embedding = get_embedding(doc['content'])
+                store_document(doc['content'], doc['metadata'], embedding)
+                time.sleep(0.1)  # Rate limiting for OpenAI API
+            except Exception as e:
+                print(f"Error processing weapon {weapon.get('name', 'Unknown')}: {str(e)}")
+                continue
     
-    for weapon in weapons:
-        try:
-            doc = process_weapon_data(weapon)
-            print(f"Processing {doc['metadata']['name']}...")
-            embedding = get_embedding(doc['content'])
-            store_document(doc['content'], doc['metadata'], embedding)
-            time.sleep(0.1)  # Rate limiting for OpenAI API
-        except Exception as e:
-            print(f"Error processing weapon {weapon.get('name', 'Unknown')}: {str(e)}")
-            continue
-    
-    print("Document population completed!")
+    print("\nDocument population completed!")
 
 if __name__ == "__main__":
     main() 

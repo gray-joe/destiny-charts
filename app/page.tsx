@@ -2,6 +2,7 @@ import D2WarmindLogo from '@/app/ui/d2warmind-logo'
 import {
   ChartBarIcon,
   WrenchScrewdriverIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 
@@ -20,7 +21,7 @@ export default function Page() {
       </div>
 
       {/* Cards Container */}
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Endgame Analysis Card */}
         <Link
           href="/endgame_analysis"
@@ -42,6 +43,18 @@ export default function Page() {
           <h2 className="mt-4 text-xl font-semibold">Build Crafting</h2>
           <p className="mt-2 text-center text-white">
             Find an optimized build for the activity you want to play
+          </p>
+        </Link>
+
+        {/* Chat Card */}
+        <Link
+          href="/chat"
+          className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+        >
+          <ChatBubbleLeftRightIcon className="h-16 w-16 text-blue-500" />
+          <h2 className="mt-4 text-xl font-semibold">Weapon Assistant</h2>
+          <p className="mt-2 text-center text-white">
+            Ask questions about weapon tiers, perks, and more
           </p>
         </Link>
       </div>

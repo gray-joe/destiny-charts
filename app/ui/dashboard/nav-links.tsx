@@ -8,6 +8,7 @@ import {
   BeakerIcon,
   WrenchScrewdriverIcon,
   AcademicCapIcon,
+  ChatBubbleLeftRightIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -18,6 +19,7 @@ const links = [
   { name: 'Home', href: '/', icon: HomeIcon },
   { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
   { name: 'Build Finder', href: '/build_finder', icon: AcademicCapIcon },
+  { name: 'Chat', href: '/chat', icon: ChatBubbleLeftRightIcon },
   { name: 'Endgame Analysis', href: '/endgame_analysis', icon: ChartBarIcon },
   {
     name: 'Boss DMG',

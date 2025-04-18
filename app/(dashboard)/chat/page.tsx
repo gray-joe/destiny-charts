@@ -9,13 +9,28 @@ interface Message {
   sources?: Array<{ name: string; type: string }>;
 }
 
+const SUPPORTED_WEAPON_TYPES = [
+  'Linear Fusion Rifles',
+  'Heavy Grenade Launchers',
+  'Machine Guns',
+  'Rockets',
+  'Swords',
+  'Breach Grenade Launchers',
+  'Glaives',
+  'Fusion Rifles',
+  'Rocket Sidearms',
+  'Sniper Rifles',
+  'Shotguns',
+  'Trace Rifles'
+];
+
 export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -66,6 +81,25 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold mb-2">Destiny 2 Weapon Assistant</h1>
+        <p className="text-gray-600 dark:text-gray-300 mb-2">
+          Ask questions about Destiny 2 weapons. I can help you with information about:
+        </p>
+        <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
+          {SUPPORTED_WEAPON_TYPES.map((type) => (
+            <li key={type}>{type}</li>
+          ))}
+        </ul>
+        <p className="text-gray-600 dark:text-gray-300">
+          Try asking about weapon tiers, perks, or specific weapons. For example:
+        </p>
+        <ul className="list-disc list-inside text-gray-600 dark:text-gray-300">
+          <li>"What are the S-tier heavy grenade launchers?"</li>
+          <li>"Tell me about Cataclysmic"</li>
+          <li>"What are the best perks for machine guns?"</li>
+        </ul>
+      </div>
       <div className="flex-1 overflow-y-auto mb-4 space-y-4">
         {messages.map((message) => (
           <div
@@ -77,8 +111,8 @@ export default function ChatPage() {
             <div
               className={`max-w-[80%] rounded-lg p-4 ${
                 message.role === 'user'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-900'
+                  ? 'bg-primary-dark text-white'
+                  : 'bg-primary-light text-white'
               }`}
             >
               <div className="whitespace-pre-wrap">{message.content}</div>
@@ -107,14 +141,14 @@ export default function ChatPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask a question about Destiny 2 Linear Fusion Rifles..."
-          className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-white placeholder-gray-400"
+          placeholder="Ask a question about Destiny 2 weapons..."
+          className="flex-1 p-2 border bg-primary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
           disabled={isLoading}
         />
         <button
           type="submit"
           disabled={isLoading}
-          className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-primary-dark text-white rounded-lg hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Send
         </button>

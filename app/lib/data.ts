@@ -1,17 +1,17 @@
 import { db } from '@vercel/postgres'
 import {
-  Weapon,
+  Abilities,
+  Activity,
+  ArtifactPerk,
+  Aspect,
+  Build,
+  Fragment,
+  MainActivity,
+  Subclass,
   SuperRegen,
   SustainedBossDamage,
-  Abilities,
   SwapBossDamage,
-  Build,
-  Aspect,
-  Fragment,
-  Subclass,
-  ArtifactPerk,
-  MainActivity,
-  Activity,
+  Weapon,
 } from './definitions'
 import { to_snake_case } from './utils'
 
