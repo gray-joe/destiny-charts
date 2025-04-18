@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { MainActivity, SubActivity } from '@/app/lib/activity-data'
+import { MainActivity, SubActivity, EncounterActivity } from '@/app/lib/definitions'
 
 export default function FilterBar({
   activities,
@@ -22,12 +22,11 @@ export default function FilterBar({
     searchParams.get('encounter') || ''
   )
 
-  // Find the currently selected activity and subactivity objects
   const currentActivity = activities.find((a) => a.id === selectedActivity) as
     | MainActivity
     | undefined
   const currentSubActivity = currentActivity?.subActivities?.find(
-    (sa) => sa.id === selectedSubActivity
+    (sa: SubActivity) => sa.id === selectedSubActivity
   ) as SubActivity | undefined
 
   const updateFilters = (
@@ -78,7 +77,7 @@ export default function FilterBar({
           className="rounded-md border-gray-300 bg-white text-gray-900 px-3 py-2"
         >
           <option value="">All {currentActivity.name}</option>
-          {currentActivity.subActivities.map((subActivity) => (
+          {currentActivity.subActivities.map((subActivity: SubActivity) => (
             <option key={subActivity.id} value={subActivity.id}>
               {subActivity.name}
             </option>
@@ -98,7 +97,7 @@ export default function FilterBar({
           className="rounded-md border-gray-300 bg-white text-gray-900 px-3 py-2"
         >
           <option value="">All {currentSubActivity.name}</option>
-          {currentSubActivity.subActivities.map((encounter) => (
+          {currentSubActivity.subActivities.map((encounter: EncounterActivity) => (
             <option key={encounter.id} value={encounter.id}>
               {encounter.name}
             </option>

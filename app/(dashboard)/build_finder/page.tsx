@@ -1,7 +1,9 @@
 import { ActivityCard } from '@/app/ui/build_finder/activity-card'
-import { activities } from '@/app/lib/activity-data'
+import { fetchActivities } from '@/app/lib/data'
 
-export default function BuildFinder() {
+export default async function BuildFinder() {
+  const activities = await fetchActivities()
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Find Your Perfect Build</h1>
@@ -12,8 +14,8 @@ export default function BuildFinder() {
             key={activity.id}
             id={activity.id}
             name={activity.name}
-            description={activity.description}
-            imageUrl={activity.imageUrl}
+            imageUrl={activity.imageUrl || ''}
+            iconUrl={activity.iconUrl || ''}
             subActivities={activity.subActivities}
           />
         ))}

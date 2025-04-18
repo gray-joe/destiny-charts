@@ -10,6 +10,8 @@ import {
   Fragment,
   Subclass,
   ArtifactPerk,
+  MainActivity,
+  Activity,
 } from './definitions'
 import { to_snake_case } from './utils'
 
@@ -165,7 +167,7 @@ export async function fetchBuilds(): Promise<Build[]> {
             json_build_object(
               'name', ac.name,
               'icon_url', ac.icon_url,
-              'type', ac.type
+              'type', at.name
             )::text
           ) FILTER (WHERE ac.name IS NOT NULL),
           '[]'
@@ -181,6 +183,7 @@ export async function fetchBuilds(): Promise<Build[]> {
       LEFT JOIN abilities a ON ba.ability_id = a.id
       LEFT JOIN build_activities bac ON b.id = bac.build_id
       LEFT JOIN activities ac ON bac.activity_id = ac.id
+      LEFT JOIN activity_types at ON ac.type_id = at.id
       LEFT JOIN class c ON b.class_id = c.id
       LEFT JOIN subclass sc ON b.subclass_id = sc.id
       GROUP BY b.id, c.name, sc.name
@@ -269,7 +272,7 @@ export async function fetchBuildById(id: string) {
             json_build_object(
               'name', ac.name,
               'icon_url', ac.icon_url,
-              'type', ac.type
+              'type', at.name
             )::text
           ) FILTER (WHERE ac.name IS NOT NULL),
           '[]'
@@ -289,6 +292,7 @@ export async function fetchBuildById(id: string) {
       LEFT JOIN abilities ab ON bab.ability_id = ab.id
       LEFT JOIN build_activities bac ON b.id = bac.build_id
       LEFT JOIN activities ac ON bac.activity_id = ac.id
+      LEFT JOIN activity_types at ON ac.type_id = at.id
       LEFT JOIN class c ON b.class_id = c.id
       LEFT JOIN subclass sc ON b.subclass_id = sc.id
       WHERE b.id = $1
@@ -392,13 +396,59 @@ export async function fetchSuperAbilities() {
   }
 }
 
-export async function fetchActivities() {
+export async function fetchActivities(): Promise<MainActivity[]> {
   try {
-    const { rows } = await db.query(`SELECT * FROM activities ORDER BY name ASC`)
-    return rows
+    // First get all activity types
+    const { rows: activityTypes } = await db.query(`
+      SELECT id, name, image_url, icon_url
+      FROM activity_types
+      ORDER BY name
+    `)
+
+    // Then get all activities
+    const { rows: activities } = await db.query(`
+      SELECT id, name, image_url, icon_url, type_id, encounters
+      FROM activities
+      ORDER BY name
+    `)
+
+    // Organize activities by type
+    const activitiesByType = activities.reduce((acc, activity) => {
+      if (!acc[activity.type_id]) {
+        acc[activity.type_id] = []
+      }
+      acc[activity.type_id].push(activity)
+      return acc
+    }, {} as Record<string, Activity[]>)
+
+    // Transform into the expected format
+    return activityTypes.map(type => ({
+      id: type.id,
+      name: type.name,
+      imageUrl: type.image_url,
+      iconUrl: type.icon_url || '',
+      subActivities: activitiesByType[type.id]?.map((activity: { 
+        id: string; 
+        name: string; 
+        image_url: string | null; 
+        icon_url: string | null; 
+        encounters: string | null 
+      }) => ({
+        id: activity.id,
+        name: activity.name,
+        imageUrl: activity.image_url || '',
+        iconUrl: activity.icon_url || '',
+        subActivities: activity.encounters ? activity.encounters.split(', ').map((encounter: string) => ({
+          id: encounter.toLowerCase().replace(/\s+/g, '-'),
+          name: encounter,
+          imageUrl: '',
+          iconUrl: ''
+        })) : []
+      })) || []
+    }))
   } catch (error) {
     console.error('Error fetching activities:', error)
-    throw new Error('Failed to fetch activities')
+    throw error
   }
 }
 

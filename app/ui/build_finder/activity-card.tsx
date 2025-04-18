@@ -4,8 +4,8 @@ import Image from 'next/image'
 interface ActivityCardProps {
   id: string
   name: string
-  description: string
   imageUrl: string
+  iconUrl: string
   parentId?: string
   subActivities?: {
     id: string
@@ -16,26 +16,22 @@ interface ActivityCardProps {
 export function ActivityCard({
   id,
   name,
-  description,
   imageUrl,
   parentId,
   subActivities,
 }: ActivityCardProps) {
   const buildPath = parentId ? `${parentId}/${id}` : id
 
-  // Create the correct query parameters based on the path structure
   const buildQueryParams = (() => {
     if (!parentId) {
       return `activity=${id}`
     }
 
-    // Check if this is an encounter (has two levels of parents)
     const [mainActivity, subActivity] = parentId.split('/')
     if (subActivity) {
       return `activity=${mainActivity}&subactivity=${subActivity}&encounter=${id}`
     }
 
-    // Regular subactivity
     return `activity=${parentId}&subactivity=${id}`
   })()
 
@@ -48,8 +44,6 @@ export function ActivityCard({
 
         <div className="p-6">
           <h3 className="text-xl font-bold mb-2 text-white">{name}</h3>
-          <p className="text-white mb-4">{description}</p>
-
           <div className="flex gap-2">
             {/* View builds for this activity directly */}
             <Link

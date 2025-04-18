@@ -180,3 +180,21 @@ export type ArtifactPerk = {
   description: string
   icon_url: string
 }
+
+export type BaseActivity = {
+  id: string
+  name: string
+  imageUrl?: string
+  iconUrl?: string
+  subActivities?: BaseActivity[]
+}
+
+export type EncounterActivity = BaseActivity
+
+export type SubActivity = BaseActivity & {
+  subActivities?: EncounterActivity[]
+}
+
+export type MainActivity = BaseActivity & {
+  subActivities?: SubActivity[]
+}

@@ -1,10 +1,9 @@
 import { ActivityCard } from '@/app/ui/build_finder/activity-card'
-import { activities } from '@/app/lib/activity-data'
+import { fetchActivities } from '@/app/lib/data'
 import type {
   MainActivity,
   SubActivity,
-  EncounterActivity,
-} from '@/app/lib/activity-data'
+} from '@/app/lib/definitions'
 import Link from 'next/link'
 
 type Params = Promise<{
@@ -18,13 +17,14 @@ export default async function SubSubActivityPage({
   params: Params
 }) {
   const resolvedParams = await params
+  const activities = await fetchActivities()
 
-  const activity = activities.find((a) => a.id === resolvedParams.activity) as
+  const activity = activities.find((activity) => activity.id === resolvedParams.activity) as
     | MainActivity
     | undefined
   const subActivity = activity?.subActivities?.find(
-    (sa) =>
-      sa.id.toLowerCase() ===
+    (subActivity) =>
+      subActivity.id.toLowerCase() ===
       decodeURIComponent(resolvedParams.subActivity).toLowerCase()
   ) as SubActivity | undefined
 
@@ -46,15 +46,14 @@ export default async function SubSubActivityPage({
       <h1 className="text-3xl font-bold mb-8">{subActivity.name}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {subActivity.subActivities?.map((encounter: EncounterActivity) => (
+        {subActivity.subActivities?.map((encounter) => (
           <ActivityCard
             key={encounter.id}
             id={encounter.id}
-            parentId={`${activity.id}/${subActivity.id}`}
             name={encounter.name}
-            description={encounter.description || ''}
             imageUrl={encounter.imageUrl || ''}
-            subActivities={encounter.subActivities}
+            iconUrl={encounter.iconUrl || ''}
+            parentId={`${activity.id}/${subActivity.id}`}
           />
         ))}
       </div>
