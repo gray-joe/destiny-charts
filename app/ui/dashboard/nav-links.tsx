@@ -15,7 +15,7 @@ import { useState } from 'react'
 
 const links = [
     { name: 'Home', href: '/', icon: HomeIcon },
-    { name: 'AI Assistant', href: '/ai_assistant', icon: ChatBubbleLeftIcon },
+    { name: 'AI Assistant', href: '/chat', icon: ChatBubbleLeftIcon },
     { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
     { name: 'Build Finder', href: '/build_finder', icon: BeakerIcon },
     {
