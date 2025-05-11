@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { lusitana } from '@/app/ui/fonts'
 
-export default function D2WarmindLogo() {
+export default function DestinyChartsLogo() {
     return (
         <div
             className={`${lusitana.className} flex flex-row items-center leading-none text-white bg-blue-1000 p-2 rounded`}
@@ -12,7 +12,7 @@ export default function D2WarmindLogo() {
                 width={50}
                 height={50}
             />
-            <p className="text-[32px] ml-4">D2 Warmind</p>
+            <p className="text-[32px] ml-4">Destiny Charts</p>
         </div>
     )
 }

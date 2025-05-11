@@ -1,13 +1,12 @@
 'use client'
 
 import {
-    RocketLaunchIcon,
+    AcademicCapIcon,
     HomeIcon,
     ChartBarIcon,
-    BugAntIcon,
+    ChatBubbleLeftIcon,
     BeakerIcon,
     WrenchScrewdriverIcon,
-    AcademicCapIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -16,69 +15,31 @@ import { useState } from 'react'
 
 const links = [
     { name: 'Home', href: '/', icon: HomeIcon },
+    { name: 'AI Assistant', href: '/ai_assistant', icon: ChatBubbleLeftIcon },
     { name: 'Builds', href: '/builds', icon: WrenchScrewdriverIcon },
-    { name: 'Build Finder', href: '/build_finder', icon: AcademicCapIcon },
-    { name: 'Endgame Analysis', href: '/endgame_analysis', icon: ChartBarIcon },
+    { name: 'Build Finder', href: '/build_finder', icon: BeakerIcon },
     {
-        name: 'Boss DMG',
-        href: '/endgame_analysis/boss_dmg',
-        icon: BugAntIcon,
+        name: 'Endgame Analysis',
+        href: '/endgame_analysis',
+        icon: ChartBarIcon,
         children: [
-            { name: 'Abilities', href: '/endgame_analysis/boss_dmg/abilities' },
-            { name: 'Sustained', href: '/endgame_analysis/boss_dmg/sustained' },
-            { name: 'Swap', href: '/endgame_analysis/boss_dmg/swap' },
+            { name: 'DPS Meta', href: '/endgame_analysis/dps_meta' },
+            { name: 'Tier Lists', href: '/endgame_analysis/tier_lists' },
+            { name: 'Other', href: '/endgame_anaylsis/other' },
         ],
     },
     {
-        name: 'Weapons',
-        href: '/endgame_analysis/weapons',
-        icon: RocketLaunchIcon,
+        name: 'Core Game Data',
+        href: '/core',
+        icon: AcademicCapIcon,
         children: [
-            {
-                name: 'Linear Fusion Rifles',
-                href: '/endgame_analysis/weapons/lfrs',
-            },
-            {
-                name: 'Heavy Grenade Launchers',
-                href: '/endgame_analysis/weapons/heavy-gls',
-            },
-            { name: 'Machine Guns', href: '/endgame_analysis/weapons/mgs' },
-            { name: 'Rockets', href: '/endgame_analysis/weapons/rockets' },
-            { name: 'Swords', href: '/endgame_analysis/weapons/swords' },
-            {
-                name: 'Breach Grenade Launchers',
-                href: '/endgame_analysis/weapons/breach-gls',
-            },
-            { name: 'Glaives', href: '/endgame_analysis/weapons/glaives' },
-            {
-                name: 'Fusion Rifles',
-                href: '/endgame_analysis/weapons/fusions',
-            },
-            {
-                name: 'Rocket Sidearms',
-                href: '/endgame_analysis/weapons/rocket-sidearms',
-            },
-            { name: 'Shotguns', href: '/endgame_analysis/weapons/shotguns' },
-            {
-                name: 'Sniper Rifles',
-                href: '/endgame_analysis/weapons/sniper-rifles',
-            },
-            {
-                name: 'Trace Rifles',
-                href: '/endgame_analysis/weapons/trace-rifles',
-            },
-        ],
-    },
-    {
-        name: 'Other',
-        href: '/endgame_analysis/other',
-        icon: BeakerIcon,
-        children: [
-            { name: 'Artifact Mods', href: '/endgame_analysis/other/artifact' },
-            {
-                name: 'Super Regen',
-                href: '/endgame_analysis/other/super_regen',
-            },
+            { name: 'Arc', href: '/core/arc' },
+            { name: 'Void', href: '/core/void' },
+            { name: 'Solar', href: '/core/solar' },
+            { name: 'Strand', href: '/core/strand' },
+            { name: 'Stasis', href: '/core/stasis' },
+            { name: 'Prismatic', href: '/core/prismatic' },
+            { name: 'Artifact Mods', href: '/core/artifact' },
         ],
     },
 ]
