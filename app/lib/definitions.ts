@@ -198,3 +198,11 @@ export type SubActivity = BaseActivity & {
 export type MainActivity = BaseActivity & {
     subActivities?: SubActivity[]
 }
+
+export type SubclassVerb = {
+    id: string
+    updated_at: string
+    name: string
+    icon_url: string
+    description: string
+}

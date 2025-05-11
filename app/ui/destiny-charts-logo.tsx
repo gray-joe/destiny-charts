@@ -12,7 +12,7 @@ export default function D2WarmindLogo() {
                 width={50}
                 height={50}
             />
-            <p className="text-[32px] ml-4">D2 Warmind</p>
+            <p className="text-[32px] ml-4">Destiny Charts</p>
         </div>
     )
 }
