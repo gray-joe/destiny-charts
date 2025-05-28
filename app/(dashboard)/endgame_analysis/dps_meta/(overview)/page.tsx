@@ -1,9 +1,9 @@
 import { lusitana } from '@/app/ui/fonts'
 import Link from 'next/link'
 import {
-    ChartBarIcon,
-    NumberedListIcon,
-    FireIcon,
+    BoltIcon,
+    ChevronDoubleRightIcon,
+    ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 
 export default async function Page() {
@@ -15,45 +15,45 @@ export default async function Page() {
 
             {/* Cards Container */}
             <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-                {/* DPS Meta Card */}
+                {/* Abilities Card */}
                 <Link
-                    href="/endgame_analysis/dps_meta"
+                    href="/endgame_analysis/dps_meta/abilities"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
-                    <FireIcon className="h-16 w-16 text-blue-500" />
+                    <BoltIcon className="h-16 w-16 text-blue-500" />
                     <h2 className="mt-4 text-xl font-semibold">
-                        DPS Meta
+                        Abilities
                     </h2>
                     <p className="mt-2 text-center text-white">
-                        View DPS meta information
+                        View DPS table for each ability
                     </p>
                 </Link>
 
-                {/* Tier List Card */}
+                {/* Sustained DPS Card */}
                 <Link
-                    href="/endgame_analysis/tier_lists"
+                    href="/endgame_analysis/dps_meta/sustained"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
-                    <NumberedListIcon className="h-16 w-16 text-blue-500" />
+                    <ChevronRightIcon className="h-16 w-16 text-blue-500" />
                     <h2 className="mt-4 text-xl font-semibold">
-                        Tier List
+                        Sustained DPS Meta
                     </h2>
                     <p className="mt-2 text-center text-white">
-                        View the tier lists for each weapon type
+                        View the sustained DPS table for each weapon
                     </p>
                 </Link>
 
-                {/* Other Card */}
+                {/* Swap DPS Card */}
                 <Link
-                    href="/endgame_analysis/other"
+                    href="/endgame_analysis/dps_meta/swap"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
-                    <ChartBarIcon className="h-16 w-16 text-blue-500" />
+                    <ChevronDoubleRightIcon className="h-16 w-16 text-blue-500" />
                     <h2 className="mt-4 text-xl font-semibold">
-                        Other
+                        Swap DPS Meta
                     </h2>
                     <p className="mt-2 text-center text-white">
-                        View other information that might be useful for endgame build crafting such as super regeneration stats
+                        View the swap DPS table for each rotation
                     </p>
                 </Link>
             </div>

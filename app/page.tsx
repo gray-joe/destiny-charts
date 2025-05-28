@@ -1,6 +1,8 @@
-import D2WarmindLogo from '@/app/ui/d2warmind-logo'
+import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
 import {
+    AcademicCapIcon,
     ChartBarIcon,
+    ChatBubbleLeftIcon,
     WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
@@ -10,12 +12,12 @@ export default function Page() {
         <main className="flex min-h-screen flex-col p-6">
             {/* Header Banner */}
             <div className="flex flex-col items-center rounded-lg bg-primary-light p-6 md:p-12">
-                <D2WarmindLogo />
+                <DestinyChartsLogo />
                 <h1 className="mt-6 text-center text-2xl text-white md:text-4xl font-bold">
-                    Welcome to D2 Warmind
+                    Welcome to Destiny Charts
                 </h1>
                 <p className="mt-4 text-center text-lg text-white md:text-xl">
-                    Endgame PVE analysis and builds
+                    In depth data and endgame analysis
                 </p>
             </div>
 
@@ -48,6 +50,33 @@ export default function Page() {
                     <p className="mt-2 text-center text-white">
                         Find an optimized build for the activity you want to
                         play
+                    </p>
+                </Link>
+
+                {/* AI Assistant Card */}
+                <Link
+                    href="/ai_assistant"
+                    className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+                >
+                    <ChatBubbleLeftIcon className="h-16 w-16 text-blue-500" />
+                    <h2 className="mt-4 text-xl font-semibold">AI Assistant</h2>
+                    <p className="mt-2 text-center text-white">
+                        Got a specific question? Ask our AI assistant!
+                    </p>
+                </Link>
+
+                {/* Core Mechanics Breakdown Card */}
+                <Link
+                    href="/core"
+                    className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+                >
+                    <AcademicCapIcon className="h-16 w-16 text-blue-500" />
+                    <h2 className="mt-4 text-xl font-semibold">
+                        Core Game Data
+                    </h2>
+                    <p className="mt-2 text-center text-white">
+                        Find more in depth info on items like Artifact perks,
+                        Aspects & Fragments, Exotic Gear and more
                     </p>
                 </Link>
             </div>

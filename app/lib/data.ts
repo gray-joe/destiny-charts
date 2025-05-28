@@ -12,6 +12,7 @@ import {
     ArtifactPerk,
     MainActivity,
     Activity,
+    SubclassVerb,
 } from './definitions'
 import { to_snake_case } from './utils'
 
@@ -488,5 +489,59 @@ export async function fetchArtifactPerks(
     } catch (error) {
         console.error('Error fetching artifact perks:', error)
         throw new Error('Failed to fetch artifact perks')
+    }
+}
+
+export async function fetchSubclassVerbs(
+    subclass?: string
+): Promise<SubclassVerb[]> {
+    try {
+        let query = 'SELECT * FROM subclass_verbs'
+        const params: string[] = []
+        if (subclass) {
+            query += ' WHERE subclass = $1'
+            params.push(subclass)
+        }
+        query += ' ORDER BY name ASC'
+        const { rows } = await db.query(query, params)
+        return rows as SubclassVerb[]
+    } catch (error) {
+        console.error('Error fetching subclass verbs:', error)
+        throw new Error('Failed to fetch subclass verbs')
+    }
+}
+
+export async function fetchGrenadeAbilities(subclass: string) {
+    try {
+        const { rows } = await db.query(
+            `SELECT id, icon_url, name, description FROM abilities WHERE type = 'Grenade' AND subclass = $1 ORDER BY name ASC`,
+            [subclass]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching grenade abilities:', error)
+        throw new Error('Failed to fetch grenade abilities')
+    }
+}
+
+export async function fetchAspectsBySubclassAndClass(
+    subclass: string,
+    className: string
+) {
+    try {
+        const { rows } = await db.query(
+            `SELECT a.* 
+             FROM aspects a
+             JOIN subclass s ON a.subclass_id = s.id
+             JOIN subclass_type st ON s.type_id = st.id
+             JOIN class c ON s.class_id = c.id
+             WHERE st.name = $1 AND c.name = $2
+             ORDER BY a.name ASC`,
+            [subclass, className]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching aspects:', error)
+        throw new Error('Failed to fetch aspects')
     }
 }
