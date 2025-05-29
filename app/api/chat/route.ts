@@ -1,15 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
-import { OpenAI } from 'openai';
 import { NextResponse } from 'next/server';
+import { getEmbedding, getChatCompletion } from '@destiny-charts/openai-client';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 type WeaponType = 
   | 'Linear Fusion Rifle'
@@ -132,11 +128,7 @@ export async function POST(req: Request) {
       documents = data;
     } else {
       // For general questions, use semantic search
-      const embeddingResponse = await openai.embeddings.create({
-        model: 'text-embedding-3-small',
-        input: message,
-      });
-      const embedding = embeddingResponse.data[0].embedding;
+      const embedding = await getEmbedding(message);
 
       const { data, error } = await supabase.rpc('match_documents', {
         query_embedding: embedding,
@@ -167,34 +159,7 @@ export async function POST(req: Request) {
       .join('\n');
 
     // Generate response using OpenAI with the context
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        {
-          role: 'system',
-          content: `You are a Destiny 2 weapon expert. Your knowledge is limited to ONLY the weapons listed in the context below. You must follow these rules strictly:
-
-1. ONLY use information from the provided context. If information isn't in the context, say "I don't have information about that in my database."
-2. When listing weapons (like S-tier weapons), include ALL weapons that match the criteria from the context.
-3. For specific weapon questions, provide ALL details available in the context.
-4. Never make up or assume information not present in the context.
-5. When asked about tiers, only mention weapons that explicitly have the requested tier in their information.
-6. Always be precise and complete in your answers.
-
-Available Weapons:
-${context}
-
-Remember: Your knowledge is limited to these weapons only. Do not reference any other weapons or make assumptions.`,
-        },
-        {
-          role: 'user',
-          content: message,
-        },
-      ],
-      temperature: 0.1,
-    });
-
-    const response = completion.choices[0].message.content;
+    const response = await getChatCompletion(message, context);
 
     return NextResponse.json({ 
       response,

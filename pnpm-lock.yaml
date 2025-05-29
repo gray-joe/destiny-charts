@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@destiny-charts/openai-client':
+        specifier: workspace:*
+        version: link:packages/openai-client
       '@heroicons/react':
         specifier: 2.2.0
         version: 2.2.0(react@19.1.0)
@@ -99,6 +102,16 @@ importers:
       prettier:
         specifier: 3.5.3
         version: 3.5.3
+
+  packages/openai-client:
+    dependencies:
+      openai:
+        specifier: 4.103.0
+        version: 4.103.0(ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.24.4)
+    devDependencies:
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
 
 packages:
 
@@ -1647,6 +1660,7 @@ packages:
   node-domexception@1.0.0:
     resolution: {integrity: sha512-/jKZoMpw0F8GRwl4/eLROPA3cfcXtLApP0QzLmUT/HuPCZWyB7IY9ZrMeKw2O/nFIqPQB3PVM9aYm0F312AXDQ==}
     engines: {node: '>=10.5.0'}
+    deprecated: Use your platform's native DOMException instead
 
   node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}

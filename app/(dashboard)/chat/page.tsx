@@ -81,60 +81,62 @@ export default function ChatPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold mb-2">Destiny 2 Weapon Assistant</h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-2">
-          Ask questions about Destiny 2 weapons. I can help you with information about:
-        </p>
-        <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
-          {SUPPORTED_WEAPON_TYPES.map((type) => (
-            <li key={type}>{type}</li>
-          ))}
-        </ul>
-        <p className="text-gray-600 dark:text-gray-300">
-          Try asking about weapon tiers, perks, or specific weapons. For example:
-        </p>
-        <ul className="list-disc list-inside text-gray-600 dark:text-gray-300">
-          <li>"What are the S-tier heavy grenade launchers?"</li>
-          <li>"Tell me about Cataclysmic"</li>
-          <li>"What are the best perks for machine guns?"</li>
-        </ul>
-      </div>
-      <div className="flex-1 overflow-y-auto mb-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${
-              message.role === 'user' ? 'justify-end' : 'justify-start'
-            }`}
-          >
+      <h1 className="text-2xl font-bold mb-2 sticky top-0 bg-background z-10 py-2">Destiny 2 Weapon Assistant</h1>
+      <div className="flex-1 overflow-y-auto">
+        <div className="mb-4">
+          <p className="text-gray-600 dark:text-gray-300 mb-2">
+            Ask questions about Destiny 2 weapons. I can help you with information about:
+          </p>
+          <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4">
+            {SUPPORTED_WEAPON_TYPES.map((type) => (
+              <li key={type}>{type}</li>
+            ))}
+          </ul>
+          <p className="text-sm text-gray-500">
+            Ask me anything about Destiny 2 weapons! For example:
+          </p>
+          <ul className="mt-2 text-sm text-gray-500 list-disc list-inside">
+            <li>&ldquo;What are the best rocket launchers?&rdquo;</li>
+            <li>&ldquo;Tell me about machine guns&rdquo;</li>
+            <li>&ldquo;What&apos;s the best linear fusion rifle?&rdquo;</li>
+          </ul>
+        </div>
+        <div className="space-y-4">
+          {messages.map((message) => (
             <div
-              className={`max-w-[80%] rounded-lg p-4 ${
-                message.role === 'user'
-                  ? 'bg-primary-dark text-white'
-                  : 'bg-primary-light text-white'
+              key={message.id}
+              className={`flex ${
+                message.role === 'user' ? 'justify-end' : 'justify-start'
               }`}
             >
-              <div className="whitespace-pre-wrap">{message.content}</div>
-              {message.sources && message.sources.length > 0 && (
-                <div className="mt-2 text-xs text-gray-500">
-                  Sources: {message.sources.map(source => source.name).join(', ')}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-900 rounded-lg p-4">
-              <div className="flex space-x-2">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+              <div
+                className={`max-w-[80%] rounded-lg p-4 ${
+                  message.role === 'user'
+                    ? 'bg-primary-dark text-white'
+                    : 'bg-primary-light text-white'
+                }`}
+              >
+                <div className="whitespace-pre-wrap">{message.content}</div>
+                {message.sources && message.sources.length > 0 && (
+                  <div className="mt-2 text-xs text-gray-500">
+                    Sources: {message.sources.map(source => source.name).join(', ')}
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-100 text-gray-900 rounded-lg p-4">
+                <div className="flex space-x-2">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <form onSubmit={handleSubmit} className="flex gap-2">
         <input
