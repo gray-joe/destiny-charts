@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    transpilePackages: ['@destiny-charts/openai-client'],
 }
 
 export default nextConfig

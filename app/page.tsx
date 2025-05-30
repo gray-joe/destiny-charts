@@ -55,7 +55,7 @@ export default function Page() {
 
                 {/* AI Assistant Card */}
                 <Link
-                    href="/ai_assistant"
+                    href="/chat"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
                     <ChatBubbleLeftIcon className="h-16 w-16 text-blue-500" />
