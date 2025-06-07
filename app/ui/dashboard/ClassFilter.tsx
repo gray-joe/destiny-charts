@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { Aspect } from '@/app/lib/definitions'
+import { Aspect, Ability } from '@/app/lib/definitions'
 import { classColors } from '@/app/ui/dashboard/colors'
 
 type Section = {
@@ -13,12 +13,14 @@ type Section = {
 type Props = {
     sections: readonly Section[]
     aspectsByClass: Record<Section['label'], Aspect[]>
+    meleeAbilitiesByClass: Record<Section['label'], Ability[]>
     backgroundColor: string
 }
 
 export function ClassFilter({
     sections,
     aspectsByClass,
+    meleeAbilitiesByClass,
     backgroundColor,
 }: Props) {
     const [selectedClass, setSelectedClass] = useState<
@@ -88,7 +90,7 @@ export function ClassFilter({
                         </h2>
 
                         {/* Aspects Table */}
-                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700">
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
                             <div className="flex bg-[#232d2e] border-b border-gray-700">
                                 <div className="w-32 md:w-40 p-4"></div>
                                 <div className="flex-1 p-4 text-center text-lg font-bold text-white">
@@ -123,7 +125,7 @@ export function ClassFilter({
                                                         className="object-contain"
                                                     />
                                                 </div>
-                                                <span className="text-base font-semibold text-white">
+                                                <span className="text-base font-semibold text-white text-center">
                                                     {aspect.name}
                                                 </span>
                                             </div>
@@ -133,6 +135,49 @@ export function ClassFilter({
                                         </div>
                                     )
                                 )
+                            )}
+                        </div>
+                        {/* Melee Abilities Table */}
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700">
+                            <div className="flex bg-[#232d2e] border-b border-gray-700">
+                                <div className="w-32 md:w-40 p-4"></div>
+                                <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                                    Melee Abilities
+                                </div>
+                            </div>
+                            {meleeAbilitiesByClass[section.label].length === 0 ? (
+                                <div className="p-6 text-center text-gray-400">
+                                    No melee abilities found for this class.
+                                </div>
+                            ) : (
+                                meleeAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
+                                    <div
+                                        key={row.id}
+                                        className={`flex border-b border-gray-700 last:border-b-0`}
+                                        style={{
+                                            backgroundColor:
+                                                idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                        }}
+                                    >
+                                        <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                            <div className="relative w-12 h-12 mb-2">
+                                                <Image
+                                                    src={row.icon_url}
+                                                    alt={row.name}
+                                                    fill
+                                                    sizes="48px"
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                            <span className="text-base font-semibold text-white text-center">
+                                                {row.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                            {row.description}
+                                        </div>
+                                    </div>
+                                ))
                             )}
                         </div>
                     </div>

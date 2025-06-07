@@ -3,8 +3,10 @@ import {
     fetchSubclassVerbs,
     fetchGrenadeAbilities,
     fetchAspectsBySubclassAndClass,
+    fetchMeleeAbilities,
+    fetchFragmentsBySubclass,
 } from '@/app/lib/data'
-import { Ability, Aspect } from '@/app/lib/definitions'
+import { Ability, Aspect, Fragment } from '@/app/lib/definitions'
 import { ClassFilter } from '@/app/ui/dashboard/ClassFilter'
 import { subclassBackgrounds } from '@/app/ui/dashboard/colors'
 
@@ -51,6 +53,14 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
         ),
     }
 
+    const meleeAbilitiesByClass: Record<ClassLabel, Ability[]> = {
+        Hunter: await fetchMeleeAbilities(normalizedSubclassType, 'Hunter'),
+        Titan: await fetchMeleeAbilities(normalizedSubclassType, 'Titan'),
+        Warlock: await fetchMeleeAbilities(normalizedSubclassType, 'Warlock'),
+    }
+
+    const fragments: Fragment[] = await fetchFragmentsBySubclass(normalizedSubclassType)
+
     const backgroundColor =
         subclassBackgrounds[
             normalizedSubclassType as keyof typeof subclassBackgrounds
@@ -88,7 +98,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                                     className="object-contain"
                                 />
                             </div>
-                            <span className="text-base font-semibold text-white">
+                            <span className="text-base font-semibold text-white text-center">
                                 {row.name}
                             </span>
                         </div>
@@ -97,6 +107,50 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* Fragments Table */}
+            <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-12">
+                <div className="flex border-b border-gray-700" style={{ backgroundColor }}>
+                    <div className="w-32 md:w-40 p-4"></div>
+                    <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                        Fragments
+                    </div>
+                </div>
+                {fragments.length === 0 ? (
+                    <div className="p-6 text-center text-gray-400">
+                        No fragments found for this subclass.
+                    </div>
+                ) : (
+                    fragments.map((row: Fragment, idx: number) => (
+                        <div
+                            key={row.id}
+                            className={`flex border-b border-gray-700 last:border-b-0`}
+                            style={{
+                                backgroundColor:
+                                    idx % 2 === 0 ? backgroundColor : '#1a2324',
+                            }}
+                        >
+                            <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                <div className="relative w-12 h-12 mb-2">
+                                    <Image
+                                        src={row.icon_url}
+                                        alt={row.name}
+                                        fill
+                                        sizes="48px"
+                                        className="object-contain"
+                                    />
+                                </div>
+                                <span className="text-base font-semibold text-white text-center">
+                                    {row.name}
+                                </span>
+                            </div>
+                            <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                {row.description}
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
 
             {/* Grenade Abilities Table */}
@@ -134,7 +188,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                                         className="object-contain"
                                     />
                                 </div>
-                                <span className="text-base font-semibold text-white">
+                                <span className="text-base font-semibold text-white text-center">
                                     {row.name}
                                 </span>
                             </div>
@@ -150,6 +204,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
             <ClassFilter
                 sections={sections}
                 aspectsByClass={aspectsByClass}
+                meleeAbilitiesByClass={meleeAbilitiesByClass}
                 backgroundColor={backgroundColor}
             />
         </main>

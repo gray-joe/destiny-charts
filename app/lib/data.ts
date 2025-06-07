@@ -545,3 +545,29 @@ export async function fetchAspectsBySubclassAndClass(
         throw new Error('Failed to fetch aspects')
     }
 }
+
+export async function fetchMeleeAbilities(subclass: string, className: string) {
+    try {
+        const { rows } = await db.query(
+            `SELECT id, icon_url, name, description, class FROM abilities WHERE type = 'Melee' AND subclass = $1 AND class = $2 ORDER BY name ASC`,
+            [subclass, className]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching melee abilities:', error)
+        throw new Error('Failed to fetch melee abilities')
+    }
+}
+
+export async function fetchFragmentsBySubclass(subclass: string) {
+    try {
+        const { rows } = await db.query(
+            `SELECT id, icon_url, name, description FROM fragments WHERE subclass_type = $1 ORDER BY name ASC`,
+            [subclass]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching fragments by subclass:', error)
+        throw new Error('Failed to fetch fragments by subclass')
+    }
+}
