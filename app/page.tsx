@@ -13,11 +13,11 @@ export default function Page() {
             {/* Header Banner */}
             <div className="flex flex-col items-center rounded-lg bg-primary-light p-6 md:p-12">
                 <DestinyChartsLogo />
-                <h1 className="mt-6 text-center text-2xl text-white md:text-4xl font-bold">
-                    Welcome to Destiny Charts
-                </h1>
                 <p className="mt-4 text-center text-lg text-white md:text-xl">
-                    In depth data and endgame analysis
+                    Your go to place for in depth data, meta analysis and builds for all activities
+                </p>
+                <p className="mt-4 text-center text-lg text-blue-400 md:text-xl italic">
+                    Currently updating with Edge of Fate data!
                 </p>
             </div>
 
