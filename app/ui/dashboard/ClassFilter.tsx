@@ -14,6 +14,8 @@ type Props = {
     sections: readonly Section[]
     aspectsByClass: Record<Section['label'], Aspect[]>
     meleeAbilitiesByClass: Record<Section['label'], Ability[]>
+    superAbilitiesByClass: Record<Section['label'], Ability[]>
+    classAbilitiesByClass: Record<Section['label'], Ability[]>
     backgroundColor: string
 }
 
@@ -21,6 +23,8 @@ export function ClassFilter({
     sections,
     aspectsByClass,
     meleeAbilitiesByClass,
+    superAbilitiesByClass,
+    classAbilitiesByClass,
     backgroundColor,
 }: Props) {
     const [selectedClass, setSelectedClass] = useState<
@@ -78,7 +82,7 @@ export function ClassFilter({
                 ))}
             </div>
 
-            {/* Class Sections with Aspects */}
+            {/* Class specific sections */}
             <div className="space-y-12">
                 {visibleSections.map((section) => (
                     <div key={section.id}>
@@ -137,8 +141,9 @@ export function ClassFilter({
                                 )
                             )}
                         </div>
+
                         {/* Melee Abilities Table */}
-                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700">
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
                             <div className="flex bg-[#232d2e] border-b border-gray-700">
                                 <div className="w-32 md:w-40 p-4"></div>
                                 <div className="flex-1 p-4 text-center text-lg font-bold text-white">
@@ -151,6 +156,94 @@ export function ClassFilter({
                                 </div>
                             ) : (
                                 meleeAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
+                                    <div
+                                        key={row.id}
+                                        className={`flex border-b border-gray-700 last:border-b-0`}
+                                        style={{
+                                            backgroundColor:
+                                                idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                        }}
+                                    >
+                                        <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                            <div className="relative w-12 h-12 mb-2">
+                                                <Image
+                                                    src={row.icon_url}
+                                                    alt={row.name}
+                                                    fill
+                                                    sizes="48px"
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                            <span className="text-base font-semibold text-white text-center">
+                                                {row.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                            {row.description}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        {/* Super Abilities Table */}
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
+                            <div className="flex bg-[#232d2e] border-b border-gray-700">
+                                <div className="w-32 md:w-40 p-4"></div>
+                                <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                                    Super Abilities
+                                </div>
+                            </div>
+                            {superAbilitiesByClass[section.label].length === 0 ? (
+                                <div className="p-6 text-center text-gray-400">
+                                    No super abilities found for this class.
+                                </div>
+                            ) : (
+                                superAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
+                                    <div
+                                        key={row.id}
+                                        className={`flex border-b border-gray-700 last:border-b-0`}
+                                        style={{
+                                            backgroundColor:
+                                                idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                        }}
+                                    >
+                                        <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                            <div className="relative w-12 h-12 mb-2">
+                                                <Image
+                                                    src={row.icon_url}
+                                                    alt={row.name}
+                                                    fill
+                                                    sizes="48px"
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                            <span className="text-base font-semibold text-white text-center">
+                                                {row.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                            {row.description}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        {/* Class Abilities Table */}
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
+                            <div className="flex bg-[#232d2e] border-b border-gray-700">
+                                <div className="w-32 md:w-40 p-4"></div>
+                                <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                                    Class Abilities
+                                </div>
+                            </div>
+                            {classAbilitiesByClass[section.label].length === 0 ? (
+                                <div className="p-6 text-center text-gray-400">
+                                    No subclass specific abilities found for this class.
+                                </div>
+                            ) : (
+                                classAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
                                     <div
                                         key={row.id}
                                         className={`flex border-b border-gray-700 last:border-b-0`}
