@@ -5,6 +5,8 @@ import {
     fetchAspectsBySubclassAndClass,
     fetchMeleeAbilities,
     fetchFragmentsBySubclass,
+    fetchSuperAbilitiesByClass,
+    fetchClassAbilitiesByClass,
 } from '@/app/lib/data'
 import { Ability, Aspect, Fragment } from '@/app/lib/definitions'
 import { ClassFilter } from '@/app/ui/dashboard/ClassFilter'
@@ -57,6 +59,18 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
         Hunter: await fetchMeleeAbilities(normalizedSubclassType, 'Hunter'),
         Titan: await fetchMeleeAbilities(normalizedSubclassType, 'Titan'),
         Warlock: await fetchMeleeAbilities(normalizedSubclassType, 'Warlock'),
+    }
+
+    const superAbilitiesByClass: Record<ClassLabel, Ability[]> = {
+        Hunter: await fetchSuperAbilitiesByClass(normalizedSubclassType, 'Hunter'),
+        Titan: await fetchSuperAbilitiesByClass(normalizedSubclassType, 'Titan'),
+        Warlock: await fetchSuperAbilitiesByClass(normalizedSubclassType, 'Warlock'),
+    }
+
+    const classAbilitiesByClass: Record<ClassLabel, Ability[]> = {
+        Hunter: await fetchClassAbilitiesByClass(normalizedSubclassType, 'Hunter'),
+        Titan: await fetchClassAbilitiesByClass(normalizedSubclassType, 'Titan'),
+        Warlock: await fetchClassAbilitiesByClass(normalizedSubclassType, 'Warlock'),
     }
 
     const fragments: Fragment[] = await fetchFragmentsBySubclass(normalizedSubclassType)
@@ -200,11 +214,13 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                 )}
             </div>
 
-            {/* Class Sections with Aspects */}
+            {/* Class specific sections */}
             <ClassFilter
                 sections={sections}
                 aspectsByClass={aspectsByClass}
                 meleeAbilitiesByClass={meleeAbilitiesByClass}
+                superAbilitiesByClass={superAbilitiesByClass}
+                classAbilitiesByClass={classAbilitiesByClass}
                 backgroundColor={backgroundColor}
             />
         </main>

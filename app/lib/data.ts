@@ -397,8 +397,19 @@ export async function fetchExoticWeapons() {
 
 export async function fetchSuperAbilities() {
     try {
+        const { rows } = await db.query(`SELECT * FROM abilities WHERE type = 'Super' ORDER BY name ASC`)
+        return rows
+    } catch (error) {
+        console.error('Error fetching super abilities:', error)
+        throw new Error('Failed to fetch super abilities')
+    }
+}
+
+export async function fetchSuperAbilitiesByClass(subclass: string, className: string) {
+    try {
         const { rows } = await db.query(
-            `SELECT * FROM abilities WHERE type = 'Super' ORDER BY name ASC`
+            `SELECT id, icon_url, name, description, class FROM abilities WHERE type = 'Super' AND subclass = $1 AND class = $2 ORDER BY name ASC`,
+            [subclass, className]
         )
         return rows
     } catch (error) {
@@ -569,5 +580,18 @@ export async function fetchFragmentsBySubclass(subclass: string) {
     } catch (error) {
         console.error('Error fetching fragments by subclass:', error)
         throw new Error('Failed to fetch fragments by subclass')
+    }
+}
+
+export async function fetchClassAbilitiesByClass(subclass: string, className: string) {
+    try {
+        const { rows } = await db.query(
+            `SELECT id, icon_url, name, description, class FROM abilities WHERE type = 'Class' AND subclass = $1 AND class = $2 ORDER BY name ASC`,
+            [subclass, className]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching class abilities:', error)
+        throw new Error('Failed to fetch class abilities')
     }
 }
