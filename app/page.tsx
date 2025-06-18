@@ -1,4 +1,4 @@
-import DestinyChartsLogo from '@/app/ui/destiny-charts-logo'
+import DestinyChartsLogo from '@/app/ui/DestinyChartsLogo'
 import {
     AcademicCapIcon,
     ChartBarIcon,
@@ -25,7 +25,7 @@ export default function Page() {
             <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
                 {/* Endgame Analysis Card */}
                 <Link
-                    href="/endgame_analysis"
+                    href="/endgame-analysis"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
                     <ChartBarIcon className="h-16 w-16 text-blue-500" />
@@ -40,7 +40,7 @@ export default function Page() {
 
                 {/* Builds Card */}
                 <Link
-                    href="/build_finder"
+                    href="/build-finder"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
                 >
                     <WrenchScrewdriverIcon className="h-16 w-16 text-blue-500" />
