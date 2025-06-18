@@ -1,7 +1,7 @@
 import { fetchBuilds, fetchActivities } from '@/app/lib/data'
-import BuildCard from '@/app/ui/builds/card'
+import BuildCard from '@/app/ui/builds/Card'
 import { Build } from '@/app/lib/definitions'
-import FilterBar from '@/app/ui/builds/filter-bar'
+import FilterBar from '@/app/ui/builds/FilterBar'
 import { Suspense } from 'react'
 
 type SearchParams = Promise<{

@@ -2,22 +2,17 @@ import os
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from openai import OpenAI
-import json
 from typing import List, Dict, Any
 import time
 
-# Load environment variables
 load_dotenv()
 
-# Initialize Supabase client
 supabase_url = os.getenv("SUPABASE_URL")
 supabase_key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 supabase: Client = create_client(supabase_url, supabase_key)
 
-# Initialize OpenAI client
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# List of all weapon types to process
 WEAPON_TYPES = [
     'Linear Fusion Rifle',
     'Heavy Grenade Launcher',
@@ -87,7 +82,6 @@ def main():
     for weapon_type in WEAPON_TYPES:
         print(f"\nProcessing {weapon_type} data...")
         
-        # Fetch and process weapon data
         weapons = fetch_weapons(weapon_type)
         print(f"Found {len(weapons)} {weapon_type}s to process")
         
@@ -97,7 +91,7 @@ def main():
                 print(f"Processing {doc['metadata']['name']}...")
                 embedding = get_embedding(doc['content'])
                 store_document(doc['content'], doc['metadata'], embedding)
-                time.sleep(0.1)  # Rate limiting for OpenAI API
+                time.sleep(0.1)
             except Exception as e:
                 print(f"Error processing weapon {weapon.get('name', 'Unknown')}: {str(e)}")
                 continue
