@@ -16,6 +16,7 @@ type Props = {
     meleeAbilitiesByClass: Record<Section['label'], Ability[]>
     superAbilitiesByClass: Record<Section['label'], Ability[]>
     classAbilitiesByClass: Record<Section['label'], Ability[]>
+    grenadeAbilitiesByClass?: Record<Section['label'], Ability[]>
     backgroundColor: string
 }
 
@@ -25,6 +26,7 @@ export function ClassFilter({
     meleeAbilitiesByClass,
     superAbilitiesByClass,
     classAbilitiesByClass,
+    grenadeAbilitiesByClass,
     backgroundColor,
 }: Props) {
     const [selectedClass, setSelectedClass] = useState<
@@ -142,6 +144,50 @@ export function ClassFilter({
                             )}
                         </div>
 
+                        {/* Super Abilities Table */}
+                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
+                            <div className="flex bg-[#232d2e] border-b border-gray-700">
+                                <div className="w-32 md:w-40 p-4"></div>
+                                <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                                    Super Abilities
+                                </div>
+                            </div>
+                            {superAbilitiesByClass[section.label].length === 0 ? (
+                                <div className="p-6 text-center text-gray-400">
+                                    No super abilities found for this class.
+                                </div>
+                            ) : (
+                                superAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
+                                    <div
+                                        key={row.id}
+                                        className={`flex border-b border-gray-700 last:border-b-0`}
+                                        style={{
+                                            backgroundColor:
+                                                idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                        }}
+                                    >
+                                        <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                            <div className="relative w-12 h-12 mb-2">
+                                                <Image
+                                                    src={row.icon_url}
+                                                    alt={row.name}
+                                                    fill
+                                                    sizes="48px"
+                                                    className="object-contain"
+                                                />
+                                            </div>
+                                            <span className="text-base font-semibold text-white text-center">
+                                                {row.name}
+                                            </span>
+                                        </div>
+                                        <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                            {row.description}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
                         {/* Melee Abilities Table */}
                         <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
                             <div className="flex bg-[#232d2e] border-b border-gray-700">
@@ -186,49 +232,51 @@ export function ClassFilter({
                             )}
                         </div>
 
-                        {/* Super Abilities Table */}
-                        <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
-                            <div className="flex bg-[#232d2e] border-b border-gray-700">
-                                <div className="w-32 md:w-40 p-4"></div>
-                                <div className="flex-1 p-4 text-center text-lg font-bold text-white">
-                                    Super Abilities
-                                </div>
-                            </div>
-                            {superAbilitiesByClass[section.label].length === 0 ? (
-                                <div className="p-6 text-center text-gray-400">
-                                    No super abilities found for this class.
-                                </div>
-                            ) : (
-                                superAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
-                                    <div
-                                        key={row.id}
-                                        className={`flex border-b border-gray-700 last:border-b-0`}
-                                        style={{
-                                            backgroundColor:
-                                                idx % 2 === 0 ? backgroundColor : '#1a2324',
-                                        }}
-                                    >
-                                        <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
-                                            <div className="relative w-12 h-12 mb-2">
-                                                <Image
-                                                    src={row.icon_url}
-                                                    alt={row.name}
-                                                    fill
-                                                    sizes="48px"
-                                                    className="object-contain"
-                                                />
-                                            </div>
-                                            <span className="text-base font-semibold text-white text-center">
-                                                {row.name}
-                                            </span>
-                                        </div>
-                                        <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                            {row.description}
-                                        </div>
+                        {/* Grenade Abilities Table */}
+                        {grenadeAbilitiesByClass && (
+                            <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">
+                                <div className="flex bg-[#232d2e] border-b border-gray-700">
+                                    <div className="w-32 md:w-40 p-4"></div>
+                                    <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                                        Grenade Abilities
                                     </div>
-                                ))
-                            )}
-                        </div>
+                                </div>
+                                {grenadeAbilitiesByClass[section.label].length === 0 ? (
+                                    <div className="p-6 text-center text-gray-400">
+                                        No grenade abilities found for this class.
+                                    </div>
+                                ) : (
+                                    grenadeAbilitiesByClass[section.label].map((row: Ability, idx: number) => (
+                                        <div
+                                            key={row.id}
+                                            className={`flex border-b border-gray-700 last:border-b-0`}
+                                            style={{
+                                                backgroundColor:
+                                                    idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                            }}
+                                        >
+                                            <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                                <div className="relative w-12 h-12 mb-2">
+                                                    <Image
+                                                        src={row.icon_url}
+                                                        alt={row.name}
+                                                        fill
+                                                        sizes="48px"
+                                                        className="object-contain"
+                                                    />
+                                                </div>
+                                                <span className="text-base font-semibold text-white text-center">
+                                                    {row.name}
+                                                </span>
+                                            </div>
+                                            <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                                {row.description}
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        )}
 
                         {/* Class Abilities Table */}
                         <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-8">

@@ -7,6 +7,7 @@ import {
     fetchFragmentsBySubclass,
     fetchSuperAbilitiesByClass,
     fetchClassAbilitiesByClass,
+    fetchGrenadeAbilitiesByClass,
 } from '@/app/lib/data'
 import { Ability, Aspect, Fragment } from '@/app/lib/definitions'
 import { ClassFilter } from '@/app/ui/dashboard/ClassFilter'
@@ -38,7 +39,19 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
         subclass_type.charAt(0).toUpperCase() +
         subclass_type.slice(1).toLowerCase()
     const subclassVerbs = await fetchSubclassVerbs(normalizedSubclassType)
-    const grenadeAbilities = await fetchGrenadeAbilities(normalizedSubclassType)
+    const isPrismatic = normalizedSubclassType === 'Prismatic'
+    
+    const grenadeAbilitiesByClass: Record<ClassLabel, Ability[]> = isPrismatic ? {
+        Hunter: await fetchGrenadeAbilitiesByClass(normalizedSubclassType, 'Hunter'),
+        Titan: await fetchGrenadeAbilitiesByClass(normalizedSubclassType, 'Titan'),
+        Warlock: await fetchGrenadeAbilitiesByClass(normalizedSubclassType, 'Warlock'),
+    } : {
+        Hunter: [],
+        Titan: [],
+        Warlock: [],
+    }
+    
+    const grenadeAbilities = isPrismatic ? [] : await fetchGrenadeAbilities(normalizedSubclassType)
 
     const aspectsByClass: Record<ClassLabel, Aspect[]> = {
         Hunter: await fetchAspectsBySubclassAndClass(
@@ -167,53 +180,6 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                 )}
             </div>
 
-            {/* Grenade Abilities Table */}
-            <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-12">
-                <div
-                    className="flex border-b border-gray-700"
-                    style={{ backgroundColor }}
-                >
-                    <div className="w-32 md:w-40 p-4"></div>
-                    <div className="flex-1 p-4 text-center text-lg font-bold text-white">
-                        Grenade Abilities
-                    </div>
-                </div>
-                {grenadeAbilities.length === 0 ? (
-                    <div className="p-6 text-center text-gray-400">
-                        No grenade abilities found for this subclass.
-                    </div>
-                ) : (
-                    grenadeAbilities.map((row: Ability, idx: number) => (
-                        <div
-                            key={row.id}
-                            className={`flex border-b border-gray-700 last:border-b-0`}
-                            style={{
-                                backgroundColor:
-                                    idx % 2 === 0 ? backgroundColor : '#1a2324',
-                            }}
-                        >
-                            <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
-                                <div className="relative w-12 h-12 mb-2">
-                                    <Image
-                                        src={row.icon_url}
-                                        alt={row.name}
-                                        fill
-                                        sizes="48px"
-                                        className="object-contain"
-                                    />
-                                </div>
-                                <span className="text-base font-semibold text-white text-center">
-                                    {row.name}
-                                </span>
-                            </div>
-                            <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                {row.description}
-                            </div>
-                        </div>
-                    ))
-                )}
-            </div>
-
             {/* Class specific sections */}
             <ClassFilter
                 sections={sections}
@@ -221,8 +187,58 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                 meleeAbilitiesByClass={meleeAbilitiesByClass}
                 superAbilitiesByClass={superAbilitiesByClass}
                 classAbilitiesByClass={classAbilitiesByClass}
+                grenadeAbilitiesByClass={isPrismatic ? grenadeAbilitiesByClass : undefined}
                 backgroundColor={backgroundColor}
             />
+
+            {/* Non-Prismatic Grenade Abilities Table */}
+            {!isPrismatic && (
+                <div className="bg-[#1a2324] rounded-lg overflow-hidden border border-gray-700 mb-12">
+                    <div
+                        className="flex border-b border-gray-700"
+                        style={{ backgroundColor }}
+                    >
+                        <div className="w-32 md:w-40 p-4"></div>
+                        <div className="flex-1 p-4 text-center text-lg font-bold text-white">
+                            Grenade Abilities
+                        </div>
+                    </div>
+                    {grenadeAbilities.length === 0 ? (
+                        <div className="p-6 text-center text-gray-400">
+                            No grenade abilities found for this subclass.
+                        </div>
+                    ) : (
+                        grenadeAbilities.map((row: Ability, idx: number) => (
+                            <div
+                                key={row.id}
+                                className={`flex border-b border-gray-700 last:border-b-0`}
+                                style={{
+                                    backgroundColor:
+                                        idx % 2 === 0 ? backgroundColor : '#1a2324',
+                                }}
+                            >
+                                <div className="w-32 md:w-40 flex flex-col items-center justify-center p-4 border-r border-gray-700">
+                                    <div className="relative w-12 h-12 mb-2">
+                                        <Image
+                                            src={row.icon_url}
+                                            alt={row.name}
+                                            fill
+                                            sizes="48px"
+                                            className="object-contain"
+                                        />
+                                    </div>
+                                    <span className="text-base font-semibold text-white text-center">
+                                        {row.name}
+                                    </span>
+                                </div>
+                                <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
+                                    {row.description}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            )}
         </main>
     )
 }

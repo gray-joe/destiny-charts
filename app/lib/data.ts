@@ -595,3 +595,16 @@ export async function fetchClassAbilitiesByClass(subclass: string, className: st
         throw new Error('Failed to fetch class abilities')
     }
 }
+
+export async function fetchGrenadeAbilitiesByClass(subclass: string, className: string) {
+    try {
+        const { rows } = await db.query(
+            `SELECT id, icon_url, name, description, class FROM abilities WHERE type = 'Grenade' AND subclass = $1 AND class = $2 ORDER BY name ASC`,
+            [subclass, className]
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching grenade abilities by class:', error)
+        throw new Error('Failed to fetch grenade abilities by class')
+    }
+}
