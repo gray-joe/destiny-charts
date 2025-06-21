@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Aspect, Ability } from '@/app/lib/definitions'
 import { classColors } from '@/app/ui/dashboard/colors'
+import { highlightText } from '@/app/lib/utils'
 
 type Section = {
     id: string
@@ -136,7 +137,7 @@ export function ClassFilter({
                                                 </span>
                                             </div>
                                             <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                                {aspect.description}
+                                                {highlightText(aspect.description)}
                                             </div>
                                         </div>
                                     )
@@ -181,7 +182,7 @@ export function ClassFilter({
                                             </span>
                                         </div>
                                         <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                            {row.description}
+                                            {highlightText(row.description)}
                                         </div>
                                     </div>
                                 ))
@@ -225,7 +226,7 @@ export function ClassFilter({
                                             </span>
                                         </div>
                                         <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                            {row.description}
+                                            {highlightText(row.description)}
                                         </div>
                                     </div>
                                 ))
@@ -270,7 +271,7 @@ export function ClassFilter({
                                                 </span>
                                             </div>
                                             <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                                {row.description}
+                                                {highlightText(row.description)}
                                             </div>
                                         </div>
                                     ))
@@ -315,7 +316,7 @@ export function ClassFilter({
                                             </span>
                                         </div>
                                         <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                            {row.description}
+                                            {highlightText(row.description)}
                                         </div>
                                     </div>
                                 ))

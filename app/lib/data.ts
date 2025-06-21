@@ -33,7 +33,6 @@ export async function fetchTierList(type: string): Promise<Weapon[]> {
     ]
 
     if (!validTypes.includes(type)) {
-        console.log(`Type "${type}" not found in valid types:`, validTypes)
         throw new Error(`Invalid weapon type: ${type}`)
     }
 
