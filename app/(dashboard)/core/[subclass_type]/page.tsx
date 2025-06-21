@@ -12,6 +12,7 @@ import {
 import { Ability, Aspect, Fragment } from '@/app/lib/definitions'
 import { ClassFilter } from '@/app/ui/dashboard/ClassFilter'
 import { subclassBackgrounds } from '@/app/ui/dashboard/colors'
+import { highlightText } from '@/app/lib/utils'
 
 const sections = [
     {
@@ -130,7 +131,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                             </span>
                         </div>
                         <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                            {row.description}
+                            {highlightText(row.description)}
                         </div>
                     </div>
                 ))}
@@ -173,7 +174,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                                 </span>
                             </div>
                             <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                {row.description}
+                                {highlightText(row.description)}
                             </div>
                         </div>
                     ))
@@ -232,7 +233,7 @@ async function SubclassPage({ subclass_type }: { subclass_type: string }) {
                                     </span>
                                 </div>
                                 <div className="flex-1 p-4 text-sm text-gray-200 whitespace-pre-line">
-                                    {row.description}
+                                    {highlightText(row.description)}
                                 </div>
                             </div>
                         ))
