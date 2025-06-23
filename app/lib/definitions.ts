@@ -90,13 +90,30 @@ export type SwapBossDamage = {
 }
 
 export type ExoticWeapon = {
+    id: string
     name: string
     icon_url: string
+    description?: string
+}
+
+export type ExoticTierListItem = {
+    exotic_weapon_id?: string
+    exotic_armor_id?: string
+    name: string
+    icon_url: string
+    ad_clear: number
+    champions: number
+    survivability: number
+    movement: number
+    dps: number
+    support: number
 }
 
 export type ExoticArmor = {
+    id: string
     name: string
     icon_url: string
+    description?: string
 }
 
 export type AspectData = {

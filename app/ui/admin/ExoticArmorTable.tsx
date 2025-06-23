@@ -1,63 +1,56 @@
-import { Weapon, ExoticWeapon } from '@/app/lib/definitions'
+import { ExoticArmor } from '@/app/lib/definitions'
 import Link from 'next/link'
 
-type WeaponItem = Weapon | ExoticWeapon
-
-interface WeaponsTableProps {
-    weapons: WeaponItem[]
-    basePath: string
-}
-
-export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
+export default function ExoticArmorTable({ armor, basePath }: { armor: ExoticArmor[], basePath: string }) {
     return (
-        <div className="mt-6 low-root">
+        <div className="mt-6 flow-root">
             <div className="overflow-x-auto">
                 <div className="inline-block min-w-full align-middle">
-                    <div className="overflow-hidden rounded-md bg-primary-dark p-2">
-                        <table className="min-w-full divide-y divide-gray-800">
-                            <thead className="bg-primary-dark">
+                    <div className="overflow-hidden rounded-md bg-primary-dark p-2 md:pt-0">
+                        <table className="min-w-full rounded-md text-white">
+                            <thead className="rounded-md bg-primary-dark text-left text-sm font-normal">
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-4 py-5 text-left text-sm font-semibold text-white"
+                                        className="px-4 py-5 font-medium"
                                     >
                                         Icon
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-4 py-5 text-left text-sm font-semibold text-white"
+                                        className="px-4 py-5 font-medium"
                                     >
                                         Name
                                     </th>
                                     <th
                                         scope="col"
-                                        className="relative py-3 pl-4 pr-3"
+                                        className="px-4 py-5 font-medium"
                                     >
-                                        <span className="sr-only">Actions</span>
+                                        Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-700">
-                                {weapons.map((weapon) => (
+                                {armor.map((armorItem) => (
                                     <tr
-                                        key={weapon.name}
+                                        key={armorItem.name}
                                         className="hover:bg-primary-dark/50"
                                     >
                                         <td className="whitespace-nowrap px-4 py-4">
-                                            {weapon.icon_url && (
+                                            {armorItem.icon_url && (
                                                 <img
-                                                    src={weapon.icon_url}
-                                                    alt={weapon.name}
+                                                    src={armorItem.icon_url}
+                                                    alt={armorItem.name}
                                                     className="h-8 w-8 rounded"
                                                 />
                                             )}
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-4 text-white">
-                                            {weapon.name}
+                                            {armorItem.name}
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-4">
                                             <Link
-                                                href={`${basePath}/${weapon.id}`}
+                                                href={`${basePath}/${armorItem.id}`}
                                                 className="text-blue-400 hover:text-blue-300"
                                             >
                                                 Edit
@@ -72,4 +65,4 @@ export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
             </div>
         </div>
     )
-}
+} 

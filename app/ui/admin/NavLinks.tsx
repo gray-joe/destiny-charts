@@ -7,7 +7,10 @@ import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 
 const links = [
-    { name: 'Legendary Weapons', href: '/admin/legendary_weapons' },
+    { name: 'Home', href: '/admin' },
+    { name: 'Exotic Armor', href: '/admin/exotic-armor' },
+    { name: 'Exotic Weapons', href: '/admin/exotic-weapons' },
+    { name: 'Legendary Weapons', href: '/admin/legendary-weapons' },
     { name: 'Builds', href: '/admin/builds' },
 ]
 

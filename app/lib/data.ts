@@ -13,6 +13,7 @@ import {
     MainActivity,
     Activity,
     SubclassVerb,
+    ExoticTierListItem,
 } from './definitions'
 import { to_snake_case } from './utils'
 
@@ -316,14 +317,12 @@ export async function fetchLegendaryWeapons(
     try {
         const offset = (page - 1) * limit
 
-        // Count total with search
         const countQuery = query
             ? 'SELECT COUNT(*) FROM legendary_weapons WHERE name ILIKE $1'
             : 'SELECT COUNT(*) FROM legendary_weapons'
         const countParams = query ? [`%${query}%`] : []
         const { rows: countResult } = await db.query(countQuery, countParams)
 
-        // Fetch data with search
         const dataQuery = query
             ? `SELECT * FROM legendary_weapons 
          WHERE name ILIKE $3
@@ -382,15 +381,201 @@ export async function fetchExoticArmor() {
     }
 }
 
-export async function fetchExoticWeapons() {
+export async function fetchExoticArmorWithTierList(
+    page: number = 1,
+    limit: number = 10,
+    query: string = ''
+) {
+    try {
+        const offset = (page - 1) * limit
+
+        const countQuery = query
+            ? 'SELECT COUNT(*) FROM exotic_armor WHERE name ILIKE $1'
+            : 'SELECT COUNT(*) FROM exotic_armor'
+        const countParams = query ? [`%${query}%`] : []
+        const { rows: countResult } = await db.query(countQuery, countParams)
+
+        const dataQuery = query
+            ? `SELECT ea.*, 
+                    tlea.ad_clear,
+                    tlea.champion,
+                    tlea.survivability,
+                    tlea.movement,
+                    tlea.dps,
+                    tlea.support
+               FROM exotic_armor ea
+               LEFT JOIN tier_list_exotic_armor tlea ON ea.id = tlea.exotic_armor_id
+               WHERE ea.name ILIKE $3
+               ORDER BY ea.name ASC 
+               LIMIT $1 OFFSET $2`
+            : `SELECT ea.*, 
+                    tlea.ad_clear,
+                    tlea.champion,
+                    tlea.survivability,
+                    tlea.movement,
+                    tlea.dps,
+                    tlea.support
+               FROM exotic_armor ea
+               LEFT JOIN tier_list_exotic_armor tlea ON ea.id = tlea.exotic_armor_id
+               ORDER BY ea.name ASC 
+               LIMIT $1 OFFSET $2`
+        const dataParams = query
+            ? [limit, offset, `%${query}%`]
+            : [limit, offset]
+        const { rows } = await db.query(dataQuery, dataParams)
+
+        return {
+            armor: rows,
+            total: parseInt(countResult[0].count),
+        }
+    } catch (error) {
+        console.error('Error:', error)
+        throw new Error('Failed to fetch exotic armor')
+    }
+}
+
+export async function fetchAllExoticArmor() {
     try {
         const { rows } = await db.query(
-            `SELECT * FROM exotic_weapons ORDER BY name ASC`
+            `SELECT ea.*, 
+                    tlea.ad_clear,
+                    tlea.champion,
+                    tlea.survivability,
+                    tlea.movement,
+                    tlea.dps,
+                    tlea.support
+             FROM exotic_armor ea
+             LEFT JOIN tier_list_exotic_armor tlea ON ea.id = tlea.exotic_armor_id
+             ORDER BY ea.name ASC`
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching exotic armor:', error)
+        throw new Error('Failed to fetch exotic armor')
+    }
+}
+
+export async function fetchExoticWeapons(
+    page: number = 1,
+    limit: number = 10,
+    query: string = ''
+) {
+    try {
+        const offset = (page - 1) * limit
+
+        const countQuery = query
+            ? 'SELECT COUNT(*) FROM exotic_weapons WHERE name ILIKE $1'
+            : 'SELECT COUNT(*) FROM exotic_weapons'
+        const countParams = query ? [`%${query}%`] : []
+        const { rows: countResult } = await db.query(countQuery, countParams)
+
+        const dataQuery = query
+            ? `SELECT ew.*, 
+                    tlew.ad_clear,
+                    tlew.champion,
+                    tlew.survivability,
+                    tlew.movement,
+                    tlew.dps,
+                    tlew.support
+               FROM exotic_weapons ew
+               LEFT JOIN tier_list_exotic_weapons tlew ON ew.id = tlew.exotic_weapon_id
+               WHERE ew.name ILIKE $3
+               ORDER BY ew.name ASC 
+               LIMIT $1 OFFSET $2`
+            : `SELECT ew.*, 
+                    tlew.ad_clear,
+                    tlew.champion,
+                    tlew.survivability,
+                    tlew.movement,
+                    tlew.dps,
+                    tlew.support
+               FROM exotic_weapons ew
+               LEFT JOIN tier_list_exotic_weapons tlew ON ew.id = tlew.exotic_weapon_id
+               ORDER BY ew.name ASC 
+               LIMIT $1 OFFSET $2`
+        const dataParams = query
+            ? [limit, offset, `%${query}%`]
+            : [limit, offset]
+        const { rows } = await db.query(dataQuery, dataParams)
+
+        return {
+            weapons: rows,
+            total: parseInt(countResult[0].count),
+        }
+    } catch (error) {
+        console.error('Error:', error)
+        throw new Error('Failed to fetch exotic weapons')
+    }
+}
+
+export async function fetchAllExoticWeapons() {
+    try {
+        const { rows } = await db.query(
+            `SELECT ew.*, 
+                    tlew.ad_clear,
+                    tlew.champion,
+                    tlew.survivability,
+                    tlew.movement,
+                    tlew.dps,
+                    tlew.support
+             FROM exotic_weapons ew
+             LEFT JOIN tier_list_exotic_weapons tlew ON ew.id = tlew.exotic_weapon_id
+             ORDER BY ew.name ASC`
         )
         return rows
     } catch (error) {
         console.error('Error fetching exotic weapons:', error)
         throw new Error('Failed to fetch exotic weapons')
+    }
+}
+
+export async function fetchExoticTierList(): Promise<ExoticTierListItem[]> {
+    try {
+        const { rows } = await db.query(
+            `SELECT 
+                ew.id as exotic_weapon_id,
+                ew.name,
+                ew.icon_url,
+                COALESCE(tlew.ad_clear, 0) as ad_clear,
+                COALESCE(tlew.champion, 0) as champions,
+                COALESCE(tlew.survivability, 0) as survivability,
+                COALESCE(tlew.movement, 0) as movement,
+                COALESCE(tlew.dps, 0) as dps,
+                COALESCE(tlew.support, 0) as support
+             FROM exotic_weapons ew
+             LEFT JOIN tier_list_exotic_weapons tlew ON ew.id = tlew.exotic_weapon_id
+             WHERE tlew.exotic_weapon_id IS NOT NULL
+             ORDER BY ew.name ASC`
+        )
+        return rows as ExoticTierListItem[]
+    } catch (error) {
+        console.error('Error fetching exotic tier list:', error)
+        throw new Error('Failed to fetch exotic tier list')
+    }
+}
+
+export async function fetchExoticArmorTierList(): Promise<ExoticTierListItem[]> {
+    try {
+        const { rows } = await db.query(
+            `SELECT 
+                ea.id as exotic_armor_id,
+                ea.name,
+                ea.icon_url,
+                COALESCE(tlea.ad_clear, 0) as ad_clear,
+                COALESCE(tlea.champion, 0) as champions,
+                COALESCE(tlea.survivability, 0) as survivability,
+                COALESCE(tlea.movement, 0) as movement,
+                COALESCE(tlea.dps, 0) as dps,
+                COALESCE(tlea.support, 0) as support
+             FROM exotic_armor ea
+             LEFT JOIN tier_list_exotic_armor tlea ON ea.id = tlea.exotic_armor_id
+             WHERE tlea.exotic_armor_id IS NOT NULL
+             ORDER BY ea.name ASC`
+        )
+        return rows as ExoticTierListItem[]
+    } catch (error) {
+        console.error('Error fetching exotic armor tier list:', error)
+        throw new Error('Failed to fetch exotic armor tier list')
     }
 }
 

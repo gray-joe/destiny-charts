@@ -1,14 +1,7 @@
-import { Weapon, ExoticWeapon } from '@/app/lib/definitions'
+import { ExoticWeapon } from '@/app/lib/definitions'
 import Link from 'next/link'
 
-type WeaponItem = Weapon | ExoticWeapon
-
-interface WeaponsTableProps {
-    weapons: WeaponItem[]
-    basePath: string
-}
-
-export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
+export default function ExoticWeaponsTable({ weapons }: { weapons: ExoticWeapon[] }) {
     return (
         <div className="mt-6 low-root">
             <div className="overflow-x-auto">
@@ -57,7 +50,7 @@ export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
                                         </td>
                                         <td className="whitespace-nowrap px-4 py-4">
                                             <Link
-                                                href={`${basePath}/${weapon.id}`}
+                                                href={`/admin/exotic-weapons/${weapon.id}`}
                                                 className="text-blue-400 hover:text-blue-300"
                                             >
                                                 Edit
@@ -72,4 +65,4 @@ export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
             </div>
         </div>
     )
-}
+} 

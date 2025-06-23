@@ -2,7 +2,7 @@ import { createBuild } from '@/app/lib/admin-actions'
 import {
     fetchSubclasses,
     fetchExoticArmor,
-    fetchExoticWeapons,
+    fetchAllExoticWeapons,
     fetchSuperAbilities,
     fetchActivities,
     fetchAspects,
@@ -13,7 +13,7 @@ import { redirect } from 'next/navigation'
 export default async function CreateBuildPage() {
     const subclasses = await fetchSubclasses()
     const exoticArmor = await fetchExoticArmor()
-    const exoticWeapons = await fetchExoticWeapons()
+    const exoticWeapons = await fetchAllExoticWeapons()
     const superAbilities = await fetchSuperAbilities()
     const activities = await fetchActivities()
     const aspects = await fetchAspects()

@@ -1,8 +1,17 @@
-import { fetchTierList } from '@/app/lib/data'
+import { fetchTierList, fetchExoticTierList, fetchExoticArmorTierList } from '@/app/lib/data'
 import WeaponsTable from '@/app/ui/weapons-tier-list/Table'
+import ExoticTable from '@/app/ui/exotic-tier-list/Table'
 import { notFound } from 'next/navigation'
 
 const weaponTypes = {
+    'exotic-weapons': {
+        type: 'Exotic Weapon',
+        display: 'Exotic Weapons',
+    },
+    'exotic-armor': {
+        type: 'Exotic Armor',
+        display: 'Exotic Armor',
+    },
     lfrs: {
         type: 'Linear Fusion Rifle',
         display: 'Linear Fusion Rifles',
@@ -72,6 +81,28 @@ export default async function Page({ params }: PageProps) {
 
     if (!weaponType) {
         notFound()
+    }
+
+    if (resolvedParams.type === 'exotic-weapons') {
+        const exotics = await fetchExoticTierList()
+        
+        return (
+            <>
+                <h1>{weaponType.display}</h1>
+                <ExoticTable exotics={exotics} />
+            </>
+        )
+    }
+
+    if (resolvedParams.type === 'exotic-armor') {
+        const exotics = await fetchExoticArmorTierList()
+        
+        return (
+            <>
+                <h1>{weaponType.display}</h1>
+                <ExoticTable exotics={exotics} />
+            </>
+        )
     }
 
     const weapons = await fetchTierList(weaponType.type)
