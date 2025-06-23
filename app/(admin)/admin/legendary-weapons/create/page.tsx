@@ -6,7 +6,7 @@ export default async function CreateLegendaryWeaponPage() {
         'use server'
         const result = await createLegendaryWeapon(formData)
         if (result.success) {
-            redirect(`/admin/legendary_weapons/${result.id}`)
+            redirect(`/admin/legendary-weapons/${result.id}`)
         }
     }
 

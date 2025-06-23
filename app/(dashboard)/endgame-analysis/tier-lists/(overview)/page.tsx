@@ -10,6 +10,26 @@ export default async function Page() {
 
             {/* Cards Container */}
             <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+                {/* Exotic Weapons Tier List Card */}
+                <Link
+                    href="/endgame-analysis/tier-lists/exotic-weapons"
+                    className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+                >
+                    <h1 className="mt-4 text-xl font-semibold">
+                        Exotic Weapons
+                    </h1>
+                </Link>
+
+                {/* Exotic Armor Tier List Card */}
+                <Link
+                    href="/endgame-analysis/tier-lists/exotic-armor"
+                    className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"
+                >
+                    <h1 className="mt-4 text-xl font-semibold">
+                        Exotic Armor
+                    </h1>
+                </Link>
+
                 {/* LFR Tier List Card */}
                 <Link
                     href="/endgame-analysis/tier-lists/lfrs"

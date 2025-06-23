@@ -6,11 +6,11 @@ import { to_snake_case } from './utils'
 
 export async function navigateToEdit(formData: FormData) {
     const id = formData.get('id') as string
-    redirect(`/admin/legendary_weapons/${id}`)
+    redirect(`/admin/legendary-weapons/${id}`)
 }
 
 export async function navigateToCreate() {
-    redirect('/admin/legendary_weapons/create')
+    redirect('/admin/legendary-weapons/create')
 }
 
 export async function updateWeaponIconUrl(weaponId: string, iconUrl: string) {
@@ -19,7 +19,7 @@ export async function updateWeaponIconUrl(weaponId: string, iconUrl: string) {
             `UPDATE legendary_weapons SET icon_url = $1 WHERE id = $2`,
             [iconUrl, weaponId]
         )
-        revalidatePath(`/admin/legendary_weapons/${weaponId}`)
+        revalidatePath(`/admin/legendary-weapons/${weaponId}`)
         return { success: true }
     } catch (error) {
         console.error('Error updating weapon icon URL:', error)
@@ -282,7 +282,6 @@ export async function createLegendaryWeapon(formData: FormData) {
         const type = formData.get('type') as string
         const rank = parseInt(formData.get('rank') as string)
 
-        // Shift existing weapons down to make room for the new rank
         await db.query(
             `UPDATE tier_list_${to_snake_case(type)} 
        SET rank = rank + 1 
@@ -290,7 +289,6 @@ export async function createLegendaryWeapon(formData: FormData) {
             [rank]
         )
 
-        // Insert the new weapon's ranking
         await db.query(
             `INSERT INTO tier_list_${to_snake_case(type)} (weapon_id, rank) 
        VALUES ($1, $2)`,
@@ -298,7 +296,7 @@ export async function createLegendaryWeapon(formData: FormData) {
         )
 
         await db.query('COMMIT')
-        revalidatePath('/admin/legendary_weapons')
+        revalidatePath('/admin/legendary-weapons')
         return { success: true, id: weaponId }
     } catch (error) {
         await db.query('ROLLBACK')
@@ -352,16 +350,13 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
         const newType = formData.get('type') as string
         const newRank = parseInt(formData.get('rank') as string)
 
-        // If the type has changed, we need to move the weapon to a different tier list
         if (oldWeapon.type !== newType) {
-            // Remove from old tier list
             await db.query(
                 `DELETE FROM tier_list_${to_snake_case(oldWeapon.type)} 
          WHERE weapon_id = $1`,
                 [id]
             )
 
-            // Make room in the new tier list
             await db.query(
                 `UPDATE tier_list_${to_snake_case(newType)} 
          SET rank = rank + 1 
@@ -369,14 +364,12 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
                 [newRank]
             )
 
-            // Insert into new tier list
             await db.query(
                 `INSERT INTO tier_list_${to_snake_case(newType)} (weapon_id, rank) 
          VALUES ($1, $2)`,
                 [id, newRank]
             )
         } else {
-            // Just update the rank in the current tier list
             const {
                 rows: [currentRank],
             } = await db.query(
@@ -386,7 +379,6 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
 
             if (currentRank.rank !== newRank) {
                 if (currentRank.rank < newRank) {
-                    // Moving down in rank, shift others up
                     await db.query(
                         `UPDATE tier_list_${to_snake_case(newType)} 
              SET rank = rank - 1 
@@ -394,7 +386,6 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
                         [currentRank.rank, newRank]
                     )
                 } else {
-                    // Moving up in rank, shift others down
                     await db.query(
                         `UPDATE tier_list_${to_snake_case(newType)} 
              SET rank = rank + 1 
@@ -403,7 +394,6 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
                     )
                 }
 
-                // Update the weapon's rank
                 await db.query(
                     `UPDATE tier_list_${to_snake_case(newType)} 
            SET rank = $1 
@@ -414,12 +404,116 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
         }
 
         await db.query('COMMIT')
-        revalidatePath(`/admin/legendary_weapons/${id}`)
-        revalidatePath('/admin/legendary_weapons')
+        revalidatePath(`/admin/legendary-weapons/${id}`)
+        revalidatePath('/admin/legendary-weapons')
         return { success: true }
     } catch (error) {
         await db.query('ROLLBACK')
         console.error('Error updating legendary weapon:', error)
         return { success: false, error: 'Failed to update legendary weapon' }
+    }
+}
+
+export async function updateExoticWeapon(
+    id: string, 
+    name: string, 
+    icon_url: string, 
+    description?: string,
+    ad_clear?: number,
+    champion?: number,
+    survivability?: number,
+    movement?: number,
+    dps?: number,
+    support?: number
+) {
+    try {
+        await db.query('BEGIN')
+
+        await db.query(
+            `UPDATE exotic_weapons SET name = $1, icon_url = $2, description = $3 WHERE id = $4`,
+            [name, icon_url, description || null, id]
+        )
+
+        try {
+            const { rows } = await db.query(
+                `SELECT 1 FROM tier_list_exotic_weapons WHERE exotic_weapon_id = $1`,
+                [id]
+            )
+
+            if (rows.length > 0) {
+                await db.query(
+                    `UPDATE tier_list_exotic_weapons 
+                     SET ad_clear = $1, champion = $2, survivability = $3, movement = $4, dps = $5, support = $6
+                     WHERE exotic_weapon_id = $7`,
+                    [ad_clear || null, champion || null, survivability || null, movement || null, dps || null, support || null, id]
+                )
+            } else {
+                await db.query(
+                    `INSERT INTO tier_list_exotic_weapons (exotic_weapon_id, ad_clear, champion, survivability, movement, dps, support)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                    [id, ad_clear || null, champion || null, survivability || null, movement || null, dps || null, support || null]
+                )
+            }
+        } catch (tierListError) {
+            console.warn('Tier list update failed, continuing with basic weapon update:', tierListError)
+        }
+
+        await db.query('COMMIT')
+    } catch (error) {
+        await db.query('ROLLBACK')
+        console.error('Error updating exotic weapon:', error)
+        throw new Error('Failed to update exotic weapon')
+    }
+}
+
+export async function updateExoticArmor(
+    id: string, 
+    name: string, 
+    icon_url: string, 
+    description?: string,
+    ad_clear?: number,
+    champion?: number,
+    survivability?: number,
+    movement?: number,
+    dps?: number,
+    support?: number
+) {
+    try {
+        await db.query('BEGIN')
+
+        await db.query(
+            `UPDATE exotic_armor SET name = $1, icon_url = $2, description = $3 WHERE id = $4`,
+            [name, icon_url, description || null, id]
+        )
+
+        try {
+            const { rows } = await db.query(
+                `SELECT 1 FROM tier_list_exotic_armor WHERE exotic_armor_id = $1`,
+                [id]
+            )
+
+            if (rows.length > 0) {
+                await db.query(
+                    `UPDATE tier_list_exotic_armor 
+                     SET ad_clear = $1, champion = $2, survivability = $3, movement = $4, dps = $5, support = $6
+                     WHERE exotic_armor_id = $7`,
+                    [ad_clear || null, champion || null, survivability || null, movement || null, dps || null, support || null, id]
+                )
+            } else {
+                await db.query(
+                    `INSERT INTO tier_list_exotic_armor (exotic_armor_id, ad_clear, champion, survivability, movement, dps, support)
+                     VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+                    [id, ad_clear || null, champion || null, survivability || null, movement || null, dps || null, support || null]
+                )
+            }
+        } catch (tierListError) {
+            console.warn('Tier list update failed, continuing with basic armor update:', tierListError)
+        }
+
+        await db.query('COMMIT')
+    } catch (error) {
+        await db.query('ROLLBACK')
+        console.error('Error updating exotic armor:', error)
+        throw new Error('Failed to update exotic armor')
     }
 }

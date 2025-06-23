@@ -1,5 +1,4 @@
 import { fetchLegendaryWeapon } from '@/app/lib/data'
-import { updateLegendaryWeapon } from '@/app/lib/admin-actions'
 import Image from 'next/image'
 
 type Params = Promise<{
@@ -32,12 +31,7 @@ export default async function EditWeaponPage({ params }: { params: Params }) {
                     )}
                 </div>
 
-                <form
-                    action={async (formData: FormData) => {
-                        'use server'
-                        await updateLegendaryWeapon(id, formData)
-                    }}
-                >
+                <form action={`/admin/legendary-weapons/${id}/update`} method="POST">
                     <div className="grid grid-cols-2 gap-6">
                         <div>
                             <label
