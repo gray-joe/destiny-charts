@@ -43,7 +43,7 @@ importers:
         version: 15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       openai:
         specifier: 4.103.0
-        version: 4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.64)
+        version: 4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.67)
       postcss:
         specifier: 8.5.3
         version: 8.5.3
@@ -66,8 +66,8 @@ importers:
         specifier: 10.0.5
         version: 10.0.5(react@19.1.0)
       zod:
-        specifier: 3.25.64
-        version: 3.25.64
+        specifier: 3.25.67
+        version: 3.25.67
     devDependencies:
       '@types/bcrypt':
         specifier: 5.0.2
@@ -107,7 +107,7 @@ importers:
     dependencies:
       openai:
         specifier: 4.103.0
-        version: 4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.64)
+        version: 4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.67)
     devDependencies:
       typescript:
         specifier: 5.8.3
@@ -2247,8 +2247,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.64:
-    resolution: {integrity: sha512-hbP9FpSZf7pkS7hRVUrOjhwKJNyampPgtXKc3AN6DsWtoHsg2Sb4SQaS4Tcay380zSwd2VPo9G9180emBACp5g==}
+  zod@3.25.67:
+    resolution: {integrity: sha512-idA2YXwpCdqUSKRCACDE6ItZD9TZzy3OZMtpfLoh6oPR47lipysRrJfjzMqFxQ3uJuUPyUeWe1r9vLH33xO/Qw==}
 
 snapshots:
 
@@ -4025,7 +4025,7 @@ snapshots:
 
   obuf@1.1.2: {}
 
-  openai@4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.64):
+  openai@4.103.0(ws@8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))(zod@3.25.67):
     dependencies:
       '@types/node': 18.19.105
       '@types/node-fetch': 2.6.12
@@ -4036,7 +4036,7 @@ snapshots:
       node-fetch: 2.7.0
     optionalDependencies:
       ws: 8.18.2(bufferutil@4.0.8)(utf-8-validate@6.0.3)
-      zod: 3.25.64
+      zod: 3.25.67
     transitivePeerDependencies:
       - encoding
 
@@ -4713,4 +4713,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@3.25.64: {}
+  zod@3.25.67: {}
