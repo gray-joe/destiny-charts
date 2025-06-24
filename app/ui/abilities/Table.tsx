@@ -49,39 +49,15 @@ export default function AbilitiesTable({ data }: { data: Abilities[] }) {
             className: 'min-w-[150px] max-w-[300px] break-words',
         },
         {
-            key: 'count',
-            label: 'Count',
-            always: false,
-            className: 'min-w-[80px]',
-        },
-        {
-            key: 'percentage',
-            label: 'Percentage',
-            always: false,
-            className: 'min-w-[100px]',
-        },
-        {
-            key: 'actual',
-            label: 'Actual',
+            key: 'total_damage',
+            label: 'Total Damage',
             always: true,
             className: 'min-w-[100px]',
         },
         {
-            key: 'wipe',
-            label: 'Wipe',
-            always: false,
-            className: 'min-w-[100px]',
-        },
-        {
-            key: 'ratio',
-            label: 'Ratio',
-            always: false,
-            className: 'min-w-[100px]',
-        },
-        {
-            key: 'deviation',
-            label: 'Deviation',
-            always: false,
+            key: 'dps',
+            label: 'DPS',
+            always: true,
             className: 'min-w-[100px]',
         },
         {
@@ -194,7 +170,7 @@ export default function AbilitiesTable({ data }: { data: Abilities[] }) {
                                                         key={column.key}
                                                         className={`px-3 py-5 text-sm ${column.className} ${
                                                             column.key ===
-                                                            'actual'
+                                                            'total_damage'
                                                                 ? getActualColor(
                                                                       value as string
                                                                   )

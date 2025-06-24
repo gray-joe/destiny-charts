@@ -101,7 +101,7 @@ export async function fetchAbilitiesData(): Promise<Abilities[]> {
             `SELECT da.*, a.name, a.type, a.icon_url
        FROM dps_abilities da
        LEFT JOIN abilities a ON da.ability_id = a.id
-       ORDER BY da.actual DESC`
+       ORDER BY da.total_damage DESC`
         )
         return rows as Abilities[]
     } catch (error) {
