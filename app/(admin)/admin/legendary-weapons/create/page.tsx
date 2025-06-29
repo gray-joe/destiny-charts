@@ -56,7 +56,7 @@ export default async function CreateLegendaryWeaponPage() {
                                     Heavy Grenade Launcher
                                 </option>
                                 <option value="Machine Gun">Machine Gun</option>
-                                <option value="Rocket">Rocket</option>
+                                <option value="Rocket Launcher">Rocket Launcher</option>
                                 <option value="Sword">Sword</option>
                                 <option value="Breach Grenade Launcher">
                                     Breach Grenade Launcher

@@ -13,7 +13,7 @@ const SUPPORTED_WEAPON_TYPES = [
   'Linear Fusion Rifles',
   'Heavy Grenade Launchers',
   'Machine Guns',
-  'Rockets',
+  'Rocket Launchers',
   'Swords',
   'Breach Grenade Launchers',
   'Glaives',

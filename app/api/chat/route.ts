@@ -11,7 +11,7 @@ type WeaponType =
   | 'Linear Fusion Rifle'
   | 'Heavy Grenade Launcher'
   | 'Machine Gun'
-  | 'Rocket'
+  | 'Rocket Launcher'
   | 'Sword'
   | 'Breach Grenade Launcher'
   | 'Glaive'
@@ -52,9 +52,9 @@ const WEAPON_TYPE_MAP: Record<WeaponType, WeaponTypeInfo> = {
     variations: ['machine gun', 'mg', 'lmg'],
     dbValue: 'machine_gun'
   },
-  'Rocket': {
-    variations: ['rocket', 'rocket launcher', 'rl'],
-    dbValue: 'rocket'
+  'Rocket Launcher': {
+    variations: ['rocket launcher', 'rl'],
+    dbValue: 'rocket_launcher'
   },
   'Sword': {
     variations: ['sword'],

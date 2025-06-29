@@ -17,7 +17,7 @@ WEAPON_TYPES = [
     'Linear Fusion Rifle',
     'Heavy Grenade Launcher',
     'Machine Gun',
-    'Rocket',
+    'Rocket Launcher',
     'Sword',
     'Breach Grenade Launcher',
     'Glaive',

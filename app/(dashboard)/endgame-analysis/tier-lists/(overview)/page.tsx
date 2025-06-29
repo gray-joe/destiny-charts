@@ -60,7 +60,7 @@ export default async function Page() {
                     </h1>
                 </Link>
 
-                {/* Rocket Card */}
+                {/* Rocket Launcher Card */}
                 <Link
                     href="/endgame-analysis/tier-lists/rocket-launchers"
                     className="flex flex-col items-center rounded-lg bg-primary-light p-8 shadow-lg hover:bg-primary transition-colors"

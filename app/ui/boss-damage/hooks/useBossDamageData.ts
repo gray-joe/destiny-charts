@@ -13,8 +13,28 @@ type CombinedBossDamageData = LegendaryWeaponForBossDamage & {
     buffs?: string
 }
 
+function parsePerks(perks: any): string[] {
+    if (Array.isArray(perks)) {
+        return perks;
+    }
+    if (typeof perks === 'string') {
+        try {
+            return JSON.parse(perks);
+        } catch {
+            const cleaned = perks.replace(/^\{|\}$/g, '');
+            if (cleaned) {
+                return cleaned.split(',').map(item => {
+                    return item.replace(/^["']|["']$/g, '').trim();
+                }).filter(item => item.length > 0);
+            }
+            return [perks];
+        }
+    }
+    return [];
+}
+
 export function useBossDamageData(
-    legendaryWeapons: (LegendaryWeaponForBossDamage & { perk_one?: string | null, perk_two?: string | null })[],
+    legendaryWeapons: (LegendaryWeaponForBossDamage & { perks_third?: string | null, perks_fourth?: string | null })[],
     weaponDamageBuffs: WeaponDamageBuff[],
     bossDebuffs: BossDebuff[],
     weaponAmmoBuffs: WeaponAmmoBuff[],
@@ -126,17 +146,20 @@ export function useBossDamageData(
             let highestPerkOneAmount = 0
             let highestPerkTwoAmount = 0
             
+            const thirdPerks = parsePerks(weapon.perks_third)
+            const fourthPerks = parsePerks(weapon.perks_fourth)
+             
             weaponPerkBuffs.forEach(buff => {
                 const buffAmount = parseFloat(buff.buff_amount)
                 
-                if (weapon.perk_one && weapon.perk_one.toLowerCase().includes(buff.name.toLowerCase())) {
+                if (thirdPerks.some(perk => perk.toLowerCase().includes(buff.name.toLowerCase()))) {
                     if (buffAmount > highestPerkOneAmount) {
                         highestPerkOneAmount = buffAmount
                         bestPerkOne = buff
                     }
                 }
                 
-                if (weapon.perk_two && weapon.perk_two.toLowerCase().includes(buff.name.toLowerCase())) {
+                if (fourthPerks.some(perk => perk.toLowerCase().includes(buff.name.toLowerCase()))) {
                     if (buffAmount > highestPerkTwoAmount) {
                         highestPerkTwoAmount = buffAmount
                         bestPerkTwo = buff
@@ -178,8 +201,8 @@ export function useBossDamageData(
             const ammoSurgeBuffs = selectedAmmoBuffsList.filter(buff => buff.buff_type === "Surge")
             
             const applicableAmmoPerkBuffs = ammoPerkBuffs.filter(buff => 
-                (weapon.perk_one && weapon.perk_one.toLowerCase().includes(buff.name.toLowerCase())) ||
-                (weapon.perk_two && weapon.perk_two.toLowerCase().includes(buff.name.toLowerCase()))
+                thirdPerks.some(perk => perk.toLowerCase().includes(buff.name.toLowerCase())) ||
+                fourthPerks.some(perk => perk.toLowerCase().includes(buff.name.toLowerCase()))
             )
             
             const weaponPerkBuffsNames = [...weaponPerkBuffsDisplay, ...applicableAmmoPerkBuffs].map(buff => buff.name).join(', ') || 'None'
@@ -219,19 +242,18 @@ export function useBossDamageData(
 
             const isUnlimitedAmmo = weapon.reserves >= 9999
             
-            let effectiveReserves = weapon.reserves
-            let effectiveMagSize = weapon.mag_size || 0
-            let effectiveReloadTime = weapon.reload_time || 0
+            let effectiveReserves = Number(weapon.reserves) || 0
+            let effectiveMagSize = Number(weapon.mag_size) || 0
+            let effectiveReloadTime = Number(weapon.reload_time) || 0
             
             const applicableAmmoBuffs = selectedAmmoBuffsList.filter(ammoBuff => {
                 if (ammoBuff.buff_type === "Weapon Perk") {
-                    return (weapon.perk_one && weapon.perk_one.toLowerCase().includes(ammoBuff.name.toLowerCase())) ||
-                           (weapon.perk_two && weapon.perk_two.toLowerCase().includes(ammoBuff.name.toLowerCase()))
+                    return thirdPerks.some(perk => perk.toLowerCase().includes(ammoBuff.name.toLowerCase())) ||
+                           fourthPerks.some(perk => perk.toLowerCase().includes(ammoBuff.name.toLowerCase()))
                 }
                 return true
             })
             
-            // Calculate ammo generation effects FIRST (before other magazine buffs)
             let ammoGeneratedPerMag = 0
             applicableAmmoBuffs.forEach(ammoBuff => {
                 if (ammoBuff.buff_function === "Ammo Generation") {
@@ -245,24 +267,28 @@ export function useBossDamageData(
                         if (timeToFireRequiredHits <= requiredTime) {
                             const triggersPerMag = Math.floor(effectiveMagSize / requiredHits)
                             ammoGeneratedPerMag += triggersPerMag * ammoGenerated
-                            console.log(`Weapon: ${weapon.name}, Required Hits: ${requiredHits}, Required Time: ${requiredTime}s, Ammo Generated: ${ammoGenerated}, Triggers per Mag: ${triggersPerMag}, Total Ammo Generated per Mag: ${ammoGeneratedPerMag}`)
                         }
                     }
                 }
             })
             
-            // Apply ammo buff effects
+            let firstMagSize = effectiveMagSize
+            const baseMagSize = Number(weapon.mag_size) || 0
+            
             applicableAmmoBuffs.forEach(ammoBuff => {
                 const buffAmount = parseFloat(ammoBuff.buff_amount)
                 
                 switch (ammoBuff.buff_function) {
                     case "Ammo Generation":
-                        // Ammo generation is handled above - we add the generated ammo to magazine size
                         effectiveMagSize += ammoGeneratedPerMag
+                        firstMagSize += ammoGeneratedPerMag
                         break
                         
-                    case "Mag Boost":
-                        effectiveMagSize += Math.floor(effectiveMagSize * buffAmount)
+                    case "Overflow Mag":
+                        const baseMagNum = Number(baseMagSize)
+                        const buffAmountNum = Number(buffAmount)
+                        const overflowAmount = Math.floor(baseMagNum * buffAmountNum)
+                        firstMagSize += overflowAmount
                         break
                         
                     case "Auto Reload":
@@ -275,28 +301,26 @@ export function useBossDamageData(
             
             let totalTime = 0
             if (weapon.rounds_per_min && effectiveMagSize && effectiveReloadTime) {
-                // effectiveMagSize already includes ammo generation from above
-                const numMagazines = Math.ceil(effectiveReserves / effectiveMagSize)
+                const roundsInFirstMag = Math.min(effectiveReserves, firstMagSize)
+                const remainingRounds = Math.max(0, effectiveReserves - firstMagSize)
+                const numAdditionalMags = Math.ceil(remainingRounds / effectiveMagSize)
                 
-                const fireTime = effectiveReserves / weapon.rounds_per_min * 60
+                const fireTimeFirstMag = roundsInFirstMag / weapon.rounds_per_min * 60
+                const fireTimeRemaining = remainingRounds / weapon.rounds_per_min * 60
+                const totalFireTime = fireTimeFirstMag + fireTimeRemaining
                 
-                const numReloads = Math.max(0, numMagazines - 1)
+                const numReloads = Math.max(0, numAdditionalMags)
                 const reloadTime = numReloads * effectiveReloadTime
                 
-                totalTime = fireTime + reloadTime
-                
-                if (ammoGeneratedPerMag > 0) {
-                    console.log(`Weapon: ${weapon.name}, Final Effective Mag Size: ${effectiveMagSize}, Num Magazines: ${numMagazines}, Total Time: ${totalTime.toFixed(1)}s`)
-                }
+                totalTime = totalFireTime + reloadTime
             } else {
                 totalTime = 100
             }
             
             let swapDamage = 0
             let swapTime = 0
-            if (weapon.rounds_per_min && effectiveMagSize) {
-                // effectiveMagSize already includes ammo generation from above
-                const roundsInMag = Math.min(effectiveReserves, effectiveMagSize)
+            if (weapon.rounds_per_min && firstMagSize) {
+                const roundsInMag = Math.min(effectiveReserves, firstMagSize)
                 swapDamage = baseDamage * roundsInMag * (1 + highestDebuffAmount)
                 
                 swapTime = roundsInMag / weapon.rounds_per_min * 60

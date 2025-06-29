@@ -796,7 +796,7 @@ export async function fetchGrenadeAbilitiesByClass(subclass: string, className: 
 export async function fetchLegendaryWeaponsForBossDamage() {
     try {
         const { rows } = await db.query(
-            `SELECT lw.id, lw.name, lw.icon_url, lw.type, lw.frame, lw.reserves, lw.perk_one, lw.perk_two, lw.rounds_per_min, lw.mag_size, lw.reload_time, wd.single_shot_damage
+            `SELECT lw.id, lw.name, lw.icon_url, lw.type, lw.frame, lw.reserves, lw.perks_third, lw.perks_fourth, lw.rounds_per_min, lw.mag_size, lw.reload_time, wd.single_shot_damage
              FROM legendary_weapons lw
              LEFT JOIN weapon_dmg wd ON lw.type = wd.type AND lw.frame = wd.frame`
         )
