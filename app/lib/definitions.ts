@@ -91,6 +91,61 @@ export type SwapBossDamage = {
     true_dps: string
 }
 
+export type LegendaryWeaponForBossDamage = {
+    id: string,
+    name: string,
+    icon_url: string,
+    type: string,
+    frame: string,
+    reserves: number,
+    single_shot_damage?: number,
+    perk_one?: string,
+    perk_two?: string,
+    rounds_per_min?: number,
+    mag_size?: number,
+    reload_time?: number,
+}
+
+export type WeaponDamageByType = {
+    type: string,
+    frame: string,
+    single_shot_damage: number,
+}
+
+export type WeaponDamageBuff = {
+    id: string,
+    updated_at: string,
+    weapon_type: string,
+    weapon_frame: string,
+    buff_amount: string,
+    buff_type: string,
+    priority: string,
+    name: string,
+}
+
+export type BossDebuff = {
+    id: number,
+    updated_at: string,
+    name: string,
+    debuff_type: string,
+    debuff_amount: string,
+    priority: string,
+}
+
+export type WeaponAmmoBuff = {
+    id: string,
+    updated_at: string,
+    weapon_type: string,
+    weapon_frame: string,
+    buff_amount: string,
+    buff_type: string,
+    name: string,
+    weapon_element: string,
+    buff_requirement_hits: string,
+    buff_requirement_time: string,
+    buff_function: string,
+}
+
 export type ExoticWeapon = {
     id: string
     name: string
