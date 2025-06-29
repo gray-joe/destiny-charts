@@ -792,3 +792,53 @@ export async function fetchGrenadeAbilitiesByClass(subclass: string, className: 
         throw new Error('Failed to fetch grenade abilities by class')
     }
 }
+
+export async function fetchLegendaryWeaponsForBossDamage() {
+    try {
+        const { rows } = await db.query(
+            `SELECT lw.id, lw.name, lw.icon_url, lw.type, lw.frame, lw.reserves, lw.perk_one, lw.perk_two, lw.rounds_per_min, lw.mag_size, lw.reload_time, wd.single_shot_damage
+             FROM legendary_weapons lw
+             LEFT JOIN weapon_dmg wd ON lw.type = wd.type AND lw.frame = wd.frame`
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching legendary weapons for boss damage:', error)
+        throw new Error('Failed to fetch legendary weapons for boss damage')
+    }
+}
+
+export async function fetchWeaponDamageBuffs() {
+    try {
+        const { rows } = await db.query(
+            `SELECT * FROM weapon_dmg_buffs`
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching weapon damage buffs:', error)
+        throw new Error('Failed to fetch weapon damage buffs')
+    }
+}
+
+export async function fetchBossDebuffs() {
+    try {
+        const { rows } = await db.query(
+            `SELECT * FROM boss_debuff`
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching boss debuffs:', error)
+        throw new Error('Failed to fetch boss debuffs')
+    }
+}
+
+export async function fetchWeaponDamage() {
+    try {
+        const { rows } = await db.query(
+            `SELECT * FROM weapon_dmg`
+        )
+        return rows
+    } catch (error) {
+        console.error('Error fetching weapon damage data:', error)
+        throw new Error('Failed to fetch weapon damage data')
+    }
+}
