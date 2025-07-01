@@ -73,8 +73,8 @@ importers:
         specifier: 5.0.2
         version: 5.0.2
       '@types/node':
-        specifier: 24.0.1
-        version: 24.0.1
+        specifier: 24.0.8
+        version: 24.0.8
       '@types/react':
         specifier: 19.1.8
         version: 19.1.8
@@ -475,8 +475,8 @@ packages:
   '@types/node@18.19.105':
     resolution: {integrity: sha512-a+DrwD2VyzqQR2W0EVF8EaCh6Em4ilQAYLEPZnMNkQHXR7ziWW7RUhZMWZAgRpkDDAdUIcJOXSPJT/zBEwz3sA==}
 
-  '@types/node@24.0.1':
-    resolution: {integrity: sha512-MX4Zioh39chHlDJbKmEgydJDS3tspMP/lnQC67G3SWsTnb9NeYVWOjkxpOSy4oMfPs4StcWHwBrvUb4ybfnuaw==}
+  '@types/node@24.0.8':
+    resolution: {integrity: sha512-WytNrFSgWO/esSH9NbpWUfTMGQwCGIKfCmNlmFDNiI5gGhgMmEA+V1AEvKLeBNvvtBnailJtkrEa2OIISwrVAA==}
 
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
@@ -2556,7 +2556,7 @@ snapshots:
 
   '@types/bcrypt@5.0.2':
     dependencies:
-      '@types/node': 24.0.1
+      '@types/node': 24.0.8
 
   '@types/estree@1.0.8': {}
 
@@ -2566,20 +2566,20 @@ snapshots:
 
   '@types/node-fetch@2.6.12':
     dependencies:
-      '@types/node': 24.0.1
+      '@types/node': 24.0.8
       form-data: 4.0.2
 
   '@types/node@18.19.105':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@24.0.1':
+  '@types/node@24.0.8':
     dependencies:
       undici-types: 7.8.0
 
   '@types/pg@8.11.6':
     dependencies:
-      '@types/node': 24.0.1
+      '@types/node': 24.0.8
       pg-protocol: 1.7.0
       pg-types: 4.0.2
 
@@ -2595,7 +2595,7 @@ snapshots:
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 24.0.1
+      '@types/node': 24.0.8
 
   '@typescript-eslint/eslint-plugin@8.35.0(@typescript-eslint/parser@8.35.0(eslint@9.29.0(jiti@1.21.7))(typescript@5.8.3))(eslint@9.29.0(jiti@1.21.7))(typescript@5.8.3)':
     dependencies:
