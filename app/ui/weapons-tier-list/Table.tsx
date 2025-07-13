@@ -14,8 +14,7 @@ function parsePerks(perks: string[] | string | null | undefined): string[] {
     if (typeof perks === 'string') {
         try {
             return JSON.parse(perks);
-        } catch (e) {
-            console.error(e);
+        } catch {
             const cleaned = perks.replace(/^\{|\}$/g, '');
             if (cleaned) {
                 return cleaned.split(',').map(item => {
@@ -187,14 +186,14 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
 
 function getTierBackgroundColor(tier: string): string {
     const colors = {
-        S: 'bg-emerald-900/50', 
-        A: 'bg-green-900/50',
-        B: 'bg-lime-900/50',
-        C: 'bg-yellow-900/50',
-        D: 'bg-orange-900/50',
-        E: 'bg-red-800/50',
-        F: 'bg-red-900/50',
-        G: 'bg-red-950/50',
+        S: 'bg-purple-900/30',
+        A: 'bg-green-900/30',
+        B: 'bg-lime-900/30',
+        C: 'bg-yellow-900/30',
+        D: 'bg-orange-900/30',
+        E: 'bg-red-800/30',
+        F: 'bg-red-900/30',
+        G: 'bg-red-950/30',
     }
     return colors[tier as keyof typeof colors] || 'bg-primary-dark'
 }
