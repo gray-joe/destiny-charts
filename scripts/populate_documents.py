@@ -39,7 +39,7 @@ def get_embedding(text: str) -> List[float]:
 def fetch_weapons(weapon_type: str) -> List[Dict[str, Any]]:
     """Fetch weapon data from the tier list for a specific weapon type."""
     response = supabase.table('legendary_weapons').select(
-        'id, type, name, icon_url, affinity, frame, enhanceable, reserves, perk_one, perk_two, origin_trait, tier'
+        'id, type, name, icon_url, affinity, frame, reserves, perks_third, perks_fourth, origin_trait, tier'
     ).eq('type', weapon_type).execute()
     return response.data
 
@@ -49,10 +49,9 @@ def process_weapon_data(weapon: Dict[str, Any]) -> Dict[str, Any]:
     {weapon.get('type', 'Unknown')}: {weapon.get('name', 'Unknown')}
     Element: {weapon.get('affinity', 'Unknown')}
     Frame: {weapon.get('frame', 'Unknown')}
-    Enhanceable: {weapon.get('enhanceable', 'Unknown')}
     Reserves: {weapon.get('reserves', 'Unknown')}
-    Perk One: {weapon.get('perk_one', 'Unknown')}
-    Perk Two: {weapon.get('perk_two', 'Unknown')}
+    Perk One: {weapon.get('perks_third', 'Unknown')}
+    Perk Two: {weapon.get('perks_fourth', 'Unknown')}
     Origin Trait: {weapon.get('origin_trait', 'Unknown')}
     Tier: {weapon.get('tier', 'Unknown')}
     """

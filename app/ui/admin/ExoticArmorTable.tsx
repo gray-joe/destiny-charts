@@ -1,5 +1,6 @@
 import { ExoticArmor } from '@/app/lib/definitions'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function ExoticArmorTable({ armor, basePath }: { armor: ExoticArmor[], basePath: string }) {
     return (
@@ -38,7 +39,7 @@ export default function ExoticArmorTable({ armor, basePath }: { armor: ExoticArm
                                     >
                                         <td className="whitespace-nowrap px-4 py-4">
                                             {armorItem.icon_url && (
-                                                <img
+                                                <Image
                                                     src={armorItem.icon_url}
                                                     alt={armorItem.name}
                                                     className="h-8 w-8 rounded"

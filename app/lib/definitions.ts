@@ -3,10 +3,12 @@ export type Weapon = {
     name: string
     affinity: string
     frame: string
-    enhanceable: boolean
     reserves: number
-    perk_one: string
-    perk_two: string
+    mag_size: number
+    reload_speed: number
+    rounds_per_min: number
+    perks_third: string
+    perks_fourth: string
     origin_trait: string
     icon_url: string
     type: string

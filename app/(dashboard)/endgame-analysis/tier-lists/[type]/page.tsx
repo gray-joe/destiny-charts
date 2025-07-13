@@ -28,9 +28,9 @@ const weaponTypes = {
         type: 'Rocket Sidearm',
         display: 'Rocket Sidearms',
     },
-    rockets: {
-        type: 'Rocket',
-        display: 'Rockets',
+    'rocket-launchers': {
+        type: 'Rocket Launcher',
+        display: 'Rocket Launchers',
     },
     swords: {
         type: 'Sword',

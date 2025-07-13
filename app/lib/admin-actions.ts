@@ -242,10 +242,9 @@ export async function createLegendaryWeapon(formData: FormData) {
         name,
         affinity,
         frame,
-        enhanceable,
         reserves,
-        perk_one,
-        perk_two,
+        perks_third,
+        perks_fourth,
         origin_trait,
         icon_url,
         type,
@@ -267,10 +266,9 @@ export async function createLegendaryWeapon(formData: FormData) {
                 formData.get('name'),
                 formData.get('affinity'),
                 formData.get('frame'),
-                formData.get('enhanceable'),
                 formData.get('reserves'),
-                formData.get('perk_one'),
-                formData.get('perk_two'),
+                formData.get('perks_third'),
+                formData.get('perks_fourth'),
                 formData.get('origin_trait'),
                 formData.get('icon_url'),
                 formData.get('type'),
@@ -309,23 +307,20 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
     try {
         await db.query('BEGIN')
 
-        // Get the old weapon type for comparison
         const {
             rows: [oldWeapon],
         } = await db.query(`SELECT type FROM legendary_weapons WHERE id = $1`, [
             id,
         ])
 
-        // Update the weapon details
         await db.query(
             `UPDATE legendary_weapons 
        SET name = $1,
            affinity = $2,
            frame = $3,
-           enhanceable = $4,
            reserves = $5,
-           perk_one = $6,
-           perk_two = $7,
+           perks_third = $6,
+           perks_fourth = $7,
            origin_trait = $8,
            icon_url = $9,
            type = $10,
@@ -335,10 +330,9 @@ export async function updateLegendaryWeapon(id: string, formData: FormData) {
                 formData.get('name'),
                 formData.get('affinity'),
                 formData.get('frame'),
-                formData.get('enhanceable') === 'true',
                 parseInt(formData.get('reserves') as string),
-                formData.get('perk_one'),
-                formData.get('perk_two'),
+                formData.get('perks_third'),
+                formData.get('perks_fourth'),
                 formData.get('origin_trait'),
                 formData.get('icon_url'),
                 formData.get('type'),
