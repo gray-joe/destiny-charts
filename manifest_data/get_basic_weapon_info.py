@@ -23,8 +23,8 @@ for item_id, json_str in rows:
 
     socket_entries = item_data.get("sockets", {}).get("socketEntries", [])
     frame = socket_entries[0].get("singleInitialItemHash") if socket_entries else None
-    third_column_perk_hash = socket_entries[3].get("randomizedPlugSetHash") if len(socket_entries) > 3 else None
-    fourth_column_perk_hash = socket_entries[4].get("randomizedPlugSetHash") if len(socket_entries) > 4 else None
+    third_column_perk_hash = socket_entries[3].get("randomizedPlugSetHash") or socket_entries[3].get("reusablePlugSetHash") if len(socket_entries) > 3 else None
+    fourth_column_perk_hash = socket_entries[4].get("randomizedPlugSetHash") or socket_entries[4].get("reusablePlugSetHash") if len(socket_entries) > 4 else None
     origin_trait_hash = socket_entries[8].get("singleInitialItemHash") if len(socket_entries) > 8 else None
     
     collectible_hash = item_data.get("collectibleHash")
@@ -38,8 +38,8 @@ for item_id, json_str in rows:
         "Legendary Sword",
         "Legendary Linear Fusion Rifle",
         "Legendary Rocket Launcher",
-        "Legendary Breach Grenade Laucnher",
-        "Legendary Heavy Grenade Launcher",
+        "Legendary Breach Grenade Launcher",
+        "Legendary Grenade Launcher",
         "Legendary Sidearm",
     ]
     if item_type in weapon_types and collectible_hash:
