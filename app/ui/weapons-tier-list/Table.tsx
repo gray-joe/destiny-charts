@@ -5,32 +5,93 @@ import { lusitana } from '@/app/ui/fonts'
 import Search from '@/app/ui/Search'
 import { useState } from 'react'
 import { Weapon } from '@/app/lib/definitions'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+
+function parsePerks(perks: string[] | string | null | undefined): string[] {
+    if (Array.isArray(perks)) {
+        return perks;
+    }
+    if (typeof perks === 'string') {
+        try {
+            return JSON.parse(perks);
+        } catch (e) {
+            console.error(e);
+            const cleaned = perks.replace(/^\{|\}$/g, '');
+            if (cleaned) {
+                return cleaned.split(',').map(item => {
+                    return item.replace(/^["']|["']$/g, '').trim();
+                }).filter(item => item.length > 0);
+            }
+            return [perks];
+        }
+    }
+    return [];
+}
 
 export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
     const [searchTerm, setSearchTerm] = useState('')
+    const [showAllColumns, setShowAllColumns] = useState(false)
 
     const filteredWeapons = weapons.filter((weapon) => {
         const searchFields = [
             weapon.name,
             weapon.affinity,
             weapon.frame,
-            weapon.perk_one,
-            weapon.perk_two,
             weapon.origin_trait,
         ]
 
-        return searchFields.some((field) =>
+        const thirdPerks = parsePerks(weapon.perks_third).join(' ')
+        const fourthPerks = parsePerks(weapon.perks_fourth).join(' ')
+
+        const allSearchFields = [
+            ...searchFields,
+            thirdPerks,
+            fourthPerks,
+        ]
+
+        return allSearchFields.some((field) =>
             field?.toLowerCase().includes(searchTerm.toLowerCase())
         )
     })
 
+    const columns = [
+        { key: 'rank', label: 'Tier', always: true, className: 'whitespace-nowrap' },
+        { key: 'tier', label: 'Rank', always: true, className: 'whitespace-nowrap font-bold' },
+        { key: 'icon_url', label: 'Icon', always: true, className: 'whitespace-nowrap' },
+        { key: 'name', label: 'Name', always: true, className: 'whitespace-nowrap' },
+        { key: 'affinity', label: 'Affinity', always: true, className: 'whitespace-nowrap' },
+        { key: 'frame', label: 'Frame', always: true, className: 'whitespace-nowrap' },
+        { key: 'rounds_per_min', label: 'Rounds per Min', always: false, className: 'whitespace-nowrap' },
+        { key: 'perks_third', label: 'Third Column Perks', always: false, className: '' },
+        { key: 'perks_fourth', label: 'Fourth Column Perks', always: false, className: '' },
+        { key: 'origin_trait', label: 'Origin Trait', always: false, className: 'whitespace-nowrap' },
+    ]
+
     return (
         <div className="w-full">
-            <h1
-                className={`${lusitana.className} mb-8 text-xl md:text-2xl text-white`}
-            >
-                Tier List
-            </h1>
+            <div className="flex justify-between items-center mb-4">
+                <h1
+                    className={`${lusitana.className} text-xl md:text-2xl text-white`}
+                >
+                    Tier List
+                </h1>
+                <button
+                    onClick={() => setShowAllColumns(!showAllColumns)}
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-white bg-primary-light rounded-md hover:bg-primary-hover"
+                >
+                    {showAllColumns ? (
+                        <>
+                            <EyeSlashIcon className="h-5 w-5" />
+                            Hide Details
+                        </>
+                    ) : (
+                        <>
+                            <EyeIcon className="h-5 w-5" />
+                            Show Details
+                        </>
+                    )}
+                </button>
+            </div>
             <Search
                 placeholder="Search weapons by name, affinity, frame, perk, origin trait..."
                 onSearch={setSearchTerm}
@@ -42,72 +103,19 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
                             <table className="min-w-full rounded-md text-white">
                                 <thead className="rounded-md bg-primary-dark text-left text-sm font-normal">
                                     <tr>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Tier
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Rank
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-4 py-5 font-medium sm:pl-6"
-                                        >
-                                            Icon
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Name
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Affinity
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Frame
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Enhanced
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Reserves
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Perk 1
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Perk 2
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-3 py-5 font-medium"
-                                        >
-                                            Origin Trait
-                                        </th>
+                                        {columns.map(
+                                            (column) =>
+                                                (column.always ||
+                                                    showAllColumns) && (
+                                                    <th
+                                                        key={column.key}
+                                                        scope="col"
+                                                        className={`px-3 py-5 font-medium ${column.className}`}
+                                                    >
+                                                        {column.label}
+                                                    </th>
+                                                )
+                                        )}
                                     </tr>
                                 </thead>
 
@@ -119,50 +127,52 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
                                                 weapon.tier
                                             )}`}
                                         >
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.rank}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm font-bold">
-                                                {weapon.tier}
-                                            </td>
-                                            <td className="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-6">
-                                                {weapon.icon_url ? (
-                                                    <Image
-                                                        src={weapon.icon_url}
-                                                        alt={weapon.name}
-                                                        width={48}
-                                                        height={48}
-                                                    />
-                                                ) : (
-                                                    <div className="w-12 h-12 bg-primary-light" />
-                                                )}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.name}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.affinity}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.frame}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.enhanceable
-                                                    ? 'Yes'
-                                                    : 'No'}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.reserves}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.perk_one}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.perk_two}
-                                            </td>
-                                            <td className="whitespace-nowrap px-3 py-5 text-sm">
-                                                {weapon.origin_trait}
-                                            </td>
+                                            {columns.map((column) => {
+                                                if (
+                                                    !column.always &&
+                                                    !showAllColumns
+                                                )
+                                                    return null
+
+                                                const value = weapon[column.key as keyof Weapon]
+
+                                                return (
+                                                    <td
+                                                        key={column.key}
+                                                        className={`px-3 py-5 text-sm ${column.className}`}
+                                                    >
+                                                        {column.key === 'icon_url' ? (
+                                                            value ? (
+                                                                <Image
+                                                                    src={value as string}
+                                                                    alt={weapon.name}
+                                                                    width={48}
+                                                                    height={48}
+                                                                />
+                                                            ) : (
+                                                                <div className="w-12 h-12 bg-primary-light" />
+                                                            )
+                                                        ) : column.key === 'perks_third' || column.key === 'perks_fourth' ? (
+                                                            (() => {
+                                                                const perks = parsePerks(value as string | string[] | null | undefined);
+                                                                return perks.length > 0 ? (
+                                                                    <ul className="list-disc list-inside space-y-1">
+                                                                        {perks.map((perk, index) => (
+                                                                            <li key={index} className="text-xs">
+                                                                                {perk}
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                ) : (
+                                                                    <span>-</span>
+                                                                );
+                                                            })()
+                                                        ) : (
+                                                            value
+                                                        )}
+                                                    </td>
+                                                )
+                                            })}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -177,7 +187,7 @@ export default function WeaponsTable({ weapons }: { weapons: Weapon[] }) {
 
 function getTierBackgroundColor(tier: string): string {
     const colors = {
-        S: 'bg-emerald-900/50',
+        S: 'bg-emerald-900/50', 
         A: 'bg-green-900/50',
         B: 'bg-lime-900/50',
         C: 'bg-yellow-900/50',

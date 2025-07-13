@@ -118,27 +118,6 @@ export default async function CreateLegendaryWeaponPage() {
 
                         <div>
                             <label
-                                htmlFor="enhanceable"
-                                className="block text-sm font-medium text-gray-400 mb-2"
-                            >
-                                Enhanceable
-                            </label>
-                            <select
-                                id="enhanceable"
-                                name="enhanceable"
-                                required
-                                className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
-                            >
-                                <option value="">
-                                    Select enhanceable status
-                                </option>
-                                <option value="true">Yes</option>
-                                <option value="false">No</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label
                                 htmlFor="reserves"
                                 className="block text-sm font-medium text-gray-400 mb-2"
                             >
@@ -156,15 +135,15 @@ export default async function CreateLegendaryWeaponPage() {
 
                         <div>
                             <label
-                                htmlFor="perk_one"
+                                htmlFor="perks_third"
                                 className="block text-sm font-medium text-gray-400 mb-2"
                             >
                                 Perk One
                             </label>
                             <input
                                 type="text"
-                                id="perk_one"
-                                name="perk_one"
+                                id="perks_third"
+                                name="perks_third"
                                 required
                                 className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
                                 placeholder="Enter perk one"
@@ -173,15 +152,15 @@ export default async function CreateLegendaryWeaponPage() {
 
                         <div>
                             <label
-                                htmlFor="perk_two"
+                                htmlFor="perks_fourth"
                                 className="block text-sm font-medium text-gray-400 mb-2"
                             >
                                 Perk Two
                             </label>
                             <input
                                 type="text"
-                                id="perk_two"
-                                name="perk_two"
+                                id="perks_fourth"
+                                name="perks_fourth"
                                 required
                                 className="w-full px-3 py-2 bg-primary-light text-white rounded-md border border-gray-700 focus:outline-none focus:border-blue-500"
                                 placeholder="Enter perk two"

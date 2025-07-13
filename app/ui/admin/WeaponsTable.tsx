@@ -1,5 +1,6 @@
 import { Weapon, ExoticWeapon } from '@/app/lib/definitions'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type WeaponItem = Weapon | ExoticWeapon
 
@@ -45,7 +46,7 @@ export default function WeaponsTable({ weapons, basePath }: WeaponsTableProps) {
                                     >
                                         <td className="whitespace-nowrap px-4 py-4">
                                             {weapon.icon_url && (
-                                                <img
+                                                <Image
                                                     src={weapon.icon_url}
                                                     alt={weapon.name}
                                                     className="h-8 w-8 rounded"
