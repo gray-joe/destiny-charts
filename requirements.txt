@@ -3,3 +3,5 @@ supabase==2.15.0
 python-dotenv==1.1.0
 requests==2.32.4
 beautifulsoup4==4.13.3
+flask==2.1.0
+

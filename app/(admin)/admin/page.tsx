@@ -10,5 +10,12 @@ export default async function PrivatePage() {
         redirect('/login')
     }
 
-    return <p>Hello {data.user.email}</p>
+    return (
+        <div>
+            <p>Hello {data.user.email}</p>
+            <a href={`https://www.bungie.net/en/OAuth/Authorize?client_id=${process.env.NEXT_PUBLIC_BUNGIE_CLIENT_ID}&response_type=code`}>
+                Login with Bungie
+            </a>
+        </div>
+    )
 }
